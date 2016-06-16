@@ -3,6 +3,12 @@
 typed_astunparse
 ================
 
+.. image:: https://badge.fury.io/py/typed-astunparse.svg
+    :target: https://badge.fury.io/py/typed-astunparse
+
+.. image:: https://travis-ci.org/mbdevpl/typed-astunparse.svg?branch=master
+    :target: https://travis-ci.org/mbdevpl/typed-astunparse
+
 What *astunparse* is for *ast*, *typed-astunparse* is for *typed-ast*.
 
 The built-in *ast* module has capabilites to parse Python source code into abstract syntax tree
