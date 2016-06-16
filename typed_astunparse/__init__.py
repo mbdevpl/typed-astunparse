@@ -15,6 +15,8 @@
 
 """
 This is __init__.py file of typed_astunparse package.
+
+functions: unparse, dump
 """
 
 from __future__ import absolute_import
