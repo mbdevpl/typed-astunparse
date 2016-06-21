@@ -23,5 +23,16 @@ import typed_ast.ast35
 class Unparser(astunparse.Unparser):
     """ Partial rewrite of Unparser from astunparse to handle typed_ast.ast35-based trees. """
 
-    # TODO: now using default unparser that ignores type comments
-    pass
+    # TODO: for most nodes still using default unparser that ignores type comments
+
+    def write_type_comment(self, type_comment):
+        self.write(" # type: ")
+        if isinstance(type_comment, str):
+            self.write(type_comment)
+        else:
+            self.dispatch(type_comment)
+
+    def _Assign(self, t):
+        super()._Assign(t)
+        if t.type_comment:
+            self.write_type_comment(t.type_comment)
