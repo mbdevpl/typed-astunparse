@@ -9,6 +9,9 @@ typed-astunparse
 .. image:: https://travis-ci.org/mbdevpl/typed-astunparse.svg?branch=master
     :target: https://travis-ci.org/mbdevpl/typed-astunparse
 
+.. role:: bash(code)
+   :language: bash
+
 The *typed-astunparse* is to *typed-ast* as *astunparse* is to *ast*. In short: unparsing of Python
 3.5 abstract syntax trees (AST) with type comments.
 
@@ -37,6 +40,43 @@ typed-astunparse depends on:
 -  astunparse
 
 -  typed-ast
+
+------------
+installation
+------------
+
+For simplest installation use :bash:`pip`:
+
+.. code:: bash
+
+    pip3.5 install typed-astunparse
+
+You can also build your own version:
+
+.. code:: bash
+
+    git clone
+    cd typed-astunparse
+    python3.5 -m unittest discover # make sure the tests pass
+    python3.5 setup.py bdsit_wheel
+    find dist -name "typed_astunparse-*" | tail -n 1 | xargs pip3.5 install
+
+-----
+usage
+-----
+
+Example of roundtrip from code through AST to code:
+
+.. code:: python
+
+    import typed_ast
+    import typed_astunparse
+
+    code = 'my_string = None # type: str'
+    roundtrip = typed_astunparse.unparse(typed_ast.parse(code))
+    print(roundtrip)
+
+for more examples see :bash:`examples.ipynb` notebook.
 
 -----
 links
