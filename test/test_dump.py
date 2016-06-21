@@ -23,21 +23,21 @@ import unittest
 import typed_ast.ast35
 import typed_astunparse
 
+from .examples import MODES as modes, EXAMPLES as examples
+
 _LOG = logging.getLogger(__name__)
 
 class DumpTests(unittest.TestCase):
     """ Unit tests for dump() function. """
 
-    def test_addition(self):
-        """ Is AST of "a + b" printed correctly? """
+    def test_examples(self):
+        """ Are ASTs of examples printed correctly? """
 
-        tree = typed_ast.ast35.BinOp(
-            typed_ast.ast35.Name('a', typed_ast.ast35.Load()), typed_ast.ast35.Add(),
-            typed_ast.ast35.Name('b', typed_ast.ast35.Load()))
-
-        tree_str = typed_astunparse.dump(tree)
-
-        _LOG.debug('%s', tree_str)
-        self.assertEqual(
-            tree_str.replace('\n', '').replace(' ', ''),
-            "BinOp(left=Name(id='a',ctx=Load()),op=Add(),right=Name(id='b',ctx=Load()))")
+        for description, example in examples.items():
+            for mode in modes:
+                if example['trees'][mode] is None:
+                    continue
+                dump = typed_astunparse.dump(example['trees'][mode])
+                _LOG.debug('%s', dump)
+                dump = dump.replace('\n', '').replace(' ', '')
+                self.assertEqual(dump, example['dumps'][mode], msg=(description, mode))
