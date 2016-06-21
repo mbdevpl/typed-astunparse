@@ -1,11 +1,14 @@
 /build
 /dist
 /htmlcov
+/examples.py
 
 # temporary files
 __pycache__
 *.egg
 *.egg-info
 *.pyc
+*-checkpoint.ipynb
 /.cache
 /.coverage
+/.ipynb_checkpoints
