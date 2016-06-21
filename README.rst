@@ -1,6 +1,6 @@
 
 ================
-typed_astunparse
+typed-astunparse
 ================
 
 .. image:: https://badge.fury.io/py/typed-astunparse.svg
@@ -9,7 +9,8 @@ typed_astunparse
 .. image:: https://travis-ci.org/mbdevpl/typed-astunparse.svg?branch=master
     :target: https://travis-ci.org/mbdevpl/typed-astunparse
 
-What *astunparse* is for *ast*, *typed-astunparse* is for *typed-ast*.
+The *typed-astunparse* is to *typed-ast* as *astunparse* is to *ast*. In short: unparsing of Python
+3.5 abstract syntax trees (AST) with type comments.
 
 The built-in *ast* module has capabilites to parse Python source code into abstract syntax tree
 (AST). It does not, however, have neiter capability to go back from AST to source code nor
