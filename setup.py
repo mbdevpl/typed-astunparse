@@ -89,14 +89,13 @@ def setup():
     """ Run setuptools.setup() with correct arguments. """
 
     name = 'typed-astunparse'
-    description = 'what astunparse is for ast, typed-astunparse is for typed-ast'
+    description = 'typed-astunparse is to typed-ast as astunparse is to ast'
     url = 'http://mbdev.pl/'
     download_url = 'https://github.com/mbdevpl/typed-astunparse'
     author = 'Mateusz Bysiek'
     author_email = 'mb@mbdev.pl'
     license_str = 'Apache License 2.0'
     keywords = ['ast', 'unparsing', 'pretty printing']
-    # tell distutils wheare all the packages are
     package_dir = {'': _SRC_DIR}
     entry_points = {
         }

@@ -17,4 +17,4 @@
 This file defines version of typed_astunparse package.
 """
 
-version = '0.1.0.dev2'
+version = '0.1.0.dev3'
