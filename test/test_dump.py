@@ -30,7 +30,7 @@ _LOG = logging.getLogger(__name__)
 class DumpTests(unittest.TestCase):
     """ Unit tests for dump() function. """
 
-    def test_examples(self):
+    def test_dump_examples(self):
         """ Are ASTs of examples printed correctly? """
 
         for description, example in examples.items():

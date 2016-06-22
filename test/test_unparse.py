@@ -30,7 +30,7 @@ _LOG = logging.getLogger(__name__)
 class UnparseTests(unittest.TestCase):
     """ Unit tests for unparse() function. """
 
-    def test_examples(self):
+    def test_unparse_examples(self):
         """ Are ASTs of examples unparsed correctly? """
 
         for description, example in examples.items():

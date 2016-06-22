@@ -51,7 +51,7 @@ EXAMPLES = {
             "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))]," \
             "decorator_list=[],returns=None,type_comment='(bool)->bool')"
         },
-    'type comment': {
+    'assignment with type comment': {
         'code': "my_string = None # type: str",
         'is_expression': False,
         'tree': typed_ast.ast35.Assign(
@@ -114,7 +114,7 @@ EXAMPLES = {
                     "keywords=[]))]," \
                 "type_comment='typing.io.TextIO')"
         },
-    'type annotations': {
+    'function definition with type annotations': {
         'code': "def negation(arg: bool) -> bool:\n    return (not arg)",
         'is_expression': False,
         'tree': typed_ast.ast35.FunctionDef(
