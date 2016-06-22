@@ -5,7 +5,13 @@ python:
 
 install:
   - pip install -r test_requirements.txt
-  - python setup.py install
+  - python setup.py sdist
+  - ls -1tr dist/*tar.gz | tail -n 1 | xargs pip install
+  - pip uninstall typed_astunparse --yes
+  - python setup.py bdist_wheel
+  - ls -1tr dist/*.whl | tail -n 1 | xargs pip install
 
 script:
   - python -m unittest discover
+  - python -m coverage run --branch -m unittest discover
+  - python -m coverage report --show-missing
