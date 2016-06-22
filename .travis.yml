@@ -5,6 +5,7 @@ python:
 
 before_install:
   - pip install -r test_requirements.txt
+  - pip install coveralls
   - python setup.py sdist
   - python setup.py bdist_wheel
 
@@ -19,5 +20,6 @@ script:
 
 after_success:
   - python -m pylint --output-format=colorized --unsafe-load-any-extension=y typed_astunparse test || true
-  - python -m coverage run --branch -m unittest discover --verbose
+  - python -m coverage run --branch --include="typed_astunparse/*","test/*" -m unittest discover --verbose
   - python -m coverage report --show-missing
+  - coveralls
