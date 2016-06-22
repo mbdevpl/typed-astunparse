@@ -20,6 +20,7 @@ tested function: unparse
 import logging
 import unittest
 
+import typed_ast.ast35
 import typed_astunparse
 
 from .examples import MODES as modes, EXAMPLES as examples
@@ -44,3 +45,23 @@ class UnparseTests(unittest.TestCase):
                 _LOG.debug('%s', code)
                 code = code.strip()#replace('\n', '')
                 self.assertEqual(code, example['code'], msg=(description, mode))
+
+    def test_many_roundtrips(self):
+        """ Are ASTs preserved when doing parse(unparse(parse(...unparse(parse(code))...)))? """
+
+        for description, example in examples.items():
+            for mode in modes:
+                if example['trees'][mode] is None:
+                    continue
+                if mode == 'eval':
+                    continue # TODO: why astunparse doesn't handle "Expression()"?
+                if mode == 'single':
+                    continue # TODO: why astunparse doesn't handle "Interactive()"?
+
+                tree = example['trees'][mode]
+                for _ in range(10):
+                    code = typed_astunparse.unparse(tree)
+                    _LOG.debug('%s', code)
+                    clean_code = code.strip()
+                    self.assertEqual(clean_code, example['code'], msg=(description, mode))
+                    tree = typed_ast.ast35.parse(source=code, mode=mode)
