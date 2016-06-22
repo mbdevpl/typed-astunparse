@@ -23,13 +23,45 @@ import typed_astunparse
 MODES = ['exec', 'eval', 'single']
 
 EXAMPLES = {
-    'addition': {
-        'code': "(a + b)",
-        'is_expression': True,
-        'tree': typed_ast.ast35.BinOp(
-            typed_ast.ast35.Name('a', typed_ast.ast35.Load()), typed_ast.ast35.Add(),
-            typed_ast.ast35.Name('b', typed_ast.ast35.Load())),
-        'dump': "BinOp(left=Name(id='a',ctx=Load()),op=Add(),right=Name(id='b',ctx=Load()))"
+    'function definiton': {
+        'code': "def negation(arg):\n    return (not arg)",
+        'is_expression': False,
+        'tree': typed_ast.ast35.FunctionDef(
+            'negation',
+            typed_ast.ast35.arguments(
+                [typed_ast.ast35.arg('arg', None)],
+                None, [], [], None, []),
+            [typed_ast.ast35.Return(typed_ast.ast35.UnaryOp(
+                typed_ast.ast35.Not(), typed_ast.ast35.Name('arg', typed_ast.ast35.Load())
+                ))],
+            [], None, None
+            ),
+        'dump': \
+            "FunctionDef(name='negation',args=arguments(" \
+                "args=[arg(arg='arg',annotation=None)]," \
+                "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[])," \
+            "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))]," \
+            "decorator_list=[],returns=None,type_comment=None)"
+        },
+    'function definition with type annotations': {
+        'code': "def negation(arg: bool) -> bool:\n    return (not arg)",
+        'is_expression': False,
+        'tree': typed_ast.ast35.FunctionDef(
+            'negation',
+            typed_ast.ast35.arguments(
+                [typed_ast.ast35.arg('arg', typed_ast.ast35.Name('bool', typed_ast.ast35.Load()))],
+                None, [], [], None, []),
+            [typed_ast.ast35.Return(typed_ast.ast35.UnaryOp(
+                typed_ast.ast35.Not(), typed_ast.ast35.Name('arg', typed_ast.ast35.Load())
+                ))],
+            [], typed_ast.ast35.Name('bool', typed_ast.ast35.Load()), None
+            ),
+        'dump': \
+            "FunctionDef(name='negation',args=arguments(" \
+                "args=[arg(arg='arg',annotation=Name(id='bool',ctx=Load()))]," \
+                "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[])," \
+            "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))]," \
+            "decorator_list=[],returns=Name(id='bool',ctx=Load()),type_comment=None)"
         },
     'function definiton with type comment': {
         'code': "def negation(arg):\n    # type: (bool) -> bool\n    return (not arg)",
@@ -116,25 +148,13 @@ EXAMPLES = {
                     "keywords=[]))]," \
                 "type_comment='typing.io.TextIO')"
         },
-    'function definition with type annotations': {
-        'code': "def negation(arg: bool) -> bool:\n    return (not arg)",
-        'is_expression': False,
-        'tree': typed_ast.ast35.FunctionDef(
-            'negation',
-            typed_ast.ast35.arguments(
-                [typed_ast.ast35.arg('arg', typed_ast.ast35.Name('bool', typed_ast.ast35.Load()))],
-                None, [], [], None, []),
-            [typed_ast.ast35.Return(typed_ast.ast35.UnaryOp(
-                typed_ast.ast35.Not(), typed_ast.ast35.Name('arg', typed_ast.ast35.Load())
-                ))],
-            [], typed_ast.ast35.Name('bool', typed_ast.ast35.Load()), None
-            ),
-        'dump': \
-            "FunctionDef(name='negation',args=arguments(" \
-                "args=[arg(arg='arg',annotation=Name(id='bool',ctx=Load()))]," \
-                "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[])," \
-            "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))]," \
-            "decorator_list=[],returns=Name(id='bool',ctx=Load()),type_comment=None)"
+    'addition': {
+        'code': "(a + b)",
+        'is_expression': True,
+        'tree': typed_ast.ast35.BinOp(
+            typed_ast.ast35.Name('a', typed_ast.ast35.Load()), typed_ast.ast35.Add(),
+            typed_ast.ast35.Name('b', typed_ast.ast35.Load())),
+        'dump': "BinOp(left=Name(id='a',ctx=Load()),op=Add(),right=Name(id='b',ctx=Load()))"
         }
     }
 
