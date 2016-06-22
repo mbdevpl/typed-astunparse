@@ -20,6 +20,7 @@ tested function: dump
 import logging
 import unittest
 
+import typed_ast.ast35
 import typed_astunparse
 
 from .examples import MODES as modes, EXAMPLES as examples
@@ -40,3 +41,26 @@ class DumpTests(unittest.TestCase):
                 _LOG.debug('%s', dump)
                 dump = dump.replace('\n', '').replace(' ', '')
                 self.assertEqual(dump, example['dumps'][mode], msg=(description, mode))
+
+    def test_many_dump_roundtrips(self):
+        """ Are ASTs preserved after unparse(parse(...unparse(parse(dump(tree)))...))? """
+
+        for description, example in examples.items():
+            for mode in modes:
+                if example['trees'][mode] is None:
+                    continue
+                if mode == 'eval':
+                    continue # TODO: why astunparse doesn't handle "Expression()"?
+                if mode == 'single':
+                    continue # TODO: why astunparse doesn't handle "Interactive()"?
+
+                dump = typed_astunparse.dump(example['trees'][mode])
+                for _ in range(10):
+                    tree = typed_ast.ast35.parse(source=dump, mode=mode)
+                    dump = typed_astunparse.unparse(tree)
+                    _LOG.debug('%s', dump)
+                    clean_dump = dump.replace('\n', '').replace(' ', '')
+                    self.assertEqual(clean_dump, example['dumps'][mode], msg=(description, mode))
+                # TODO: use tree equality comparison below
+                #tree = typed_ast.ast35.parse(source=dump, mode=mode)
+                #self.assertTrue(typed_astunparse.equal(tree, example['trees'][mode]))
