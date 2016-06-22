@@ -25,14 +25,33 @@ class Unparser(astunparse.Unparser):
 
     # TODO: for most nodes still using default unparser that ignores type comments
 
-    def write_type_comment(self, type_comment):
-        self.write(" # type: ")
-        if isinstance(type_comment, str):
-            self.write(type_comment)
+    def _write_string_or_dispatch(self, t):
+        """ If t is str, write it. Otherwise, dispatch it. """
+
+        if isinstance(t, str):
+            self.write(t)
         else:
-            self.dispatch(type_comment)
+            self.dispatch(t)
+
+    def _write_type_comment(self, type_comment):
+        """ Unparse type comment, appending it to the end of the current line. """
+
+        self.write(" # type: ")
+        self._write_string_or_dispatch(type_comment)
 
     def _Assign(self, t):
+        """ Unparse Assign node.
+
+        Rather than handling just:
+
+        Assign(expr* targets, expr value)
+
+        handle:
+
+        Assign(expr* targets, expr value, string? type_comment)
+        """
+
         super()._Assign(t)
-        if t.type_comment:
-            self.write_type_comment(t.type_comment)
+
+        if t.type_comment is not None:
+            self._write_type_comment(t.type_comment)
