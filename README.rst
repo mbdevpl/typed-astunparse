@@ -9,6 +9,9 @@ typed-astunparse
 .. image:: https://travis-ci.org/mbdevpl/typed-astunparse.svg?branch=master
     :target: https://travis-ci.org/mbdevpl/typed-astunparse
 
+.. image:: https://coveralls.io/repos/github/mbdevpl/typed-astunparse/badge.svg?branch=master
+    :target: https://coveralls.io/github/mbdevpl/typed-astunparse?branch=master
+
 .. role:: bash(code)
    :language: bash
 
