@@ -5,12 +5,15 @@ typed-astunparse
 
 .. image:: https://badge.fury.io/py/typed-astunparse.svg
     :target: https://badge.fury.io/py/typed-astunparse
+    :alt: package version from PyPI
 
 .. image:: https://travis-ci.org/mbdevpl/typed-astunparse.svg?branch=master
     :target: https://travis-ci.org/mbdevpl/typed-astunparse
+    :alt: build status from Travis CI
 
 .. image:: https://coveralls.io/repos/github/mbdevpl/typed-astunparse/badge.svg?branch=master
     :target: https://coveralls.io/github/mbdevpl/typed-astunparse?branch=master
+    :alt: test coverage from Coveralls
 
 .. role:: bash(code)
    :language: bash
@@ -40,7 +43,7 @@ requirements
 ------------
 
 This package is intendended for Python 3.5. It was tested on 64 bit Ubuntu, but it might work on
-other versions and systems too.
+other systems too.
 
 typed-astunparse depends on:
 
@@ -62,7 +65,7 @@ You can also build your own version:
 
 .. code:: bash
 
-    git clone
+    git clone https://github.com/mbdevpl/typed-astunparse
     cd typed-astunparse
     python3.5 -m unittest discover # make sure the tests pass
     python3.5 setup.py bdist_wheel
