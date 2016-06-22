@@ -3,8 +3,8 @@
 typed-astunparse
 ================
 
-.. image:: https://badge.fury.io/py/typed-astunparse.svg
-    :target: https://badge.fury.io/py/typed-astunparse
+.. image:: https://img.shields.io/pypi/v/typed-astunparse.svg
+    :target: https://pypi.python.org/pypi/typed-astunparse
     :alt: package version from PyPI
 
 .. image:: https://travis-ci.org/mbdevpl/typed-astunparse.svg?branch=master
@@ -15,11 +15,14 @@ typed-astunparse
     :target: https://coveralls.io/github/mbdevpl/typed-astunparse?branch=master
     :alt: test coverage from Coveralls
 
+.. image:: https://img.shields.io/pypi/l/typed-astunparse.svg
+    :alt: license
+
 .. role:: bash(code)
-   :language: bash
+    :language: bash
 
 .. role:: python(code)
-   :language: python
+    :language: python
 
 The *typed-astunparse* is to *typed-ast* as *astunparse* is to *ast*. In short: unparsing of Python
 3.5 abstract syntax trees (AST) with type comments.
