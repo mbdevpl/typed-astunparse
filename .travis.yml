@@ -12,6 +12,7 @@ install:
   - ls -1tr dist/*.whl | tail -n 1 | xargs pip install
 
 script:
+  - python -m pylint --output-format=colorized --unsafe-load-any-extension=y typed_astunparse test || true
   - python -m unittest discover
   - python -m coverage run --branch -m unittest discover
   - python -m coverage report --show-missing

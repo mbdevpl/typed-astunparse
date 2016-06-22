@@ -20,7 +20,6 @@ tested function: unparse
 import logging
 import unittest
 
-import typed_ast.ast35
 import typed_astunparse
 
 from .examples import MODES as modes, EXAMPLES as examples

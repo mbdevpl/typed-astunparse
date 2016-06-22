@@ -185,20 +185,20 @@ class Unparser(astunparse.Unparser):
 
     """
 
-    boolops = {**astunparse.Unparser.boolops, typed_ast.ast35.And: 'and', typed_ast.ast35.Or: 'or'}
+    boolops = {typed_ast.ast35.And: 'and', typed_ast.ast35.Or: 'or', **astunparse.Unparser.boolops}
     """ Mapping from boolean operation node to its string representation.
 
     This overrides of base class dict, because {ast.And: 'and', ast.Or: 'or'} obviously causes
     errors.
     """
 
-    def _write_string_or_dispatch(self, t):
-        """ If t is str, write it. Otherwise, dispatch it. """
+    def _write_string_or_dispatch(self, value):
+        """ If value is str, write it. Otherwise, dispatch it. """
 
-        if isinstance(t, str):
-            self.write(t)
+        if isinstance(value, str):
+            self.write(value)
         else:
-            self.dispatch(t)
+            self.dispatch(value)
 
     def _fill_type_comment(self, type_comment):
         """ Unparse type comment, adding it on the next line. """

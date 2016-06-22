@@ -97,7 +97,7 @@ EXAMPLES = {
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
                 [typed_ast.ast35.Call(typed_ast.ast35.Attribute(
-                    typed_ast.ast35.Name('f',typed_ast.ast35.Load()), 'read',
+                    typed_ast.ast35.Name('f', typed_ast.ast35.Load()), 'read',
                     typed_ast.ast35.Load()), [], [])],
                 []
                 ))],
@@ -106,10 +106,12 @@ EXAMPLES = {
         'dump': \
             "With(" \
                 "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load())," \
-                    "args=[Str(s='setup.py')],keywords=[]),optional_vars=Name(id='f',ctx=Store()))]," \
+                    "args=[Str(s='setup.py')],keywords=[])," \
+                    "optional_vars=Name(id='f',ctx=Store()))]," \
                 "body=[Expr(value=Call(" \
                     "func=Name(id='print',ctx=Load())," \
-                    "args=[Call(func=Attribute(value=Name(id='f',ctx=Load()),attr='read',ctx=Load())," \
+                    "args=[Call(" \
+                        "func=Attribute(value=Name(id='f',ctx=Load()),attr='read',ctx=Load())," \
                         "args=[],keywords=[])]," \
                     "keywords=[]))]," \
                 "type_comment='typing.io.TextIO')"
@@ -136,7 +138,7 @@ EXAMPLES = {
         }
     }
 
-def generate_variants(example: dict):
+def _generate_variants(example: dict):
     if example['is_expression']:
         example['trees'] = {
             'exec': typed_ast.ast35.Module([typed_ast.ast35.Expr(example['tree'])], []),
@@ -160,8 +162,8 @@ def generate_variants(example: dict):
             'single': 'Interactive(body=[{}])'.format(example['dump'])
             }
 
-for _, example in EXAMPLES.items():
-    generate_variants(example)
+for _, _example in EXAMPLES.items():
+    _generate_variants(_example)
 
 # verify examples
 if __debug__:
@@ -173,20 +175,20 @@ tree from source (above) != example tree (below)
 """
 {}
 """'''
-    for description, example in EXAMPLES.items():
+    for _description, _example in EXAMPLES.items():
         for mode in MODES:
-            if example['trees'][mode] is None:
+            if _example['trees'][mode] is None:
                 try:
                     tree_from_source = typed_ast.ast35.parse(
-                        source=example['code'], filename='<string>', mode=mode)
+                        source=_example['code'], filename='<string>', mode=mode)
                 except SyntaxError:
                     tree_from_source = None
                 example_tree = None
             else:
                 tree_from_source = typed_astunparse.dump(
-                    typed_ast.ast35.parse(source=example['code'], filename='<string>', mode=mode)
+                    typed_ast.ast35.parse(source=_example['code'], filename='<string>', mode=mode)
                     ).replace('\n', '').replace(' ', '')
                 example_tree = typed_astunparse.dump(
-                    example['trees'][mode]).replace('\n', '').replace(' ', '')
+                    _example['trees'][mode]).replace('\n', '').replace(' ', '')
             assert tree_from_source == example_tree, _MSG.format(
-                description, mode, tree_from_source, example_tree)
+                _description, mode, tree_from_source, example_tree)

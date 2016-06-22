@@ -23,7 +23,7 @@ import shutil
 import sys
 import typing
 
-from typed_astunparse._version import version
+from typed_astunparse._version import VERSION as version
 
 _HERE = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 _SRC_DIR = '.'

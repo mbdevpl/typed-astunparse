@@ -21,20 +21,27 @@ functions: unparse, dump
 
 from __future__ import absolute_import
 
+import typed_ast.ast35
 from six.moves import cStringIO
 
 from .unparser import Unparser
 from .printer import Printer
-from ._version import version
+from ._version import VERSION
 
-__version__ = version
+__version__ = VERSION
 
-def unparse(tree):
-    v = cStringIO()
-    Unparser(tree, file=v)
-    return v.getvalue()
+def unparse(tree: typed_ast.ast35.AST):
+    """ Behave just like astunparse.unparse(tree), but handle typed_ast.ast35-based trees. """
 
-def dump(tree):
-    v = cStringIO()
-    Printer(file=v).visit(tree)
-    return v.getvalue()
+    stream = cStringIO()
+    Unparser(tree, file=stream)
+    return stream.getvalue()
+
+def dump(tree: typed_ast.ast35.AST):
+    """ Behave just like astunparse.dump(tree), but handle typed_ast.ast35-based trees. """
+
+    stream = cStringIO()
+    Printer(file=stream).visit(tree)
+    return stream.getvalue()
+
+__all__ = ['unparse', 'dump']
