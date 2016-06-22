@@ -62,8 +62,8 @@ You can also build your own version:
     git clone
     cd typed-astunparse
     python3.5 -m unittest discover # make sure the tests pass
-    python3.5 setup.py bdsit_wheel
-    find dist -name "typed_astunparse-*" | tail -n 1 | xargs pip3.5 install
+    python3.5 setup.py bdist_wheel
+    ls -1tr dist/*.whl | tail -n 1 | xargs pip3.5 install
 
 -----
 usage
