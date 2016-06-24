@@ -53,10 +53,6 @@ class UnparseTests(unittest.TestCase):
             for mode in modes:
                 if example['trees'][mode] is None:
                     continue
-                if mode == 'eval':
-                    continue # TODO: why astunparse doesn't handle "Expression()"?
-                if mode == 'single':
-                    continue # TODO: why astunparse doesn't handle "Interactive()"?
 
                 tree = example['trees'][mode]
                 for _ in range(10):

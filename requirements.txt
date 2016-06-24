@@ -1,2 +1,2 @@
-astunparse
+astunparse >= 1.4.0
 typed_ast
