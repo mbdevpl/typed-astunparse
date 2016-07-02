@@ -41,11 +41,12 @@ Unfortunately, *typed-ast* also doesn't provide any means to go from AST to sour
 where this module, *typed-astunparse*, comes in. It provides unparser for AST defined in
 *typed-ast*.
 
+
 ------------
 requirements
 ------------
 
-This package is intendended for Python 3.5. It was tested on 64 bit Ubuntu, but it might work on
+This package is intended for Python 3.5. It was tested on 64 bit Ubuntu, but it might work on
 other systems too.
 
 typed-astunparse depends on:
@@ -53,6 +54,7 @@ typed-astunparse depends on:
 -  astunparse
 
 -  typed-ast
+
 
 ------------
 installation
@@ -74,6 +76,7 @@ You can also build your own version:
     python3.5 setup.py bdist_wheel
     ls -1tr dist/*.whl | tail -n 1 | xargs pip3.5 install
 
+
 -----
 usage
 -----
@@ -90,6 +93,7 @@ Example of roundtrip from code through AST to code:
     print(roundtrip)
 
 for more examples see :bash:`examples.ipynb` notebook.
+
 
 -----
 links
