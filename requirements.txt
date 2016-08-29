@@ -1,2 +1,2 @@
 astunparse >= 1.4.0
-typed_ast
+typed-ast >= 0.5.6

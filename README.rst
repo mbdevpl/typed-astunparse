@@ -46,8 +46,8 @@ where this module, *typed-astunparse*, comes in. It provides unparser for AST de
 requirements
 ------------
 
-This package is intended for Python 3.5. It was tested on 64 bit Ubuntu, but it might work on
-other systems too.
+This package is intended for Python 3.5 and later. It was tested on 64 bit Ubuntu, but it might work
+on other systems too.
 
 typed-astunparse depends on:
 
@@ -89,7 +89,7 @@ Example of roundtrip from code through AST to code:
     import typed_astunparse
 
     code = 'my_string = None # type: str'
-    roundtrip = typed_astunparse.unparse(typed_ast.parse(code))
+    roundtrip = typed_astunparse.unparse(typed_ast.ast35.parse(code))
     print(roundtrip)
 
 for more examples see :bash:`examples.ipynb` notebook.
@@ -113,7 +113,11 @@ links
 
    https://astunparse.readthedocs.io/en/latest/
 
--  PEP 484:
+-  PEP 483 - The Theory of Type Hints:
+
+   https://www.python.org/dev/peps/pep-0483/
+
+-  PEP 484 - Type Hints:
 
    https://www.python.org/dev/peps/pep-0484/
 
