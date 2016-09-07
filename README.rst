@@ -15,6 +15,18 @@ typed-astunparse
     :target: https://coveralls.io/github/mbdevpl/typed-astunparse?branch=master
     :alt: test coverage from Coveralls
 
+.. image:: https://landscape.io/github/mbdevpl/typed-astunparse/master/landscape.svg?style=flat
+    :target: https://landscape.io/github/mbdevpl/typed-astunparse/master
+    :alt: code health from Landscape
+
+.. image:: https://codeclimate.com/github/mbdevpl/typed-astunparse/badges/gpa.svg
+    :target: https://codeclimate.com/github/mbdevpl/typed-astunparse
+    :alt: code GPA from Code Climate
+
+.. image:: https://codeclimate.com/github/mbdevpl/typed-astunparse/badges/issue_count.svg
+    :target: https://codeclimate.com/github/mbdevpl/typed-astunparse
+    :alt: issue count from Code Climate
+
 .. image:: https://img.shields.io/pypi/l/typed-astunparse.svg
     :alt: license
 
