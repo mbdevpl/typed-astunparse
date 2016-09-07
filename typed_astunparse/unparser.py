@@ -22,7 +22,8 @@ from astunparse.unparser import interleave
 import typed_ast.ast35
 
 class Unparser(astunparse.Unparser):
-    """ Partial rewrite of Unparser from astunparse to handle typed_ast.ast35-based trees.
+    """
+    Partial rewrite of Unparser from astunparse to handle typed_ast.ast35-based trees.
 
     The unparser aims at compatibility with native AST, as well as typed AST.
 
@@ -186,7 +187,8 @@ class Unparser(astunparse.Unparser):
     """
 
     boolops = {typed_ast.ast35.And: 'and', typed_ast.ast35.Or: 'or', **astunparse.Unparser.boolops}
-    """ Mapping from boolean operation node to its string representation.
+    """
+    Mapping from boolean operation node to its string representation.
 
     This overrides of base class dict, because {ast.And: 'and', ast.Or: 'or'} obviously causes
     errors.
@@ -213,7 +215,8 @@ class Unparser(astunparse.Unparser):
         self._write_string_or_dispatch(type_comment)
 
     def _generic_FunctionDef(self, t, async=False):
-        """ Unparse FunctionDef node.
+        """
+        Unparse FunctionDef node.
 
         Rather than handling:
 
@@ -246,7 +249,8 @@ class Unparser(astunparse.Unparser):
         self.leave()
 
     def _Assign(self, t):
-        """ Unparse Assign node.
+        """
+        Unparse Assign node.
 
         Rather than handling just:
 
@@ -263,7 +267,8 @@ class Unparser(astunparse.Unparser):
             self._write_type_comment(t.type_comment)
 
     def _For(self, t):
-        """ Unparse For node.
+        """
+        Unparse For node.
 
         Rather than handling just:
 
@@ -293,7 +298,8 @@ class Unparser(astunparse.Unparser):
             self.leave()
 
     def _With(self, t):
-        """ Unparse With node.
+        """
+        Unparse With node.
 
         Rather than handling just:
 

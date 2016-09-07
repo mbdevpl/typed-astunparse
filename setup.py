@@ -41,7 +41,8 @@ def long_description() -> str:
     return desc
 
 def classifiers() -> typing.List[str]:
-    """ Project classifiers.
+    """
+    Project classifiers.
 
     See: https://pypi.python.org/pypi?:action=list_classifiers
     """
@@ -75,7 +76,8 @@ def packages() -> typing.List[str]:
     return packages
 
 def install_requires() -> typing.List[str]:
-    """ Read contents of requirements.txt file and return its relevant lines.
+    """
+    Read contents of requirements.txt file and return its relevant lines.
 
     Only non-empty and non-comment lines are relevant.
     """

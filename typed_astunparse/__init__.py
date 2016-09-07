@@ -14,7 +14,7 @@
 # limitations under the License.
 
 """
-This is __init__.py file of typed_astunparse package.
+This is "__init__.py" file for "typed_astunparse" package.
 
 functions: unparse, dump
 """

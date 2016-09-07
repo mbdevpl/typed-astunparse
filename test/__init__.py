@@ -14,5 +14,5 @@
 # limitations under the License.
 
 """
-This is __init__.py file of tests for typed_astunparse package.
+This is "__init__.py" file for tests of "typed_astunparse" package.
 """

@@ -37,10 +37,6 @@ class UnparseTests(unittest.TestCase):
             for mode in modes:
                 if example['trees'][mode] is None:
                     continue
-                if mode == 'eval':
-                    continue # TODO: why astunparse doesn't handle "Expression()"?
-                if mode == 'single':
-                    continue # TODO: why astunparse doesn't handle "Interactive()"?
                 code = typed_astunparse.unparse(example['trees'][mode])
                 _LOG.debug('%s', code)
                 code = code.strip()#replace('\n', '')
