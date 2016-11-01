@@ -18,10 +18,11 @@ This is setup.py file for typed-astunparse.
 """
 
 import os
-import setuptools
 import shutil
 import sys
 import typing
+
+import setuptools
 
 from typed_astunparse._version import VERSION as version
 
