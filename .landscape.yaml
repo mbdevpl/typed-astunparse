@@ -6,4 +6,4 @@ test-warnings: true
 max-line-length: 100
 pylint:
   options:
-    - docstring-min-length: 10
+    docstring-min-length: 10
