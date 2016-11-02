@@ -23,7 +23,7 @@ import unittest
 import typed_ast.ast35
 import typed_astunparse
 
-from .examples import MODES as modes, EXAMPLES as examples
+from .examples import MODES as modes, EXAMPLES as examples, INVALID_EXAMPLES as invalid_examples
 
 _LOG = logging.getLogger(__name__)
 
@@ -41,6 +41,21 @@ class UnparseTests(unittest.TestCase):
                 _LOG.debug('%s', code)
                 code = code.strip()#replace('\n', '')
                 self.assertEqual(code, example['code'], msg=(description, mode))
+
+    def test_unparse_invalid_examples(self):
+        """ Are ASTs of invalid examples raising errors as expected? """
+
+        for description, example in invalid_examples.items():
+            for mode in modes:
+                if example['trees'][mode] is None:
+                    continue
+                with self.assertRaises(SyntaxError, msg=(description, mode)) as raised:
+                    _ = typed_astunparse.unparse(example['trees'][mode])
+                self.assertIn('PEP 526', str(raised.exception), msg=(description, mode))
+
+                with self.assertRaises(SyntaxError, msg=(description, mode)):# as raised:
+                    _ = typed_ast.ast35.parse(source=example['code'], mode=mode)
+                #self.assertIn('invalid syntax', str(raised.exception), msg=(description, mode))
 
     def test_many_roundtrips(self):
         """ Are ASTs preserved when doing parse(unparse(parse(...unparse(parse(code))...)))? """

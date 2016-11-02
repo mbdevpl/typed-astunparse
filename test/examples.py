@@ -180,6 +180,35 @@ EXAMPLES = {
         }
     }
 
+INVALID_EXAMPLES = {
+    'chained assignment with type annotation': {
+        'code': "my_string: str = my_string2 = None",
+        'is_expression': False,
+        'tree': typed_ast.ast35.Assign(
+            [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
+             typed_ast.ast35.Name('my_string2', typed_ast.ast35.Store())],
+            typed_ast.ast35.NameConstant(None),
+            None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
+        'dump': \
+            "None"
+            #"Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
+            #"type_comment=None,annotation=Name(id='str',ctx=Load()))"
+        },
+    'tuple unpacking assignment with type annotation': {
+        'code': "my_string, my_string2: str = my_tuple",
+        'is_expression': False,
+        'tree': typed_ast.ast35.Assign(
+            [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
+             typed_ast.ast35.Name('my_string2', typed_ast.ast35.Store())],
+            typed_ast.ast35.Name('my_tuple', typed_ast.ast35.Store()),
+            None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
+        'dump': \
+            "None"
+            #"Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
+            #"type_comment=None,annotation=Name(id='str',ctx=Load()))"
+        },
+    }
+
 def _generate_variants(example: dict):
     if example['is_expression']:
         example['trees'] = {
@@ -205,6 +234,9 @@ def _generate_variants(example: dict):
             }
 
 for _, _example in EXAMPLES.items():
+    _generate_variants(_example)
+
+for _, _example in INVALID_EXAMPLES.items():
     _generate_variants(_example)
 
 # verify examples
