@@ -277,6 +277,9 @@ class Unparser(astunparse.Unparser):
         if isinstance(t.targets[0], typed_ast.ast35.Tuple):
             raise SyntaxError('PEP 526: annotating tuple unpacking assignments is not allowed')
 
+        if t.type_comment is not None:
+            raise SyntaxError('PEP 526: adding type comment to annotated assignment is not allowed')
+
         self.fill()
         self.dispatch(t.targets[0])
         self.write(': ')
@@ -285,9 +288,6 @@ class Unparser(astunparse.Unparser):
         if t.value is not None:
             self.write(" = ")
             self.dispatch(t.value)
-
-        if t.type_comment is not None:
-            self._write_type_comment(t.type_comment)
 
     def _For(self, t):
         """

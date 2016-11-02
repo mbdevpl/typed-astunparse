@@ -207,6 +207,17 @@ INVALID_EXAMPLES = {
             #"Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
             #"type_comment=None,annotation=Name(id='str',ctx=Load()))"
         },
+    'assignment with type comment and annotation': {
+        'code': "my_string: str = None # type: str",
+        'is_expression': False,
+        'tree': typed_ast.ast35.Assign(
+            [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store())],
+            typed_ast.ast35.NameConstant(None),
+            'str', typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
+        'dump': \
+            "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
+            "type_comment='str',annotation=Name(id='str',ctx=Load()))"
+        },
     }
 
 def _generate_variants(example: dict):
