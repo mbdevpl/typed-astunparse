@@ -94,6 +94,28 @@ EXAMPLES = {
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
             "type_comment='str',annotation=None)"
         },
+    'assignment with type annotation': {
+        'code': "my_string: str = None",
+        'is_expression': False,
+        'tree': typed_ast.ast35.Assign(
+            [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store())],
+            typed_ast.ast35.NameConstant(None),
+            None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
+        'dump': \
+            "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
+            "type_comment=None,annotation=Name(id='str',ctx=Load()))"
+        },
+    'variable declaration with type annotation': {
+        'code': "my_string: str",
+        'is_expression': False,
+        'tree': typed_ast.ast35.Assign(
+            [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store())],
+            None,
+            None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
+        'dump': \
+            "Assign(targets=[Name(id='my_string',ctx=Store())],value=None," \
+            "type_comment=None,annotation=Name(id='str',ctx=Load()))"
+        },
     'for loop with type comment': {
         'code': "for i in [0, 4, 2, 42]: # type: int\n    print(i)",
         'is_expression': False,

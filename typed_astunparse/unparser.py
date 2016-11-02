@@ -259,9 +259,32 @@ class Unparser(astunparse.Unparser):
         handle:
 
         Assign(expr* targets, expr value, string? type_comment)
+
+        or even:
+
+        Assign(expr* targets, expr? value, string? type_comment, expr? annotation)
         """
 
-        super()._Assign(t)
+        if not hasattr(t, 'annotation') or t.annotation is None:
+            super()._Assign(t)
+            if t.type_comment is not None:
+                self._write_type_comment(t.type_comment)
+            return
+
+        if len(t.targets) > 1:
+            raise SyntaxError('PEP 526: annotating chained assignments is not allowed')
+
+        if isinstance(t.targets[0], typed_ast.ast35.Tuple):
+            raise SyntaxError('PEP 526: annotating tuple unpacking assignments is not allowed')
+
+        self.fill()
+        self.dispatch(t.targets[0])
+        self.write(': ')
+        self.dispatch(t.annotation)
+
+        if t.value is not None:
+            self.write(" = ")
+            self.dispatch(t.value)
 
         if t.type_comment is not None:
             self._write_type_comment(t.type_comment)
