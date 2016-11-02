@@ -37,17 +37,22 @@ typed-astunparse
     :language: python
 
 The *typed-astunparse* is to *typed-ast* as *astunparse* is to *ast*. In short: unparsing of Python
-3.5 abstract syntax trees (AST) with type comments.
+3.5 abstract syntax trees (AST) with type comments and variable annotations.
 
 The built-in *ast* module has capabilites to parse Python source code into AST. It does not,
 however, have the capability to generate source code from the AST. That's where *astunparse* comes
 in. Using a refactored version of an obscure script found in official Python repository, it provides
 code generation capability for built-in AST.
 
-Built-in *ast* module, however, completely ignores type comments introduced in PEP 484. It treats
-them like all other comments, so when you parse the code using :python:`compile()`, your type
-comments will be lost. The *typed-ast* module intoduces AST and parser that includes type comments
-defined in PEP 484.
+Built-in *ast* and *astunparse* modules, however, completely ignore type comments introduced in
+PEP 484. They treat them like all other comments, so when you parse the code using
+:python:`compile()`, your type comments will be lost. There is no place for them in the AST, so
+obviously they also cannot be unparsed.
+
+Moreover, neither module accepts variable annotations introduced in PEP 526. They cause syntax
+errors. The *typed-ast* module provides an updated AST including type comments defined in PEP 484
+and variable annotations introduced in PEP 526. It also provides a parser for Python code using
+those features.
 
 Unfortunately, *typed-ast* also doesn't provide any means to go from AST to source code. This is
 where this module, *typed-astunparse*, comes in. It provides unparser for AST defined in
@@ -104,6 +109,10 @@ Example of roundtrip from code through AST to code:
     roundtrip = typed_astunparse.unparse(typed_ast.ast35.parse(code))
     print(roundtrip)
 
+    code = 'my_string: str = None'
+    roundtrip = typed_astunparse.unparse(typed_ast.ast35.parse(code))
+    print(roundtrip)
+
 for more examples see :bash:`examples.ipynb` notebook.
 
 
@@ -132,6 +141,10 @@ links
 -  PEP 484 - Type Hints:
 
    https://www.python.org/dev/peps/pep-0484/
+
+-  PEP 526 - Syntax for Variable Annotations:
+
+   https://www.python.org/dev/peps/pep-0526/
 
 -  *typed-ast*:
 
