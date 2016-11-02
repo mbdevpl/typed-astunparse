@@ -89,10 +89,10 @@ EXAMPLES = {
         'tree': typed_ast.ast35.Assign(
             [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store())],
             typed_ast.ast35.NameConstant(None),
-            'str'),
+            'str', None),
         'dump': \
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
-            "type_comment='str')"
+            "type_comment='str',annotation=None)"
         },
     'for loop with type comment': {
         'code': "for i in [0, 4, 2, 42]: # type: int\n    print(i)",
