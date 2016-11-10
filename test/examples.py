@@ -191,8 +191,6 @@ INVALID_EXAMPLES = {
             None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
         'dump': \
             "None"
-            #"Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
-            #"type_comment=None,annotation=Name(id='str',ctx=Load()))"
         },
     'tuple unpacking assignment with type annotation': {
         'code': "my_string, my_string2: str = my_tuple",
@@ -204,8 +202,6 @@ INVALID_EXAMPLES = {
             None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
         'dump': \
             "None"
-            #"Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
-            #"type_comment=None,annotation=Name(id='str',ctx=Load()))"
         },
     'assignment with type comment and annotation': {
         'code': "my_string: str = None # type: str",
@@ -215,8 +211,7 @@ INVALID_EXAMPLES = {
             typed_ast.ast35.NameConstant(None),
             'str', typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
         'dump': \
-            "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
-            "type_comment='str',annotation=Name(id='str',ctx=Load()))"
+            "None"
         },
     }
 
