@@ -18,7 +18,9 @@
 import astunparse
 import typed_ast.ast35
 
+
 class Printer(astunparse.Printer):
+
     """Partial rewrite of Printer from astunparse to handle typed_ast.ast35-based trees."""
 
     def generic_visit(self, node):

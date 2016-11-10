@@ -19,7 +19,9 @@ import astunparse
 from astunparse.unparser import interleave
 import typed_ast.ast35
 
+
 class Unparser(astunparse.Unparser):
+
     """Partial rewrite of Unparser from astunparse to handle typed_ast.ast35-based trees.
 
     The unparser aims at compatibility with native AST, as well as typed AST.

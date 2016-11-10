@@ -21,17 +21,19 @@ import unittest
 import typed_ast.ast35
 import typed_astunparse
 
-from .examples import MODES as modes, EXAMPLES as examples, INVALID_EXAMPLES as invalid_examples
+from .examples import MODES, EXAMPLES, INVALID_EXAMPLES
 
 _LOG = logging.getLogger(__name__)
 
+
 class UnparseTests(unittest.TestCase):
+
     """Unit tests for unparse() function."""
 
     def test_unparse_examples(self):
         """Are ASTs of examples unparsed correctly?"""
-        for description, example in examples.items():
-            for mode in modes:
+        for description, example in EXAMPLES.items():
+            for mode in MODES:
                 if example['trees'][mode] is None:
                     continue
                 code = typed_astunparse.unparse(example['trees'][mode])
@@ -41,8 +43,8 @@ class UnparseTests(unittest.TestCase):
 
     def test_unparse_invalid_examples(self):
         """Are ASTs of invalid examples raising errors as expected?"""
-        for description, example in invalid_examples.items():
-            for mode in modes:
+        for description, example in INVALID_EXAMPLES.items():
+            for mode in MODES:
                 if example['trees'][mode] is None:
                     continue
                 with self.assertRaises(SyntaxError, msg=(description, mode)) as raised:
@@ -55,8 +57,8 @@ class UnparseTests(unittest.TestCase):
 
     def test_many_roundtrips(self):
         """Are ASTs preserved when doing parse(unparse(parse(...unparse(parse(code))...)))?"""
-        for description, example in examples.items():
-            for mode in modes:
+        for description, example in EXAMPLES.items():
+            for mode in MODES:
                 if example['trees'][mode] is None:
                     continue
 

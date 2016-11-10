@@ -21,17 +21,19 @@ import unittest
 import typed_ast.ast35
 import typed_astunparse
 
-from .examples import MODES as modes, EXAMPLES as examples
+from .examples import MODES, EXAMPLES
 
 _LOG = logging.getLogger(__name__)
 
+
 class DumpTests(unittest.TestCase):
+
     """Unit tests for dump() function."""
 
     def test_dump_examples(self):
         """Are ASTs of examples printed correctly?"""
-        for description, example in examples.items():
-            for mode in modes:
+        for description, example in EXAMPLES.items():
+            for mode in MODES:
                 if example['trees'][mode] is None:
                     continue
                 dump = typed_astunparse.dump(example['trees'][mode])
@@ -41,8 +43,8 @@ class DumpTests(unittest.TestCase):
 
     def test_many_dump_roundtrips(self):
         """Are ASTs preserved after unparse(parse(...unparse(parse(dump(tree)))...))?"""
-        for description, example in examples.items():
-            for mode in modes:
+        for description, example in EXAMPLES.items():
+            for mode in MODES:
                 if example['trees'][mode] is None:
                     continue
 

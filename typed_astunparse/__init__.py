@@ -29,11 +29,13 @@ from ._version import VERSION
 
 __version__ = VERSION
 
+
 def unparse(tree: typed_ast.ast35.AST):
     """Behave just like astunparse.unparse(tree), but handle typed_ast.ast35-based trees."""
     stream = cStringIO()
     Unparser(tree, file=stream)
     return stream.getvalue()
+
 
 def dump(tree: typed_ast.ast35.AST):
     """Behave just like astunparse.dump(tree), but handle typed_ast.ast35-based trees."""
