@@ -83,6 +83,17 @@ EXAMPLES = {
             "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))]," \
             "decorator_list=[],returns=None,type_comment='(bool)->bool')"
         },
+    'assignment': {
+        'code': "my_string = None",
+        'is_expression': False,
+        'tree': typed_ast.ast35.Assign(
+            [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store())],
+            typed_ast.ast35.NameConstant(None),
+            None, None),
+        'dump': \
+            "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
+            "type_comment=None,annotation=None)"
+        },
     'assignment with type comment': {
         'code': "my_string = None # type: str",
         'is_expression': False,
@@ -93,6 +104,20 @@ EXAMPLES = {
         'dump': \
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None)," \
             "type_comment='str',annotation=None)"
+        },
+    'tuple unpacking assignment with type comment': {
+        'code': "(my_string, my_int) = my_list # type: str, int",
+        'is_expression': False,
+        'tree': typed_ast.ast35.Assign(
+            [typed_ast.ast35.Tuple([
+                typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
+                typed_ast.ast35.Name('my_int', typed_ast.ast35.Store())
+                ], typed_ast.ast35.Store())],
+            typed_ast.ast35.Name('my_list', typed_ast.ast35.Load()),
+            'str, int', None),
+        'dump': \
+            "Assign(targets=[Tuple(elts=[Name(id='my_string',ctx=Store()),Name(id='my_int',ctx=Store())],ctx=Store())],value=Name(id='my_list',ctx=Load())," \
+            "type_comment='str,int',annotation=None)"
         },
     'assignment with type annotation': {
         'code': "my_string: str = None",
@@ -116,6 +141,33 @@ EXAMPLES = {
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=None," \
             "type_comment=None,annotation=Name(id='str',ctx=Load()))"
         },
+    'for-else loop': {
+        'code': "for i in [0, 4, 2, 42]:\n    print(i)\nelse:\n    print('hmm')",
+        'is_expression': False,
+        'tree': typed_ast.ast35.For(
+            typed_ast.ast35.Name('i', typed_ast.ast35.Store()),
+            typed_ast.ast35.List([
+                typed_ast.ast35.Num(0), typed_ast.ast35.Num(4), typed_ast.ast35.Num(2),
+                typed_ast.ast35.Num(42)], typed_ast.ast35.Load()),
+            [typed_ast.ast35.Expr(typed_ast.ast35.Call(
+                typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
+                [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []
+                ))],
+            [typed_ast.ast35.Expr(typed_ast.ast35.Call(
+                typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
+                [typed_ast.ast35.Str('hmm')], []
+                ))],
+            None
+            ),
+        'dump': \
+            "For(" \
+                "target=Name(id='i',ctx=Store())," \
+                "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load())," \
+                "body=[Expr(value=Call(func=Name(id='print',ctx=Load())," \
+                    "args=[Name(id='i',ctx=Load())],keywords=[]))]," \
+                "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load())," \
+                    "args=[Str(s='hmm')],keywords=[]))],type_comment=None)"
+        },
     'for loop with type comment': {
         'code': "for i in [0, 4, 2, 42]: # type: int\n    print(i)",
         'is_expression': False,
@@ -137,6 +189,65 @@ EXAMPLES = {
                 "body=[Expr(value=Call(func=Name(id='print',ctx=Load())," \
                     "args=[Name(id='i',ctx=Load())],keywords=[]))]," \
                 "orelse=[],type_comment='int')"
+        },
+    'for-else loop with type comment': {
+        'code': "for i in [0, 4, 2, 42]: # type: int\n    print(i)\nelse:\n    print('hmm')",
+        'is_expression': False,
+        'tree': typed_ast.ast35.For(
+            typed_ast.ast35.Name('i', typed_ast.ast35.Store()),
+            typed_ast.ast35.List([
+                typed_ast.ast35.Num(0), typed_ast.ast35.Num(4), typed_ast.ast35.Num(2),
+                typed_ast.ast35.Num(42)], typed_ast.ast35.Load()),
+            [typed_ast.ast35.Expr(typed_ast.ast35.Call(
+                typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
+                [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []
+                ))],
+            [typed_ast.ast35.Expr(typed_ast.ast35.Call(
+                typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
+                [typed_ast.ast35.Str('hmm')], []
+                ))],
+            'int'
+            ),
+        'dump': \
+            "For(" \
+                "target=Name(id='i',ctx=Store())," \
+                "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load())," \
+                "body=[Expr(value=Call(func=Name(id='print',ctx=Load())," \
+                    "args=[Name(id='i',ctx=Load())],keywords=[]))]," \
+                "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load())," \
+                    "args=[Str(s='hmm')],keywords=[]))],type_comment='int')"
+        },
+    'with statement': {
+        'code': "with open('setup.py') as f:\n    print(f.read())",
+        'is_expression': False,
+        'tree': typed_ast.ast35.With(
+            [typed_ast.ast35.withitem(
+                typed_ast.ast35.Call(
+                    typed_ast.ast35.Name('open', typed_ast.ast35.Load()),
+                    [typed_ast.ast35.Str(s='setup.py')], []),
+                typed_ast.ast35.Name('f', typed_ast.ast35.Store())
+                )],
+            [typed_ast.ast35.Expr(typed_ast.ast35.Call(
+                typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
+                [typed_ast.ast35.Call(typed_ast.ast35.Attribute(
+                    typed_ast.ast35.Name('f', typed_ast.ast35.Load()), 'read',
+                    typed_ast.ast35.Load()), [], [])],
+                []
+                ))],
+            None
+            ),
+        'dump': \
+            "With(" \
+                "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load())," \
+                    "args=[Str(s='setup.py')],keywords=[])," \
+                    "optional_vars=Name(id='f',ctx=Store()))]," \
+                "body=[Expr(value=Call(" \
+                    "func=Name(id='print',ctx=Load())," \
+                    "args=[Call(" \
+                        "func=Attribute(value=Name(id='f',ctx=Load()),attr='read',ctx=Load())," \
+                        "args=[],keywords=[])]," \
+                    "keywords=[]))]," \
+                "type_comment=None)"
         },
     'with statement with type comment': {
         'code': "with open('setup.py') as f: # type: typing.io.TextIO\n    print(f.read())",
@@ -170,6 +281,63 @@ EXAMPLES = {
                     "keywords=[]))]," \
                 "type_comment='typing.io.TextIO')"
         },
+    'multi-context with statement with type comment': {
+        'code': \
+            "with open('setup.py') as f1, open('README.rst') as f2:" \
+            " # type: typing.io.TextIO, typing.io.TextIO\n" \
+            "    print(f1.read())\n    print(f2.read())",
+        'is_expression': False,
+        'tree': typed_ast.ast35.With(
+            [typed_ast.ast35.withitem(
+                typed_ast.ast35.Call(
+                    typed_ast.ast35.Name('open', typed_ast.ast35.Load()),
+                    [typed_ast.ast35.Str(s='setup.py')], []),
+                typed_ast.ast35.Name('f1', typed_ast.ast35.Store())
+                ),
+             typed_ast.ast35.withitem(
+                typed_ast.ast35.Call(
+                    typed_ast.ast35.Name('open', typed_ast.ast35.Load()),
+                    [typed_ast.ast35.Str(s='README.rst')], []),
+                typed_ast.ast35.Name('f2', typed_ast.ast35.Store())
+                )],
+            [typed_ast.ast35.Expr(typed_ast.ast35.Call(
+                typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
+                [typed_ast.ast35.Call(typed_ast.ast35.Attribute(
+                    typed_ast.ast35.Name('f1', typed_ast.ast35.Load()), 'read',
+                    typed_ast.ast35.Load()), [], [])],
+                []
+                )),
+             typed_ast.ast35.Expr(typed_ast.ast35.Call(
+                typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
+                [typed_ast.ast35.Call(typed_ast.ast35.Attribute(
+                    typed_ast.ast35.Name('f2', typed_ast.ast35.Load()), 'read',
+                    typed_ast.ast35.Load()), [], [])],
+                []
+                ))],
+            'typing.io.TextIO, typing.io.TextIO'
+            ),
+        'dump': \
+            "With(" \
+                "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load())," \
+                    "args=[Str(s='setup.py')],keywords=[])," \
+                    "optional_vars=Name(id='f1',ctx=Store()))," \
+                       "withitem(context_expr=Call(func=Name(id='open',ctx=Load())," \
+                    "args=[Str(s='README.rst')],keywords=[])," \
+                    "optional_vars=Name(id='f2',ctx=Store()))]," \
+                "body=[Expr(value=Call(" \
+                    "func=Name(id='print',ctx=Load())," \
+                    "args=[Call(" \
+                        "func=Attribute(value=Name(id='f1',ctx=Load()),attr='read',ctx=Load())," \
+                        "args=[],keywords=[])]," \
+                    "keywords=[]))," \
+                       "Expr(value=Call(" \
+                    "func=Name(id='print',ctx=Load())," \
+                    "args=[Call(" \
+                        "func=Attribute(value=Name(id='f2',ctx=Load()),attr='read',ctx=Load())," \
+                        "args=[],keywords=[])]," \
+                    "keywords=[]))]," \
+                "type_comment='typing.io.TextIO,typing.io.TextIO')"
+        },
     'addition': {
         'code': "(a + b)",
         'is_expression': True,
@@ -194,6 +362,19 @@ INVALID_EXAMPLES = {
         },
     'tuple unpacking assignment with one type annotation': {
         'code': "my_string, my_string2: str = my_tuple",
+        'is_expression': False,
+        'tree': typed_ast.ast35.Assign(
+            [typed_ast.ast35.Tuple([
+                typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
+                typed_ast.ast35.Name('my_string2', typed_ast.ast35.Store())
+                ], typed_ast.ast35.Store())],
+            typed_ast.ast35.Name('my_tuple', typed_ast.ast35.Load()),
+            None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
+        'dump': \
+            "None"
+        },
+    'tuple unpacking assignment with multiple type annotations': {
+        'code': "my_string: str, my_string2: str = my_tuple",
         'is_expression': False,
         'tree': typed_ast.ast35.Assign(
             [typed_ast.ast35.Tuple([
