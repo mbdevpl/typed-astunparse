@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-This file defines the version of "typed_astunparse" package.
-"""
+"""This file defines the version of "typed_astunparse" package."""
 
 VERSION = '0.2.1'

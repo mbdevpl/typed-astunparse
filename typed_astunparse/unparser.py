@@ -13,17 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-class: Unparser
-"""
+"""class: Unparser"""
 
 import astunparse
 from astunparse.unparser import interleave
 import typed_ast.ast35
 
 class Unparser(astunparse.Unparser):
-    """
-    Partial rewrite of Unparser from astunparse to handle typed_ast.ast35-based trees.
+    """Partial rewrite of Unparser from astunparse to handle typed_ast.ast35-based trees.
 
     The unparser aims at compatibility with native AST, as well as typed AST.
 
@@ -187,36 +184,31 @@ class Unparser(astunparse.Unparser):
     """
 
     boolops = {typed_ast.ast35.And: 'and', typed_ast.ast35.Or: 'or', **astunparse.Unparser.boolops}
-    """
-    Mapping from boolean operation node to its string representation.
+    """Mapping from boolean operation node to its string representation.
 
     This overrides of base class dict, because {ast.And: 'and', ast.Or: 'or'} obviously causes
     errors.
     """
 
     def _write_string_or_dispatch(self, value):
-        """ If value is str, write it. Otherwise, dispatch it. """
-
+        """If value is str, write it. Otherwise, dispatch it."""
         if isinstance(value, str):
             self.write(value)
         else:
             self.dispatch(value)
 
     def _fill_type_comment(self, type_comment):
-        """ Unparse type comment, adding it on the next line. """
-
+        """Unparse type comment, adding it on the next line."""
         self.fill("# type: ")
         self._write_string_or_dispatch(type_comment)
 
     def _write_type_comment(self, type_comment):
-        """ Unparse type comment, appending it to the end of the current line. """
-
+        """Unparse type comment, appending it to the end of the current line."""
         self.write(" # type: ")
         self._write_string_or_dispatch(type_comment)
 
     def _generic_FunctionDef(self, t, async=False):
-        """
-        Unparse FunctionDef node.
+        """Unparse FunctionDef node.
 
         Rather than handling:
 
@@ -228,7 +220,6 @@ class Unparser(astunparse.Unparser):
         FunctionDef(identifier name, arguments args,
                     stmt* body, expr* decorator_list, expr? returns, string? type_comment)
         """
-
         if t.type_comment is None:
             super()._generic_FunctionDef(t)
             return
@@ -249,8 +240,7 @@ class Unparser(astunparse.Unparser):
         self.leave()
 
     def _Assign(self, t):
-        """
-        Unparse Assign node.
+        """Unparse Assign node.
 
         Rather than handling just:
 
@@ -264,7 +254,6 @@ class Unparser(astunparse.Unparser):
 
         Assign(expr* targets, expr? value, string? type_comment, expr? annotation)
         """
-
         if not hasattr(t, 'annotation') or t.annotation is None:
             super()._Assign(t)
             if t.type_comment is not None:
@@ -290,8 +279,7 @@ class Unparser(astunparse.Unparser):
             self.dispatch(t.value)
 
     def _For(self, t):
-        """
-        Unparse For node.
+        """Unparse For node.
 
         Rather than handling just:
 
@@ -301,7 +289,6 @@ class Unparser(astunparse.Unparser):
 
         For(expr target, expr iter, stmt* body, stmt* orelse, string? type_comment)
         """
-
         if t.type_comment is None:
             super()._For(t)
             return
@@ -321,8 +308,7 @@ class Unparser(astunparse.Unparser):
             self.leave()
 
     def _With(self, t):
-        """
-        Unparse With node.
+        """Unparse With node.
 
         Rather than handling just:
 
@@ -332,7 +318,6 @@ class Unparser(astunparse.Unparser):
 
         With(withitem* items, stmt* body, string? type_comment)
         """
-
         if t.type_comment is None:
             super()._With(t)
             return

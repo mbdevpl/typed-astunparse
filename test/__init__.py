@@ -13,6 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-This is "__init__.py" file for tests of "typed_astunparse" package.
-"""
+"""This is "__init__.py" file for tests of "typed_astunparse" package."""

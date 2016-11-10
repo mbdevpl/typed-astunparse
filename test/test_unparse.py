@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-tested function: unparse
-"""
+"""tested function: unparse"""
 
 import logging
 import unittest
@@ -28,11 +26,10 @@ from .examples import MODES as modes, EXAMPLES as examples, INVALID_EXAMPLES as 
 _LOG = logging.getLogger(__name__)
 
 class UnparseTests(unittest.TestCase):
-    """ Unit tests for unparse() function. """
+    """Unit tests for unparse() function."""
 
     def test_unparse_examples(self):
-        """ Are ASTs of examples unparsed correctly? """
-
+        """Are ASTs of examples unparsed correctly?"""
         for description, example in examples.items():
             for mode in modes:
                 if example['trees'][mode] is None:
@@ -43,8 +40,7 @@ class UnparseTests(unittest.TestCase):
                 self.assertEqual(code, example['code'], msg=(description, mode))
 
     def test_unparse_invalid_examples(self):
-        """ Are ASTs of invalid examples raising errors as expected? """
-
+        """Are ASTs of invalid examples raising errors as expected?"""
         for description, example in invalid_examples.items():
             for mode in modes:
                 if example['trees'][mode] is None:
@@ -58,8 +54,7 @@ class UnparseTests(unittest.TestCase):
                 #self.assertIn('invalid syntax', str(raised.exception), msg=(description, mode))
 
     def test_many_roundtrips(self):
-        """ Are ASTs preserved when doing parse(unparse(parse(...unparse(parse(code))...)))? """
-
+        """Are ASTs preserved when doing parse(unparse(parse(...unparse(parse(code))...)))?"""
         for description, example in examples.items():
             for mode in modes:
                 if example['trees'][mode] is None:

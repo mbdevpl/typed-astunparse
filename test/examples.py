@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Examples used in unit tests.
-"""
+"""Examples used in unit tests."""
 
 import typed_ast.ast35
 import typed_astunparse

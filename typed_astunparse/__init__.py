@@ -13,8 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-This is "__init__.py" file for "typed_astunparse" package.
+"""This is "__init__.py" file for "typed_astunparse" package.
 
 functions: unparse, dump
 """
@@ -31,15 +30,13 @@ from ._version import VERSION
 __version__ = VERSION
 
 def unparse(tree: typed_ast.ast35.AST):
-    """ Behave just like astunparse.unparse(tree), but handle typed_ast.ast35-based trees. """
-
+    """Behave just like astunparse.unparse(tree), but handle typed_ast.ast35-based trees."""
     stream = cStringIO()
     Unparser(tree, file=stream)
     return stream.getvalue()
 
 def dump(tree: typed_ast.ast35.AST):
-    """ Behave just like astunparse.dump(tree), but handle typed_ast.ast35-based trees. """
-
+    """Behave just like astunparse.dump(tree), but handle typed_ast.ast35-based trees."""
     stream = cStringIO()
     Printer(file=stream).visit(tree)
     return stream.getvalue()

@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-tested function: dump
-"""
+"""tested function: dump"""
 
 import logging
 import unittest
@@ -28,11 +26,10 @@ from .examples import MODES as modes, EXAMPLES as examples
 _LOG = logging.getLogger(__name__)
 
 class DumpTests(unittest.TestCase):
-    """ Unit tests for dump() function. """
+    """Unit tests for dump() function."""
 
     def test_dump_examples(self):
-        """ Are ASTs of examples printed correctly? """
-
+        """Are ASTs of examples printed correctly?"""
         for description, example in examples.items():
             for mode in modes:
                 if example['trees'][mode] is None:
@@ -43,8 +40,7 @@ class DumpTests(unittest.TestCase):
                 self.assertEqual(dump, example['dumps'][mode], msg=(description, mode))
 
     def test_many_dump_roundtrips(self):
-        """ Are ASTs preserved after unparse(parse(...unparse(parse(dump(tree)))...))? """
-
+        """Are ASTs preserved after unparse(parse(...unparse(parse(dump(tree)))...))?"""
         for description, example in examples.items():
             for mode in modes:
                 if example['trees'][mode] is None:

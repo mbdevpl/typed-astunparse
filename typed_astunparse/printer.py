@@ -13,18 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-class: Printer
-"""
+"""class: Printer"""
 
 import astunparse
 import typed_ast.ast35
 
 class Printer(astunparse.Printer):
-    """ Partial rewrite of Printer from astunparse to handle typed_ast.ast35-based trees. """
+    """Partial rewrite of Printer from astunparse to handle typed_ast.ast35-based trees."""
 
     def generic_visit(self, node):
-
+        """More or less a verbatim copy of astunparse.generic_visit()."""
         if isinstance(node, list):
             nodestart = "["
             nodeend = "]"
