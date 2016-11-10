@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-This is setup.py file for typed-astunparse.
-"""
+"""This is setup.py file for typed-astunparse."""
 
 import os
 import shutil
@@ -30,25 +28,22 @@ _HERE = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 _SRC_DIR = '.'
 
 def clean():
+    """Delete "build" directory if it exists."""
     if os.path.isdir('build'):
         shutil.rmtree('build')
 
 def long_description() -> str:
-    """ Read contents of README.rst file and return them. """
-
-    desc = ''
-    with open(os.path.join(_HERE, 'README.rst'), encoding='utf-8') as f:
-        desc = f.read()
+    """Read contents of README.rst file and return them."""
+    with open(os.path.join(_HERE, 'README.rst'), encoding='utf-8') as readme_file:
+        desc = readme_file.read()
     return desc
 
 def classifiers() -> typing.List[str]:
-    """
-    Project classifiers.
+    """Project classifiers.
 
     See: https://pypi.python.org/pypi?:action=list_classifiers
     """
-
-    classifiers = [
+    project_classifiers = [
         'Development Status :: 1 - Planning',
         'Environment :: Console',
         'Intended Audience :: Developers',
@@ -67,30 +62,25 @@ def classifiers() -> typing.List[str]:
         'Topic :: Software Development :: Pre-processors',
         'Topic :: Utilities'
         ]
-    return classifiers
+    return project_classifiers
 
 def packages() -> typing.List[str]:
-    """ Find packages to pack. """
-
+    """Find packages to pack."""
     exclude = ['test', 'test.*'] if 'bdist_wheel' in sys.argv else ()
-    packages = setuptools.find_packages(_SRC_DIR, exclude=exclude)
-    return packages
+    packages_list = setuptools.find_packages(_SRC_DIR, exclude=exclude)
+    return packages_list
 
 def install_requires() -> typing.List[str]:
-    """
-    Read contents of requirements.txt file and return its relevant lines.
+    """Read contents of requirements.txt file and return its relevant lines.
 
     Only non-empty and non-comment lines are relevant.
     """
-
-    reqs = []
-    with open(os.path.join(_HERE, 'requirements.txt')) as f:
-        reqs = [l for l in f.read().splitlines() if l and not l.strip().startswith('#')]
+    with open(os.path.join(_HERE, 'requirements.txt')) as reqs_file:
+        reqs = [l for l in reqs_file.read().splitlines() if l and not l.strip().startswith('#')]
     return reqs
 
 def setup():
-    """ Run setuptools.setup() with correct arguments. """
-
+    """Run setuptools.setup() with correct arguments."""
     name = 'typed-astunparse'
     description = 'typed-astunparse is to typed-ast as astunparse is to ast'
     url = 'http://mbdev.pl/'
