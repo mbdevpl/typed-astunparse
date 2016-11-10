@@ -192,13 +192,15 @@ INVALID_EXAMPLES = {
         'dump': \
             "None"
         },
-    'tuple unpacking assignment with type annotation': {
+    'tuple unpacking assignment with one type annotation': {
         'code': "my_string, my_string2: str = my_tuple",
         'is_expression': False,
         'tree': typed_ast.ast35.Assign(
-            [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
-             typed_ast.ast35.Name('my_string2', typed_ast.ast35.Store())],
-            typed_ast.ast35.Name('my_tuple', typed_ast.ast35.Store()),
+            [typed_ast.ast35.Tuple([
+                typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
+                typed_ast.ast35.Name('my_string2', typed_ast.ast35.Store())
+                ], typed_ast.ast35.Store())],
+            typed_ast.ast35.Name('my_tuple', typed_ast.ast35.Load()),
             None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
         'dump': \
             "None"
