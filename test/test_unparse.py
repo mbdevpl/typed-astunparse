@@ -48,11 +48,11 @@ class UnparseTests(unittest.TestCase):
                 if example['trees'][mode] is None:
                     continue
                 with self.assertRaises(SyntaxError, msg=(description, mode)) as raised:
-                    _ = typed_astunparse.unparse(example['trees'][mode])
+                    typed_astunparse.unparse(example['trees'][mode])
                 self.assertIn('PEP 526', str(raised.exception), msg=(description, mode))
 
                 with self.assertRaises(SyntaxError, msg=(description, mode)):# as raised:
-                    _ = typed_ast.ast35.parse(source=example['code'], mode=mode)
+                    typed_ast.ast35.parse(source=example['code'], mode=mode)
                 #self.assertIn('invalid syntax', str(raised.exception), msg=(description, mode))
 
     def test_many_roundtrips(self):

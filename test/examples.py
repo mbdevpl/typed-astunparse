@@ -396,6 +396,7 @@ INVALID_EXAMPLES = {
         },
     }
 
+
 def _generate_variants(example: dict):
     if example['is_expression']:
         example['trees'] = {
