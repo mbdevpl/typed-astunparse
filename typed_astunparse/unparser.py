@@ -326,11 +326,11 @@ class Unparser(astunparse.Unparser):
 
         Rather than handling just:
 
-        For(expr target, expr iter, stmt* body, stmt* orelse)
+        With(withitem* items, stmt* body)
 
         handle:
 
-        For(expr target, expr iter, stmt* body, stmt* orelse, string? type_comment)
+        With(withitem* items, stmt* body, string? type_comment)
         """
 
         if t.type_comment is None:
@@ -338,13 +338,7 @@ class Unparser(astunparse.Unparser):
             return
 
         self.fill("with ")
-        if hasattr(t, 'items'):
-            interleave(lambda: self.write(", "), self.dispatch, t.items)
-        else:
-            self.dispatch(t.context_expr)
-            if t.optional_vars:
-                self.write(" as ")
-                self.dispatch(t.optional_vars)
+        interleave(lambda: self.write(", "), self.dispatch, t.items)
         self.enter()
         self._write_type_comment(t.type_comment)
         self.dispatch(t.body)
