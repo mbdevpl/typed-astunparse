@@ -354,3 +354,14 @@ class Unparser(astunparse.Unparser):
         self._write_type_comment(t.type_comment)
         self.dispatch(t.body)
         self.leave()
+
+    def _Attribute(self,t):
+        self.dispatch(t.value)
+        # Special case: 3.__abs__() is a syntax error, so if t.value
+        # is an integer literal then we need to either parenthesize
+        # it or add an extra space to get 3 .__abs__().
+        if (isinstance(t.value, ast.Num) or isinstance(t.value, typed_ast.ast35.Num)) \
+                and isinstance(t.value.n, int):
+            self.write(" ")
+        self.write(".")
+        self.write(t.attr)

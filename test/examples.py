@@ -366,6 +366,15 @@ EXAMPLES = {
             typed_ast.ast35.Name('a', typed_ast.ast35.Load()), typed_ast.ast35.Add(),
             typed_ast.ast35.Name('b', typed_ast.ast35.Load())),
         'dump': "BinOp(left=Name(id='a',ctx=Load()),op=Add(),right=Name(id='b',ctx=Load()))"
+        },
+    'attribute of integer literal': {
+        'code': "3 .__abs__()",
+        'is_expression': True,
+        'tree': typed_ast.ast35.Call(
+            func=typed_ast.ast35.Attribute(
+                value=typed_ast.ast35.Num(n=3), attr='__abs__', ctx=typed_ast.ast35.Load()),
+            args=[], keywords=[]),
+        'dump': "Call(func=Attribute(value=Num(n=3),attr='__abs__',ctx=Load()),args=[],keywords=[])"
         }
     }
 
