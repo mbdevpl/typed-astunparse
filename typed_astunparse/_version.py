@@ -15,4 +15,4 @@
 
 """This file defines the version of "typed_astunparse" package."""
 
-VERSION = '0.2.1'
+VERSION = '0.2.2.dev0'

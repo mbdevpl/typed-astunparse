@@ -219,6 +219,25 @@ EXAMPLES = {
                 "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
                     "args=[Str(s='hmm')],keywords=[]))],type_comment='int')"
         },
+    'if-elif-else': {
+        'code': "if False:\n    pass\nelif True:\n    pass\nelse:\n    pass",
+        'is_expression': False,
+        'tree': typed_ast.ast35.If(
+            test=typed_ast.ast35.NameConstant(value=False),
+            body=[typed_ast.ast35.Pass()],
+            orelse=[
+                typed_ast.ast35.If(
+                    test=typed_ast.ast35.NameConstant(value=True),
+                    body=[typed_ast.ast35.Pass()],
+                    orelse=[typed_ast.ast35.Pass()])
+                ]
+            ),
+        'dump':
+            "If("
+                "test=NameConstant(value=False),body=[Pass()],"
+                "orelse=[If(test=NameConstant(value=True),body=[Pass()],orelse=[Pass()])]"
+            ")"
+        },
     'with statement': {
         'code': "with open('setup.py') as f:\n    print(f.read())",
         'is_expression': False,

@@ -15,6 +15,8 @@
 
 """class: Unparser"""
 
+import ast
+
 import astunparse
 from astunparse.unparser import interleave
 import typed_ast.ast35
@@ -303,6 +305,28 @@ class Unparser(astunparse.Unparser):
         self._write_type_comment(t.type_comment)
         self.dispatch(t.body)
         self.leave()
+        if t.orelse:
+            self.fill("else")
+            self.enter()
+            self.dispatch(t.orelse)
+            self.leave()
+
+    def _If(self, t):
+        self.fill("if ")
+        self.dispatch(t.test)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+        # collapse nested ifs into equivalent elifs.
+        while (t.orelse and len(t.orelse) == 1 and
+               (isinstance(t.orelse[0], ast.If) or isinstance(t.orelse[0], typed_ast.ast35.If))):
+            t = t.orelse[0]
+            self.fill("elif ")
+            self.dispatch(t.test)
+            self.enter()
+            self.dispatch(t.body)
+            self.leave()
+        # final else
         if t.orelse:
             self.fill("else")
             self.enter()
