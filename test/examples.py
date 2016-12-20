@@ -143,6 +143,18 @@ EXAMPLES = {
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=None,"
             "type_comment=None,annotation=Name(id='str',ctx=Load()))"
         },
+    'try-except-finally block': {
+        'code': "try:\n    pass\nexcept:\n    pass\nfinally:\n    pass",
+        'is_expression': False,
+        'tree': typed_ast.ast35.Try(
+            body=[typed_ast.ast35.Pass()],
+            handlers=[typed_ast.ast35.ExceptHandler(type=None,name=None,body=[typed_ast.ast35.Pass()])],
+            orelse=[],finalbody=[typed_ast.ast35.Pass()]),
+        'dump':
+            "Try("
+                "body=[Pass()],handlers=[ExceptHandler(type=None,name=None,body=[Pass()])],"
+                "orelse=[],finalbody=[Pass()])"
+        },
     'for-else loop': {
         'code': "for i in [0, 4, 2, 42]:\n    print(i)\nelse:\n    print('hmm')",
         'is_expression': False,

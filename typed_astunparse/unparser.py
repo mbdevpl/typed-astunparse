@@ -19,6 +19,7 @@ import ast
 
 import astunparse
 from astunparse.unparser import interleave
+#import six
 import typed_ast.ast35
 
 
@@ -282,6 +283,25 @@ class Unparser(astunparse.Unparser):
             self.write(" = ")
             self.dispatch(t.value)
 
+    # legacy code
+    '''
+    def _TryFinally(self, t):
+        if len(t.body) == 1 and \
+                (isinstance(t.body[0], ast.TryExcept) or isinstance(t.body[0], typed_ast.ast35.Try)):
+            # try-except-finally
+            self.dispatch(t.body)
+        else:
+            self.fill("try")
+            self.enter()
+            self.dispatch(t.body)
+            self.leave()
+
+        self.fill("finally")
+        self.enter()
+        self.dispatch(t.finalbody)
+        self.leave()
+    '''
+
     def _For(self, t):
         """Unparse For node.
 
@@ -354,6 +374,27 @@ class Unparser(astunparse.Unparser):
         self._write_type_comment(t.type_comment)
         self.dispatch(t.body)
         self.leave()
+
+    # Python 2 only
+    '''
+    def _UnaryOp(self, t):
+        self.write("(")
+        self.write(self.unop[t.op.__class__.__name__])
+        self.write(" ")
+        if six.PY2 and isinstance(t.op, typed_ast.ast35.USub) \
+                and isinstance(t.operand, typed_ast.ast35.Num):  # ast.USub, ast.Num
+            # If we're applying unary minus to a number, parenthesize the number.
+            # This is necessary: -2147483648 is different from -(2147483648) on
+            # a 32-bit machine (the first is an int, the second a long), and
+            # -7j is different from -(7j).  (The first has real part 0.0, the second
+            # has real part -0.0.)
+            self.write("(")
+            self.dispatch(t.operand)
+            self.write(")")
+        else:
+            self.dispatch(t.operand)
+        self.write(")")
+    '''
 
     def _Attribute(self,t):
         self.dispatch(t.value)
