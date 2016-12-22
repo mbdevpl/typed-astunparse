@@ -33,17 +33,14 @@ EXAMPLES = {
                 [typed_ast.ast35.arg('arg', None)],
                 None, [], [], None, []),
             [typed_ast.ast35.Return(typed_ast.ast35.UnaryOp(
-                typed_ast.ast35.Not(), typed_ast.ast35.Name('arg', typed_ast.ast35.Load())
-                ))],
-            [], None, None
-            ),
+                typed_ast.ast35.Not(), typed_ast.ast35.Name('arg', typed_ast.ast35.Load())))],
+            [], None, None),
         'dump':
             "FunctionDef(name='negation',args=arguments("
-                "args=[arg(arg='arg',annotation=None)],"
-                "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
+            "args=[arg(arg='arg',annotation=None)],"
+            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
             "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))],"
-            "decorator_list=[],returns=None,type_comment=None)"
-        },
+            "decorator_list=[],returns=None,type_comment=None)"},
     'function definition with type annotations': {
         'code': "def negation(arg: bool) -> bool:\n    return (not arg)",
         'is_expression': False,
@@ -53,17 +50,14 @@ EXAMPLES = {
                 [typed_ast.ast35.arg('arg', typed_ast.ast35.Name('bool', typed_ast.ast35.Load()))],
                 None, [], [], None, []),
             [typed_ast.ast35.Return(typed_ast.ast35.UnaryOp(
-                typed_ast.ast35.Not(), typed_ast.ast35.Name('arg', typed_ast.ast35.Load())
-                ))],
-            [], typed_ast.ast35.Name('bool', typed_ast.ast35.Load()), None
-            ),
+                typed_ast.ast35.Not(), typed_ast.ast35.Name('arg', typed_ast.ast35.Load())))],
+            [], typed_ast.ast35.Name('bool', typed_ast.ast35.Load()), None),
         'dump':
             "FunctionDef(name='negation',args=arguments("
-                "args=[arg(arg='arg',annotation=Name(id='bool',ctx=Load()))],"
-                "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
+            "args=[arg(arg='arg',annotation=Name(id='bool',ctx=Load()))],"
+            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
             "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))],"
-            "decorator_list=[],returns=Name(id='bool',ctx=Load()),type_comment=None)"
-        },
+            "decorator_list=[],returns=Name(id='bool',ctx=Load()),type_comment=None)"},
     'function definiton with type comment': {
         'code': "def negation(arg):\n    # type: (bool) -> bool\n    return (not arg)",
         'is_expression': False,
@@ -73,17 +67,14 @@ EXAMPLES = {
                 [typed_ast.ast35.arg('arg', None)],
                 None, [], [], None, []),
             [typed_ast.ast35.Return(typed_ast.ast35.UnaryOp(
-                typed_ast.ast35.Not(), typed_ast.ast35.Name('arg', typed_ast.ast35.Load())
-                ))],
-            [], None, '(bool) -> bool'
-            ),
+                typed_ast.ast35.Not(), typed_ast.ast35.Name('arg', typed_ast.ast35.Load())))],
+            [], None, '(bool) -> bool'),
         'dump':
             "FunctionDef(name='negation',args=arguments("
-                "args=[arg(arg='arg',annotation=None)],"
-                "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
+            "args=[arg(arg='arg',annotation=None)],"
+            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
             "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))],"
-            "decorator_list=[],returns=None,type_comment='(bool)->bool')"
-        },
+            "decorator_list=[],returns=None,type_comment='(bool)->bool')"},
     'assignment': {
         'code': "my_string = None",
         'is_expression': False,
@@ -93,8 +84,7 @@ EXAMPLES = {
             None, None),
         'dump':
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None),"
-            "type_comment=None,annotation=None)"
-        },
+            "type_comment=None,annotation=None)"},
     'assignment with type comment': {
         'code': "my_string = None # type: str",
         'is_expression': False,
@@ -104,8 +94,7 @@ EXAMPLES = {
             'str', None),
         'dump':
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None),"
-            "type_comment='str',annotation=None)"
-        },
+            "type_comment='str',annotation=None)"},
     'tuple unpacking assignment with type comment': {
         'code': "(my_string, my_int) = my_list # type: str, int",
         'is_expression': False,
@@ -119,11 +108,10 @@ EXAMPLES = {
         'dump':
             "Assign("
             "targets=[Tuple(elts=["
-                "Name(id='my_string',ctx=Store()),Name(id='my_int',ctx=Store())"
-                "],ctx=Store())],"
+            "Name(id='my_string',ctx=Store()),Name(id='my_int',ctx=Store())"
+            "],ctx=Store())],"
             "value=Name(id='my_list',ctx=Load()),"
-            "type_comment='str,int',annotation=None)"
-        },
+            "type_comment='str,int',annotation=None)"},
     'assignment with type annotation': {
         'code': "my_string: str = None",
         'is_expression': False,
@@ -133,8 +121,7 @@ EXAMPLES = {
             None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
         'dump':
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None),"
-            "type_comment=None,annotation=Name(id='str',ctx=Load()))"
-        },
+            "type_comment=None,annotation=Name(id='str',ctx=Load()))"},
     'variable declaration with type annotation': {
         'code': "my_string: str",
         'is_expression': False,
@@ -144,8 +131,7 @@ EXAMPLES = {
             None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
         'dump':
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=None,"
-            "type_comment=None,annotation=Name(id='str',ctx=Load()))"
-        },
+            "type_comment=None,annotation=Name(id='str',ctx=Load()))"},
     'for-else loop': {
         'code': "for i in [0, 4, 2, 42]:\n    print(i)\nelse:\n    print('hmm')",
         'is_expression': False,
@@ -156,23 +142,19 @@ EXAMPLES = {
                 typed_ast.ast35.Num(42)], typed_ast.ast35.Load()),
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
-                [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []
-                ))],
+                [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []))],
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
-                [typed_ast.ast35.Str('hmm')], []
-                ))],
-            None
-            ),
+                [typed_ast.ast35.Str('hmm')], []))],
+            None),
         'dump':
             "For("
-                "target=Name(id='i',ctx=Store()),"
-                "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load()),"
-                "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
-                    "args=[Name(id='i',ctx=Load())],keywords=[]))],"
-                "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
-                    "args=[Str(s='hmm')],keywords=[]))],type_comment=None)"
-        },
+            "target=Name(id='i',ctx=Store()),"
+            "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load()),"
+            "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
+            "args=[Name(id='i',ctx=Load())],keywords=[]))],"
+            "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
+            "args=[Str(s='hmm')],keywords=[]))],type_comment=None)"},
     'for loop with type comment': {
         'code': "for i in [0, 4, 2, 42]: # type: int\n    print(i)",
         'is_expression': False,
@@ -183,18 +165,15 @@ EXAMPLES = {
                 typed_ast.ast35.Num(42)], typed_ast.ast35.Load()),
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
-                [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []
-                ))],
-            [], 'int'
-            ),
+                [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []))],
+            [], 'int'),
         'dump':
             "For("
-                "target=Name(id='i',ctx=Store()),"
-                "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load()),"
-                "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
-                    "args=[Name(id='i',ctx=Load())],keywords=[]))],"
-                "orelse=[],type_comment='int')"
-        },
+            "target=Name(id='i',ctx=Store()),"
+            "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load()),"
+            "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
+            "args=[Name(id='i',ctx=Load())],keywords=[]))],"
+            "orelse=[],type_comment='int')"},
     'for-else loop with type comment': {
         'code': "for i in [0, 4, 2, 42]: # type: int\n    print(i)\nelse:\n    print('hmm')",
         'is_expression': False,
@@ -205,42 +184,33 @@ EXAMPLES = {
                 typed_ast.ast35.Num(42)], typed_ast.ast35.Load()),
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
-                [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []
-                ))],
+                [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []))],
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
-                [typed_ast.ast35.Str('hmm')], []
-                ))],
-            'int'
-            ),
+                [typed_ast.ast35.Str('hmm')], []))],
+            'int'),
         'dump':
             "For("
-                "target=Name(id='i',ctx=Store()),"
-                "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load()),"
-                "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
-                    "args=[Name(id='i',ctx=Load())],keywords=[]))],"
-                "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
-                    "args=[Str(s='hmm')],keywords=[]))],type_comment='int')"
-        },
+            "target=Name(id='i',ctx=Store()),"
+            "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load()),"
+            "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
+            "args=[Name(id='i',ctx=Load())],keywords=[]))],"
+            "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
+            "args=[Str(s='hmm')],keywords=[]))],type_comment='int')"},
     'if-elif-else': {
         'code': "if False:\n    pass\nelif True:\n    pass\nelse:\n    pass",
         'is_expression': False,
         'tree': typed_ast.ast35.If(
             test=typed_ast.ast35.NameConstant(value=False),
             body=[typed_ast.ast35.Pass()],
-            orelse=[
-                typed_ast.ast35.If(
-                    test=typed_ast.ast35.NameConstant(value=True),
-                    body=[typed_ast.ast35.Pass()],
-                    orelse=[typed_ast.ast35.Pass()])
-                ]
-            ),
+            orelse=[typed_ast.ast35.If(
+                test=typed_ast.ast35.NameConstant(value=True), body=[typed_ast.ast35.Pass()],
+                orelse=[typed_ast.ast35.Pass()])]),
         'dump':
             "If("
-                "test=NameConstant(value=False),body=[Pass()],"
-                "orelse=[If(test=NameConstant(value=True),body=[Pass()],orelse=[Pass()])]"
-            ")"
-        },
+            "test=NameConstant(value=False),body=[Pass()],"
+            "orelse=[If(test=NameConstant(value=True),body=[Pass()],orelse=[Pass()])]"
+            ")"},
     'with statement': {
         'code': "with open('setup.py') as f:\n    print(f.read())",
         'is_expression': False,
@@ -249,30 +219,26 @@ EXAMPLES = {
                 typed_ast.ast35.Call(
                     typed_ast.ast35.Name('open', typed_ast.ast35.Load()),
                     [typed_ast.ast35.Str(s='setup.py')], []),
-                typed_ast.ast35.Name('f', typed_ast.ast35.Store())
-                )],
+                typed_ast.ast35.Name('f', typed_ast.ast35.Store()))],
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
                 [typed_ast.ast35.Call(typed_ast.ast35.Attribute(
                     typed_ast.ast35.Name('f', typed_ast.ast35.Load()), 'read',
                     typed_ast.ast35.Load()), [], [])],
-                []
-                ))],
-            None
-            ),
+                []))],
+            None),
         'dump':
             "With("
-                "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
-                    "args=[Str(s='setup.py')],keywords=[]),"
-                    "optional_vars=Name(id='f',ctx=Store()))],"
-                "body=[Expr(value=Call("
-                    "func=Name(id='print',ctx=Load()),"
-                    "args=[Call("
-                        "func=Attribute(value=Name(id='f',ctx=Load()),attr='read',ctx=Load()),"
-                        "args=[],keywords=[])],"
-                    "keywords=[]))],"
-                "type_comment=None)"
-        },
+            "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
+            "args=[Str(s='setup.py')],keywords=[]),"
+            "optional_vars=Name(id='f',ctx=Store()))],"
+            "body=[Expr(value=Call("
+            "func=Name(id='print',ctx=Load()),"
+            "args=[Call("
+            "func=Attribute(value=Name(id='f',ctx=Load()),attr='read',ctx=Load()),"
+            "args=[],keywords=[])],"
+            "keywords=[]))],"
+            "type_comment=None)"},
     'with statement with type comment': {
         'code': "with open('setup.py') as f: # type: typing.io.TextIO\n    print(f.read())",
         'is_expression': False,
@@ -281,30 +247,26 @@ EXAMPLES = {
                 typed_ast.ast35.Call(
                     typed_ast.ast35.Name('open', typed_ast.ast35.Load()),
                     [typed_ast.ast35.Str(s='setup.py')], []),
-                typed_ast.ast35.Name('f', typed_ast.ast35.Store())
-                )],
+                typed_ast.ast35.Name('f', typed_ast.ast35.Store()))],
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
                 [typed_ast.ast35.Call(typed_ast.ast35.Attribute(
                     typed_ast.ast35.Name('f', typed_ast.ast35.Load()), 'read',
                     typed_ast.ast35.Load()), [], [])],
-                []
-                ))],
-            'typing.io.TextIO'
-            ),
+                []))],
+            'typing.io.TextIO'),
         'dump':
             "With("
-                "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
-                    "args=[Str(s='setup.py')],keywords=[]),"
-                    "optional_vars=Name(id='f',ctx=Store()))],"
-                "body=[Expr(value=Call("
-                    "func=Name(id='print',ctx=Load()),"
-                    "args=[Call("
-                        "func=Attribute(value=Name(id='f',ctx=Load()),attr='read',ctx=Load()),"
-                        "args=[],keywords=[])],"
-                    "keywords=[]))],"
-                "type_comment='typing.io.TextIO')"
-        },
+            "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
+            "args=[Str(s='setup.py')],keywords=[]),"
+            "optional_vars=Name(id='f',ctx=Store()))],"
+            "body=[Expr(value=Call("
+            "func=Name(id='print',ctx=Load()),"
+            "args=[Call("
+            "func=Attribute(value=Name(id='f',ctx=Load()),attr='read',ctx=Load()),"
+            "args=[],keywords=[])],"
+            "keywords=[]))],"
+            "type_comment='typing.io.TextIO')"},
     'multi-context with statement with type comment': {
         'code':
             "with open('setup.py') as f1, open('README.rst') as f2:"
@@ -316,60 +278,55 @@ EXAMPLES = {
                 typed_ast.ast35.Call(
                     typed_ast.ast35.Name('open', typed_ast.ast35.Load()),
                     [typed_ast.ast35.Str(s='setup.py')], []),
-                typed_ast.ast35.Name('f1', typed_ast.ast35.Store())
-                ),
+                typed_ast.ast35.Name('f1', typed_ast.ast35.Store())),
              typed_ast.ast35.withitem(
                 typed_ast.ast35.Call(
                     typed_ast.ast35.Name('open', typed_ast.ast35.Load()),
                     [typed_ast.ast35.Str(s='README.rst')], []),
-                typed_ast.ast35.Name('f2', typed_ast.ast35.Store())
-                )],
+                typed_ast.ast35.Name('f2', typed_ast.ast35.Store()))],
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
                 [typed_ast.ast35.Call(typed_ast.ast35.Attribute(
                     typed_ast.ast35.Name('f1', typed_ast.ast35.Load()), 'read',
                     typed_ast.ast35.Load()), [], [])],
-                []
-                )),
+                [])),
              typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
                 [typed_ast.ast35.Call(typed_ast.ast35.Attribute(
                     typed_ast.ast35.Name('f2', typed_ast.ast35.Load()), 'read',
                     typed_ast.ast35.Load()), [], [])],
-                []
-                ))],
+                []))],
             'typing.io.TextIO, typing.io.TextIO'
             ),
         'dump':
             "With("
-                "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
-                    "args=[Str(s='setup.py')],keywords=[]),"
-                    "optional_vars=Name(id='f1',ctx=Store())),"
-                       "withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
-                    "args=[Str(s='README.rst')],keywords=[]),"
-                    "optional_vars=Name(id='f2',ctx=Store()))],"
-                "body=[Expr(value=Call("
-                    "func=Name(id='print',ctx=Load()),"
-                    "args=[Call("
-                        "func=Attribute(value=Name(id='f1',ctx=Load()),attr='read',ctx=Load()),"
-                        "args=[],keywords=[])],"
-                    "keywords=[])),"
-                       "Expr(value=Call("
-                    "func=Name(id='print',ctx=Load()),"
-                    "args=[Call("
-                        "func=Attribute(value=Name(id='f2',ctx=Load()),attr='read',ctx=Load()),"
-                        "args=[],keywords=[])],"
-                    "keywords=[]))],"
-                "type_comment='typing.io.TextIO,typing.io.TextIO')"
-        },
+            "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
+            "args=[Str(s='setup.py')],keywords=[]),"
+            "optional_vars=Name(id='f1',ctx=Store())),"
+            "withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
+            "args=[Str(s='README.rst')],keywords=[]),"
+            "optional_vars=Name(id='f2',ctx=Store()))],"
+            "body=[Expr(value=Call("
+            "func=Name(id='print',ctx=Load()),"
+            "args=[Call("
+            "func=Attribute(value=Name(id='f1',ctx=Load()),attr='read',ctx=Load()),"
+            "args=[],keywords=[])],"
+            "keywords=[])),"
+            "Expr(value=Call("
+            "func=Name(id='print',ctx=Load()),"
+            "args=[Call("
+            "func=Attribute(value=Name(id='f2',ctx=Load()),attr='read',ctx=Load()),"
+            "args=[],keywords=[])],"
+            "keywords=[]))],"
+            "type_comment='typing.io.TextIO,typing.io.TextIO')"},
     'addition': {
         'code': "(a + b)",
         'is_expression': True,
         'tree': typed_ast.ast35.BinOp(
             typed_ast.ast35.Name('a', typed_ast.ast35.Load()), typed_ast.ast35.Add(),
             typed_ast.ast35.Name('b', typed_ast.ast35.Load())),
-        'dump': "BinOp(left=Name(id='a',ctx=Load()),op=Add(),right=Name(id='b',ctx=Load()))"
-        },
+        'dump':
+            "BinOp(left=Name(id='a',ctx=Load()),op=Add(),right=Name(id='b',ctx=Load()))"},
     'attribute of integer literal': {
         'code': "3 .__abs__()",
         'is_expression': True,
@@ -377,8 +334,8 @@ EXAMPLES = {
             func=typed_ast.ast35.Attribute(
                 value=typed_ast.ast35.Num(n=3), attr='__abs__', ctx=typed_ast.ast35.Load()),
             args=[], keywords=[]),
-        'dump': "Call(func=Attribute(value=Num(n=3),attr='__abs__',ctx=Load()),args=[],keywords=[])"
-        }
+        'dump':
+            "Call(func=Attribute(value=Num(n=3),attr='__abs__',ctx=Load()),args=[],keywords=[])"}
     }
 
 INVALID_EXAMPLES = {
@@ -390,32 +347,29 @@ INVALID_EXAMPLES = {
              typed_ast.ast35.Name('my_string2', typed_ast.ast35.Store())],
             typed_ast.ast35.NameConstant(None),
             None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
-        'dump': "None"
-        },
+        'dump': "None"},
     'tuple unpacking assignment with one type annotation': {
         'code': "my_string, my_string2: str = my_tuple",
         'is_expression': False,
         'tree': typed_ast.ast35.Assign(
-            [typed_ast.ast35.Tuple([
-                typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
-                typed_ast.ast35.Name('my_string2', typed_ast.ast35.Store())
-                ], typed_ast.ast35.Store())],
+            [typed_ast.ast35.Tuple(
+                [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
+                 typed_ast.ast35.Name('my_string2', typed_ast.ast35.Store())],
+                typed_ast.ast35.Store())],
             typed_ast.ast35.Name('my_tuple', typed_ast.ast35.Load()),
             None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
-        'dump': "None"
-        },
+        'dump': "None"},
     'tuple unpacking assignment with multiple type annotations': {
         'code': "my_string: str, my_string2: str = my_tuple",
         'is_expression': False,
         'tree': typed_ast.ast35.Assign(
-            [typed_ast.ast35.Tuple([
-                typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
-                typed_ast.ast35.Name('my_string2', typed_ast.ast35.Store())
-                ], typed_ast.ast35.Store())],
+            [typed_ast.ast35.Tuple(
+                [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
+                 typed_ast.ast35.Name('my_string2', typed_ast.ast35.Store())],
+                typed_ast.ast35.Store())],
             typed_ast.ast35.Name('my_tuple', typed_ast.ast35.Load()),
             None, typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
-        'dump': "None"
-        },
+        'dump': "None"},
     'assignment with type comment and annotation': {
         'code': "my_string: str = None # type: str",
         'is_expression': False,
@@ -423,8 +377,7 @@ INVALID_EXAMPLES = {
             [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store())],
             typed_ast.ast35.NameConstant(None),
             'str', typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
-        'dump': "None"
-        },
+        'dump': "None"},
     }
 
 
@@ -433,24 +386,20 @@ def _generate_variants(example: dict):
         example['trees'] = {
             'exec': typed_ast.ast35.Module([typed_ast.ast35.Expr(example['tree'])], []),
             'eval': typed_ast.ast35.Expression(example['tree']),
-            'single': typed_ast.ast35.Interactive([typed_ast.ast35.Expr(example['tree'])])
-            }
+            'single': typed_ast.ast35.Interactive([typed_ast.ast35.Expr(example['tree'])])}
         example['dumps'] = {
             'exec': 'Module(body=[Expr(value={})],type_ignores=[])'.format(example['dump']),
             'eval': 'Expression(body={})'.format(example['dump']),
-            'single': 'Interactive(body=[Expr(value={})])'.format(example['dump'])
-            }
+            'single': 'Interactive(body=[Expr(value={})])'.format(example['dump'])}
     else:
         example['trees'] = {
             'exec': typed_ast.ast35.Module([example['tree']], []),
             'eval': None,
-            'single': typed_ast.ast35.Interactive([example['tree']])
-            }
+            'single': typed_ast.ast35.Interactive([example['tree']])}
         example['dumps'] = {
             'exec': 'Module(body=[{}],type_ignores=[])'.format(example['dump']),
             'eval': None,
-            'single': 'Interactive(body=[{}])'.format(example['dump'])
-            }
+            'single': 'Interactive(body=[{}])'.format(example['dump'])}
 
 for _, _example in EXAMPLES.items():
     _generate_variants(_example)
