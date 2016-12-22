@@ -225,7 +225,7 @@ class Unparser(astunparse.Unparser):
             identifier name, arguments args, stmt* body, expr* decorator_list, expr? returns,
             string? type_comment)
         """
-        if t.type_comment is None:
+        if not hasattr(t, 'type_comment') or t.type_comment is None:
             super()._generic_FunctionDef(t, async)
             return
 
@@ -261,7 +261,7 @@ class Unparser(astunparse.Unparser):
         """
         if not hasattr(t, 'annotation') or t.annotation is None:
             super()._Assign(t)
-            if t.type_comment is not None:
+            if hasattr(t, 'type_comment') and t.type_comment is not None:
                 self._write_type_comment(t.type_comment)
             return
 
@@ -295,7 +295,7 @@ class Unparser(astunparse.Unparser):
 
         For/AsyncFor(expr target, expr iter, stmt* body, stmt* orelse, string? type_comment)
         """
-        if t.type_comment is None:
+        if not hasattr(t, 'type_comment') or t.type_comment is None:
             super()._generic_For(t, async)
             return
 
@@ -346,7 +346,7 @@ class Unparser(astunparse.Unparser):
 
         With(withitem* items, stmt* body, string? type_comment)
         """
-        if t.type_comment is None:
+        if not hasattr(t, 'type_comment') or t.type_comment is None:
             super()._With(t)
             return
 

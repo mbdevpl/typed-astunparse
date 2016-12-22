@@ -15,6 +15,7 @@
 
 """tested function: unparse"""
 
+import ast
 import logging
 import unittest
 
@@ -80,4 +81,16 @@ class UnparseTests(unittest.TestCase):
             roundtrip_tree = typed_ast.ast35.parse(source=code)
             tree_dump = typed_ast.ast35.dump(tree, include_attributes=False)
             roundtrip_tree_dump = typed_ast.ast35.dump(roundtrip_tree, include_attributes=False)
+            self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)
+
+    def test_untyped_files(self):
+        """Is Python stdlib parsed using built-in ast package also unparsed correctly?"""
+        for path in PATHS:
+            with open(path, 'r') as f:
+                original_code = f.read()
+            tree = ast.parse(source=original_code, filename=path)
+            code = typed_astunparse.unparse(tree)
+            roundtrip_tree = ast.parse(source=code)
+            tree_dump = ast.dump(tree, include_attributes=False)
+            roundtrip_tree_dump = ast.dump(roundtrip_tree, include_attributes=False)
             self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)
