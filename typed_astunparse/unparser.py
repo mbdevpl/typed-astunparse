@@ -335,22 +335,22 @@ class Unparser(astunparse.Unparser):
             self.dispatch(t.orelse)
             self.leave()
 
-    def _With(self, t):
-        """Unparse With node.
+    def _generic_With(self, t, async=False):
+        """Unparse With or AsyncWith node.
 
         Rather than handling just:
 
-        With(withitem* items, stmt* body)
+        With/AsyncWith(withitem* items, stmt* body)
 
         handle:
 
-        With(withitem* items, stmt* body, string? type_comment)
+        With/AsyncWith(withitem* items, stmt* body, string? type_comment)
         """
         if not hasattr(t, 'type_comment') or t.type_comment is None:
-            super()._With(t)
+            super()._generic_With(t, async)
             return
 
-        self.fill("with ")
+        self.fill("async with " if async else "with ")
         interleave(lambda: self.write(", "), self.dispatch, t.items)
         self.enter()
         self._write_type_comment(t.type_comment)
