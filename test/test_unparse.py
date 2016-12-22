@@ -63,7 +63,7 @@ class UnparseTests(unittest.TestCase):
                     continue
 
                 tree = example['trees'][mode]
-                for _ in range(10):
+                for _ in range(4):
                     code = typed_astunparse.unparse(tree)
                     _LOG.debug('%s', code)
                     clean_code = code.strip()

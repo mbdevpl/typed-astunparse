@@ -49,7 +49,7 @@ class DumpTests(unittest.TestCase):
                     continue
 
                 dump = typed_astunparse.dump(example['trees'][mode])
-                for _ in range(10):
+                for _ in range(4):
                     tree = typed_ast.ast35.parse(source=dump, mode=mode)
                     dump = typed_astunparse.unparse(tree)
                     _LOG.debug('%s', dump)
