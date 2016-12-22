@@ -43,41 +43,37 @@ class Unparser(astunparse.Unparser):
 
         stmt = FunctionDef(identifier name, arguments args,
                            stmt* body, expr* decorator_list, expr? returns)
-              | AsyncFunctionDef(identifier name, arguments args,
-                                 stmt* body, expr* decorator_list, expr? returns)
+             | AsyncFunctionDef(identifier name, arguments args,
+                                stmt* body, expr* decorator_list, expr? returns)
 
-              | ClassDef(identifier name,
-                 expr* bases,
-                 keyword* keywords,
-                 stmt* body,
-                 expr* decorator_list)
-              | Return(expr? value)
+             | ClassDef(identifier name, expr* bases, keyword* keywords,
+                        stmt* body, expr* decorator_list)
+             | Return(expr? value)
 
-              | Delete(expr* targets)
-              | Assign(expr* targets, expr value)
-              | AugAssign(expr target, operator op, expr value)
+             | Delete(expr* targets)
+             | Assign(expr* targets, expr value)
+             | AugAssign(expr target, operator op, expr value)
 
               -- use 'orelse' because else is a keyword in target languages
-              | For(expr target, expr iter, stmt* body, stmt* orelse)
-              | AsyncFor(expr target, expr iter, stmt* body, stmt* orelse)
-              | While(expr test, stmt* body, stmt* orelse)
-              | If(expr test, stmt* body, stmt* orelse)
-              | With(withitem* items, stmt* body)
-              | AsyncWith(withitem* items, stmt* body)
+             | For(expr target, expr iter, stmt* body, stmt* orelse)
+             | AsyncFor(expr target, expr iter, stmt* body, stmt* orelse)
+             | While(expr test, stmt* body, stmt* orelse)
+             | If(expr test, stmt* body, stmt* orelse)
+             | With(withitem* items, stmt* body)
+             | AsyncWith(withitem* items, stmt* body)
 
-              | Raise(expr? exc, expr? cause)
-              | Try(stmt* body, excepthandler* handlers, stmt* orelse, stmt* finalbody)
-              | Assert(expr test, expr? msg)
+             | Raise(expr? exc, expr? cause)
+             | Try(stmt* body, excepthandler* handlers, stmt* orelse, stmt* finalbody)
+             | Assert(expr test, expr? msg)
 
-              | Import(alias* names)
-              | ImportFrom(identifier? module, alias* names, int? level)
+             | Import(alias* names)
+             | ImportFrom(identifier? module, alias* names, int? level)
 
-              | Global(identifier* names)
-              | Nonlocal(identifier* names)
-              | Expr(expr value)
-              | Pass | Break | Continue
+             | Global(identifier* names)
+             | Nonlocal(identifier* names)
+             | Expr(expr value)
+             | Pass | Break | Continue
 
-              -- XXX Jython will be different
               -- col_offset is the byte offset in the utf8 string the parser uses
               attributes (int lineno, int col_offset)
 
@@ -283,7 +279,6 @@ class Unparser(astunparse.Unparser):
             self.write(" = ")
             self.dispatch(t.value)
 
-    #'''
     def _generic_For(self, t, async=False):
         """Unparse For or AsyncFor node.
 
@@ -357,7 +352,7 @@ class Unparser(astunparse.Unparser):
         self.dispatch(t.body)
         self.leave()
 
-    def _Attribute(self,t):
+    def _Attribute(self, t):
         self.dispatch(t.value)
         # Special case: 3.__abs__() is a syntax error, so if t.value
         # is an integer literal then we need to either parenthesize

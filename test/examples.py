@@ -99,10 +99,10 @@ EXAMPLES = {
         'code': "(my_string, my_int) = my_list # type: str, int",
         'is_expression': False,
         'tree': typed_ast.ast35.Assign(
-            [typed_ast.ast35.Tuple([
-                typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
-                typed_ast.ast35.Name('my_int', typed_ast.ast35.Store())
-                ], typed_ast.ast35.Store())],
+            [typed_ast.ast35.Tuple(
+                [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store()),
+                 typed_ast.ast35.Name('my_int', typed_ast.ast35.Store())],
+                typed_ast.ast35.Store())],
             typed_ast.ast35.Name('my_list', typed_ast.ast35.Load()),
             'str, int', None),
         'dump':
@@ -296,8 +296,7 @@ EXAMPLES = {
                     typed_ast.ast35.Name('f2', typed_ast.ast35.Load()), 'read',
                     typed_ast.ast35.Load()), [], [])],
                 []))],
-            'typing.io.TextIO, typing.io.TextIO'
-            ),
+            'typing.io.TextIO, typing.io.TextIO'),
         'dump':
             "With("
             "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
@@ -335,8 +334,7 @@ EXAMPLES = {
                 value=typed_ast.ast35.Num(n=3), attr='__abs__', ctx=typed_ast.ast35.Load()),
             args=[], keywords=[]),
         'dump':
-            "Call(func=Attribute(value=Num(n=3),attr='__abs__',ctx=Load()),args=[],keywords=[])"}
-    }
+            "Call(func=Attribute(value=Num(n=3),attr='__abs__',ctx=Load()),args=[],keywords=[])"}}
 
 INVALID_EXAMPLES = {
     'chained assignment with type annotation': {
@@ -377,8 +375,7 @@ INVALID_EXAMPLES = {
             [typed_ast.ast35.Name('my_string', typed_ast.ast35.Store())],
             typed_ast.ast35.NameConstant(None),
             'str', typed_ast.ast35.Name('str', typed_ast.ast35.Load())),
-        'dump': "None"},
-    }
+        'dump': "None"}}
 
 
 def _generate_variants(example: dict):
