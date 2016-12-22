@@ -212,20 +212,21 @@ class Unparser(astunparse.Unparser):
         self._write_string_or_dispatch(type_comment)
 
     def _generic_FunctionDef(self, t, async=False):
-        """Unparse FunctionDef node.
+        """Unparse FunctionDef or AsyncFunctionDef node.
 
         Rather than handling:
 
-        FunctionDef(identifier name, arguments args,
-                    stmt* body, expr* decorator_list, expr? returns)
+        FunctionDef/AsyncFunctionDef(
+            identifier name, arguments args, stmt* body, expr* decorator_list, expr? returns)
 
         handle:
 
-        FunctionDef(identifier name, arguments args,
-                    stmt* body, expr* decorator_list, expr? returns, string? type_comment)
+        FunctionDef/AsyncFunctionDef(
+            identifier name, arguments args, stmt* body, expr* decorator_list, expr? returns,
+            string? type_comment)
         """
         if t.type_comment is None:
-            super()._generic_FunctionDef(t)
+            super()._generic_FunctionDef(t, async)
             return
 
         self.write("\n")
@@ -282,22 +283,23 @@ class Unparser(astunparse.Unparser):
             self.write(" = ")
             self.dispatch(t.value)
 
-    def _For(self, t):
-        """Unparse For node.
+    #'''
+    def _generic_For(self, t, async=False):
+        """Unparse For or AsyncFor node.
 
         Rather than handling just:
 
-        For(expr target, expr iter, stmt* body, stmt* orelse)
+        For/AsyncFor(expr target, expr iter, stmt* body, stmt* orelse)
 
         handle:
 
-        For(expr target, expr iter, stmt* body, stmt* orelse, string? type_comment)
+        For/AsyncFor(expr target, expr iter, stmt* body, stmt* orelse, string? type_comment)
         """
         if t.type_comment is None:
-            super()._For(t)
+            super()._generic_For(t, async)
             return
 
-        self.fill("for ")
+        self.fill("async for " if async else "for ")
         self.dispatch(t.target)
         self.write(" in ")
         self.dispatch(t.iter)
