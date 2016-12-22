@@ -21,7 +21,7 @@ import unittest
 import typed_ast.ast35
 import typed_astunparse
 
-from .examples import MODES, EXAMPLES, INVALID_EXAMPLES
+from .examples import MODES, EXAMPLES, INVALID_EXAMPLES, PATHS
 
 _LOG = logging.getLogger(__name__)
 
@@ -69,3 +69,15 @@ class UnparseTests(unittest.TestCase):
                     clean_code = code.strip()
                     self.assertEqual(clean_code, example['code'], msg=(description, mode))
                     tree = typed_ast.ast35.parse(source=code, mode=mode)
+
+    def test_files(self):
+        """Does Python stdlib remain the same after roundtrip parse-unparse?"""
+        for path in PATHS:
+            with open(path, 'r') as f:
+                original_code = f.read()
+            tree = typed_ast.ast35.parse(source=original_code, filename=path)
+            code = typed_astunparse.unparse(tree)
+            roundtrip_tree = typed_ast.ast35.parse(source=code)
+            tree_dump = typed_ast.ast35.dump(tree, include_attributes=False)
+            roundtrip_tree_dump = typed_ast.ast35.dump(roundtrip_tree, include_attributes=False)
+            self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)

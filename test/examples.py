@@ -15,6 +15,9 @@
 
 """Examples used in unit tests."""
 
+import os
+import sys
+
 import typed_ast.ast35
 import typed_astunparse
 
@@ -482,3 +485,17 @@ tree from source (above) != example tree (below)
                     _example['trees'][mode]).replace('\n', '').replace(' ', '')
             assert tree_from_source == example_tree, _MSG.format(
                 _description, mode, tree_from_source, example_tree)
+
+_ROOT_DIRECTORY = os.path.join(
+    getattr(sys, 'real_prefix', sys.prefix), 'lib', 'python{}.{}'.format(*sys.version_info[:2]))
+
+# verify root directory
+if __debug__:
+    assert isinstance(_ROOT_DIRECTORY, str)
+    assert len(_ROOT_DIRECTORY) > 0
+    assert os.path.isdir(_ROOT_DIRECTORY)
+
+PATHS = sorted([
+    os.path.join(_ROOT_DIRECTORY, n)
+    for n in os.listdir(_ROOT_DIRECTORY)
+    if n.endswith('.py') and not n.startswith('bad')])
