@@ -75,6 +75,37 @@ EXAMPLES = {
             "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
             "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))],"
             "decorator_list=[],returns=None,type_comment='(bool)->bool')"},
+    'decorated function with type comment': {
+        'code': '@deco\ndef do_nothing():\n    # type: () -> None\n    pass',
+        'is_expression': False,
+        'tree': typed_ast.ast35.FunctionDef(
+            name='do_nothing',
+            args=typed_ast.ast35.arguments([], None, [], [], None, []),
+            body=[typed_ast.ast35.Pass()],
+            decorator_list=[typed_ast.ast35.Name(id='deco',ctx=typed_ast.ast35.Load())],
+            returns=None, type_comment='() -> None'),
+        'dump':
+            "FunctionDef("
+            "name='do_nothing',"
+            "args=arguments("
+            "args=[],vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
+            "body=[Pass()],decorator_list=[Name(id='deco',ctx=Load())],"
+            "returns=None,type_comment='()->None')"},
+    'function with type comment and annotations': {
+        'code': 'def do_nothing() -> None:\n    # type: () -> None\n    pass',
+        'is_expression': False,
+        'tree': typed_ast.ast35.FunctionDef(
+            name='do_nothing',
+            args=typed_ast.ast35.arguments([], None, [], [], None, []),
+            body=[typed_ast.ast35.Pass()], decorator_list=[],
+            returns=typed_ast.ast35.NameConstant(value=None), type_comment='() -> None'),
+        'dump':
+            "FunctionDef("
+            "name='do_nothing',"
+            "args=arguments("
+            "args=[],vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
+            "body=[Pass()],decorator_list=[],"
+            "returns=NameConstant(value=None),type_comment='()->None')"},
     'assignment': {
         'code': "my_string = None",
         'is_expression': False,
