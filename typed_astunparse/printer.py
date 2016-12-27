@@ -35,8 +35,7 @@ class Printer(astunparse.Printer):
         self._annotate_fields = annotate_fields
         self._include_attributes = include_attributes
 
-    def generic_visit(self, node):
-        """More or less a verbatim copy of astunparse.generic_visit()."""
+    def _prepare_for_print(self, node):
         if isinstance(node, list):
             nodestart = "["
             nodeend = "]"
@@ -47,6 +46,15 @@ class Printer(astunparse.Printer):
             children = [
                 (name + "=" if self._annotate_fields else '', value)
                 for name, value in typed_ast.ast35.iter_fields(node)]
+
+        return nodestart, children, nodeend
+
+    def generic_visit(self, node):
+        """Print the syntax tree without unparsing it.
+
+        Merge of astunparse.Printer.generic_visit() and typed_ast.ast35.dump().
+        """
+        nodestart, children, nodeend = self._prepare_for_print(node)
 
         if len(children) > 1:
             self.indentation += 1

@@ -18,7 +18,8 @@
 functions: unparse, dump
 """
 
-from __future__ import absolute_import
+import ast
+import typing as t
 
 import typed_ast.ast35
 from six.moves import cStringIO
@@ -30,14 +31,20 @@ from ._version import VERSION
 __version__ = VERSION
 
 
-def unparse(tree: typed_ast.ast35.AST):
-    """Behave just like astunparse.unparse(tree), but handle typed_ast.ast35-based trees."""
+def unparse(tree: t.Union[ast.AST, typed_ast.ast35.AST]) -> str:
+    """Unparse the abstract syntax tree into a str.
+
+    Behave just like astunparse.unparse(tree), but handle trees which are typed, untyped, or mixed.
+    In other words, a mixture of ast.AST-based and typed_ast.ast35-based nodes will be unparsed.
+    """
     stream = cStringIO()
     Unparser(tree, file=stream)
     return stream.getvalue()
 
 
-def dump(tree: typed_ast.ast35.AST, annotate_fields: bool=True, include_attributes: bool=False):
+def dump(
+        tree: t.Union[ast.AST, typed_ast.ast35.AST], annotate_fields: bool=True,
+        include_attributes: bool=False) -> str:
     """Behave just like astunparse.dump(tree), but handle typed_ast.ast35-based trees."""
     stream = cStringIO()
     Printer(

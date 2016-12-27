@@ -291,11 +291,11 @@ EXAMPLES = {
                     typed_ast.ast35.Load()), [], [])],
                 [])),
              typed_ast.ast35.Expr(typed_ast.ast35.Call(
-                typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
-                [typed_ast.ast35.Call(typed_ast.ast35.Attribute(
-                    typed_ast.ast35.Name('f2', typed_ast.ast35.Load()), 'read',
-                    typed_ast.ast35.Load()), [], [])],
-                []))],
+                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
+                 [typed_ast.ast35.Call(typed_ast.ast35.Attribute(
+                     typed_ast.ast35.Name('f2', typed_ast.ast35.Load()), 'read',
+                     typed_ast.ast35.Load()), [], [])],
+                 []))],
             'typing.io.TextIO, typing.io.TextIO'),
         'dump':
             "With("

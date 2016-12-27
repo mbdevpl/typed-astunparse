@@ -39,7 +39,7 @@ class UnparseTests(unittest.TestCase):
                     continue
                 code = typed_astunparse.unparse(example['trees'][mode])
                 _LOG.debug('%s', code)
-                code = code.strip()#replace('\n', '')
+                code = code.strip()
                 self.assertEqual(code, example['code'], msg=(description, mode))
 
     def test_unparse_invalid_examples(self):
@@ -52,9 +52,8 @@ class UnparseTests(unittest.TestCase):
                     typed_astunparse.unparse(example['trees'][mode])
                 self.assertIn('PEP 526', str(raised.exception), msg=(description, mode))
 
-                with self.assertRaises(SyntaxError, msg=(description, mode)):# as raised:
+                with self.assertRaises(SyntaxError, msg=(description, mode)):
                     typed_ast.ast35.parse(source=example['code'], mode=mode)
-                #self.assertIn('invalid syntax', str(raised.exception), msg=(description, mode))
 
     def test_many_roundtrips(self):
         """Prserve ASTs when doing parse(unparse(parse(...unparse(parse(code))...)))."""
