@@ -29,8 +29,8 @@ class Printer(astunparse.Printer):
     def __init__(
             self, file=sys.stdout, indent="  ", annotate_fields: bool=True,
             include_attributes: bool=False):
+        """Initialize Printer instance."""
         super().__init__(file=file, indent=indent)
-        assert annotate_fields is True
         assert include_attributes is False
         self._annotate_fields = annotate_fields
         self._include_attributes = include_attributes
@@ -44,7 +44,9 @@ class Printer(astunparse.Printer):
         else:
             nodestart = type(node).__name__ + "("
             nodeend = ")"
-            children = [(name + "=", value) for name, value in typed_ast.ast35.iter_fields(node)]
+            children = [
+                (name + "=" if self._annotate_fields else '', value)
+                for name, value in typed_ast.ast35.iter_fields(node)]
 
         if len(children) > 1:
             self.indentation += 1

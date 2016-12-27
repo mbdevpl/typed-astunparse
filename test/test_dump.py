@@ -65,7 +65,7 @@ class DumpTests(unittest.TestCase):
             typed_tree = typed_ast.ast35.parse(source=code, filename=path)
             bad_typed_dump = astunparse.dump(typed_tree)
 
-            for annotate_fields in [True]:
+            for annotate_fields in [True, False]:
                 for include_attributes in [False]:
 
                     with self.assertRaises(TypeError):
