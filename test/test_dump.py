@@ -15,15 +15,24 @@
 
 """tested function: dump"""
 
+import ast
 import logging
 import unittest
 
+import astunparse
 import typed_ast.ast35
 import typed_astunparse
 
-from .examples import MODES, EXAMPLES
+from .examples import MODES, EXAMPLES, PATHS
 
 _LOG = logging.getLogger(__name__)
+
+
+def _postprocess_dump(tested_typed_dump):
+
+    lines = [s.strip() for s in tested_typed_dump.splitlines()]
+    lines = [s + ' ' if s.endswith(',') else s for s in lines]
+    return ''.join(lines)
 
 
 class DumpTests(unittest.TestCase):
@@ -40,6 +49,40 @@ class DumpTests(unittest.TestCase):
                 _LOG.debug('%s', dump)
                 dump = dump.replace('\n', '').replace(' ', '')
                 self.assertEqual(dump, example['dumps'][mode], msg=(description, mode))
+
+    def test_dump_files_comparison(self):
+        """Print the same data as other existing modules."""
+        for path in PATHS:
+            with open(path, 'r') as py_file:
+                code = py_file.read()
+
+            untyped_tree = ast.parse(source=code, filename=path)
+            untyped_dump = astunparse.dump(untyped_tree)
+            tested_untyped_dump = typed_astunparse.dump(untyped_tree)
+
+            self.assertEqual(untyped_dump.splitlines(), tested_untyped_dump.splitlines())
+
+            typed_tree = typed_ast.ast35.parse(source=code, filename=path)
+            bad_typed_dump = astunparse.dump(typed_tree)
+
+            for annotate_fields in [True]:
+                for include_attributes in [False]:
+
+                    with self.assertRaises(TypeError):
+                        _ = typed_ast.ast35.dump(
+                            untyped_tree, annotate_fields=annotate_fields,
+                            include_attributes=include_attributes)
+
+                    typed_dump = typed_ast.ast35.dump(
+                        typed_tree, annotate_fields=annotate_fields,
+                        include_attributes=include_attributes)
+                    tested_typed_dump = _postprocess_dump(typed_astunparse.dump(
+                        typed_tree, annotate_fields=annotate_fields,
+                        include_attributes=include_attributes))
+
+                    self.assertNotEqual(untyped_dump, bad_typed_dump)
+                    self.assertNotEqual(typed_dump, bad_typed_dump)
+                    self.assertEqual(typed_dump, tested_typed_dump)
 
     def test_many_dump_roundtrips(self):
         """Are ASTs preserved after unparse(parse(...unparse(parse(dump(tree)))...))?"""

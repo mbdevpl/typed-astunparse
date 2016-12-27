@@ -37,10 +37,12 @@ def unparse(tree: typed_ast.ast35.AST):
     return stream.getvalue()
 
 
-def dump(tree: typed_ast.ast35.AST):
+def dump(tree: typed_ast.ast35.AST, annotate_fields: bool=True, include_attributes: bool=False):
     """Behave just like astunparse.dump(tree), but handle typed_ast.ast35-based trees."""
     stream = cStringIO()
-    Printer(file=stream).visit(tree)
+    Printer(
+        file=stream, annotate_fields=annotate_fields,
+        include_attributes=include_attributes).visit(tree)
     return stream.getvalue()
 
 __all__ = ['unparse', 'dump']

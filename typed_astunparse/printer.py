@@ -15,6 +15,9 @@
 
 """class: Printer"""
 
+import ast
+import sys
+
 import astunparse
 import typed_ast.ast35
 
@@ -22,6 +25,15 @@ import typed_ast.ast35
 class Printer(astunparse.Printer):
 
     """Partial rewrite of Printer from astunparse to handle typed_ast.ast35-based trees."""
+
+    def __init__(
+            self, file=sys.stdout, indent="  ", annotate_fields: bool=True,
+            include_attributes: bool=False):
+        super().__init__(file=file, indent=indent)
+        assert annotate_fields is True
+        assert include_attributes is False
+        self._annotate_fields = annotate_fields
+        self._include_attributes = include_attributes
 
     def generic_visit(self, node):
         """More or less a verbatim copy of astunparse.generic_visit()."""
@@ -42,7 +54,7 @@ class Printer(astunparse.Printer):
             attr, child = pair
             if len(children) > 1:
                 self.write("\n" + self.indent_with * self.indentation)
-            if isinstance(child, (typed_ast.ast35.AST, list)):
+            if isinstance(child, (ast.AST, typed_ast.ast35.AST, list)):
                 self.write(attr)
                 self.visit(child)
             else:
