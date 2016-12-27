@@ -82,7 +82,7 @@ EXAMPLES = {
             name='do_nothing',
             args=typed_ast.ast35.arguments([], None, [], [], None, []),
             body=[typed_ast.ast35.Pass()],
-            decorator_list=[typed_ast.ast35.Name(id='deco',ctx=typed_ast.ast35.Load())],
+            decorator_list=[typed_ast.ast35.Name(id='deco', ctx=typed_ast.ast35.Load())],
             returns=None, type_comment='() -> None'),
         'dump':
             "FunctionDef("
