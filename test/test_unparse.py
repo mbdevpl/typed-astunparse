@@ -32,7 +32,7 @@ class UnparseTests(unittest.TestCase):
     """Unit tests for unparse() function."""
 
     def test_unparse_examples(self):
-        """Are ASTs of examples unparsed correctly?"""
+        """Unparse ASTs of examples correctly."""
         for description, example in EXAMPLES.items():
             for mode in MODES:
                 if example['trees'][mode] is None:
@@ -43,7 +43,7 @@ class UnparseTests(unittest.TestCase):
                 self.assertEqual(code, example['code'], msg=(description, mode))
 
     def test_unparse_invalid_examples(self):
-        """Are ASTs of invalid examples raising errors as expected?"""
+        """Raise errors on ASTs of invalid examples as expected."""
         for description, example in INVALID_EXAMPLES.items():
             for mode in MODES:
                 if example['trees'][mode] is None:
@@ -57,7 +57,7 @@ class UnparseTests(unittest.TestCase):
                 #self.assertIn('invalid syntax', str(raised.exception), msg=(description, mode))
 
     def test_many_roundtrips(self):
-        """Are ASTs preserved when doing parse(unparse(parse(...unparse(parse(code))...)))?"""
+        """Prserve ASTs when doing parse(unparse(parse(...unparse(parse(code))...)))."""
         for description, example in EXAMPLES.items():
             for mode in MODES:
                 if example['trees'][mode] is None:
@@ -72,7 +72,7 @@ class UnparseTests(unittest.TestCase):
                     tree = typed_ast.ast35.parse(source=code, mode=mode)
 
     def test_files(self):
-        """Does Python stdlib remain the same after roundtrip parse-unparse?"""
+        """Keep Python stdlib tree the same after roundtrip parse-unparse."""
         for path in PATHS:
             with open(path, 'r') as py_file:
                 original_code = py_file.read()
@@ -84,7 +84,7 @@ class UnparseTests(unittest.TestCase):
             self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)
 
     def test_untyped_files(self):
-        """Is Python stdlib parsed using built-in ast package also unparsed correctly?"""
+        """Unparse Python stdlib correctly even if parsed using built-in ast package."""
         for path in PATHS:
             with open(path, 'r') as py_file:
                 original_code = py_file.read()

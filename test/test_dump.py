@@ -40,7 +40,7 @@ class DumpTests(unittest.TestCase):
     """Unit tests for dump() function."""
 
     def test_dump_examples(self):
-        """Are ASTs of examples printed correctly?"""
+        """Print ASTs of examples correctly."""
         for description, example in EXAMPLES.items():
             for mode in MODES:
                 if example['trees'][mode] is None:
@@ -85,7 +85,7 @@ class DumpTests(unittest.TestCase):
                     self.assertEqual(typed_dump, tested_typed_dump)
 
     def test_many_dump_roundtrips(self):
-        """Are ASTs preserved after unparse(parse(...unparse(parse(dump(tree)))...))?"""
+        """Preserve ASTs after unparse(parse(...unparse(parse(dump(tree)))...))."""
         for description, example in EXAMPLES.items():
             for mode in MODES:
                 if example['trees'][mode] is None:
