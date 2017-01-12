@@ -169,8 +169,8 @@ EXAMPLES = {
         'tree': typed_ast.ast35.For(
             typed_ast.ast35.Name('i', typed_ast.ast35.Store()),
             typed_ast.ast35.List([
-                typed_ast.ast35.Num(0), typed_ast.ast35.Num(4), typed_ast.ast35.Num(2),
-                typed_ast.ast35.Num(42)], typed_ast.ast35.Load()),
+                typed_ast.ast35.Num(0, 0), typed_ast.ast35.Num(4, 0), typed_ast.ast35.Num(2, 0),
+                typed_ast.ast35.Num(42, 0)], typed_ast.ast35.Load()),
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
                 [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []))],
@@ -181,7 +181,7 @@ EXAMPLES = {
         'dump':
             "For("
             "target=Name(id='i',ctx=Store()),"
-            "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load()),"
+            "iter=List(elts=[Num(n=0,contains_underscores=0),Num(n=4,contains_underscores=0),Num(n=2,contains_underscores=0),Num(n=42,contains_underscores=0)],ctx=Load()),"
             "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
             "args=[Name(id='i',ctx=Load())],keywords=[]))],"
             "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
@@ -192,8 +192,8 @@ EXAMPLES = {
         'tree': typed_ast.ast35.For(
             typed_ast.ast35.Name('i', typed_ast.ast35.Store()),
             typed_ast.ast35.List([
-                typed_ast.ast35.Num(0), typed_ast.ast35.Num(4), typed_ast.ast35.Num(2),
-                typed_ast.ast35.Num(42)], typed_ast.ast35.Load()),
+                typed_ast.ast35.Num(0, 0), typed_ast.ast35.Num(4, 0), typed_ast.ast35.Num(2, 0),
+                typed_ast.ast35.Num(42, 0)], typed_ast.ast35.Load()),
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
                 [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []))],
@@ -201,7 +201,7 @@ EXAMPLES = {
         'dump':
             "For("
             "target=Name(id='i',ctx=Store()),"
-            "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load()),"
+            "iter=List(elts=[Num(n=0,contains_underscores=0),Num(n=4,contains_underscores=0),Num(n=2,contains_underscores=0),Num(n=42,contains_underscores=0)],ctx=Load()),"
             "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
             "args=[Name(id='i',ctx=Load())],keywords=[]))],"
             "orelse=[],type_comment='int')"},
@@ -211,8 +211,8 @@ EXAMPLES = {
         'tree': typed_ast.ast35.For(
             typed_ast.ast35.Name('i', typed_ast.ast35.Store()),
             typed_ast.ast35.List([
-                typed_ast.ast35.Num(0), typed_ast.ast35.Num(4), typed_ast.ast35.Num(2),
-                typed_ast.ast35.Num(42)], typed_ast.ast35.Load()),
+                typed_ast.ast35.Num(0, 0), typed_ast.ast35.Num(4, 0), typed_ast.ast35.Num(2, 0),
+                typed_ast.ast35.Num(42, 0)], typed_ast.ast35.Load()),
             [typed_ast.ast35.Expr(typed_ast.ast35.Call(
                 typed_ast.ast35.Name('print', typed_ast.ast35.Load()),
                 [typed_ast.ast35.Name('i', typed_ast.ast35.Load())], []))],
@@ -223,7 +223,7 @@ EXAMPLES = {
         'dump':
             "For("
             "target=Name(id='i',ctx=Store()),"
-            "iter=List(elts=[Num(n=0),Num(n=4),Num(n=2),Num(n=42)],ctx=Load()),"
+            "iter=List(elts=[Num(n=0,contains_underscores=0),Num(n=4,contains_underscores=0),Num(n=2,contains_underscores=0),Num(n=42,contains_underscores=0)],ctx=Load()),"
             "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
             "args=[Name(id='i',ctx=Load())],keywords=[]))],"
             "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
@@ -362,10 +362,11 @@ EXAMPLES = {
         'is_expression': True,
         'tree': typed_ast.ast35.Call(
             func=typed_ast.ast35.Attribute(
-                value=typed_ast.ast35.Num(n=3), attr='__abs__', ctx=typed_ast.ast35.Load()),
+                value=typed_ast.ast35.Num(n=3, contains_underscores=0),
+                attr='__abs__', ctx=typed_ast.ast35.Load()),
             args=[], keywords=[]),
         'dump':
-            "Call(func=Attribute(value=Num(n=3),attr='__abs__',ctx=Load()),args=[],keywords=[])"}}
+            "Call(func=Attribute(value=Num(n=3,contains_underscores=0),attr='__abs__',ctx=Load()),args=[],keywords=[])"}}
 
 INVALID_EXAMPLES = {
     'chained assignment with type annotation': {

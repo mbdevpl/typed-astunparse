@@ -44,13 +44,13 @@ def classifiers() -> typing.List[str]:
     See: https://pypi.python.org/pypi?:action=list_classifiers
     """
     project_classifiers = [
-        'Development Status :: 1 - Planning',
+        'Development Status :: 2 - Pre-Alpha',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
-        'Operating System :: POSIX :: Linux',
+        'Operating System :: POSIX',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: Implementation :: CPython',
@@ -58,7 +58,6 @@ def classifiers() -> typing.List[str]:
         'Topic :: Scientific/Engineering',
         'Topic :: Software Development :: Code Generators',
         'Topic :: Software Development :: Compilers',
-        'Topic :: Software Development :: Interpreters',
         'Topic :: Software Development :: Pre-processors',
         'Topic :: Utilities'
         ]
