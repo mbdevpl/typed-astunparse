@@ -11,6 +11,10 @@ typed-astunparse
     :target: https://travis-ci.org/mbdevpl/typed-astunparse
     :alt: build status from Travis CI
 
+.. image:: https://ci.appveyor.com/api/projects/status/github/mbdevpl/typed-astunparse?svg=true
+    :target: https://ci.appveyor.com/project/mbdevpl/typed-astunparse
+    :alt: build status from AppVeyor
+
 .. image:: https://coveralls.io/repos/github/mbdevpl/typed-astunparse/badge.svg?branch=master
     :target: https://coveralls.io/github/mbdevpl/typed-astunparse?branch=master
     :alt: test coverage from Coveralls
@@ -63,8 +67,8 @@ where this module, *typed-astunparse*, comes in. It provides unparser for AST de
 requirements
 ------------
 
-This package is intended for Python 3.5 and later. It was tested on 64 bit Ubuntu, but it might work
-on other systems too.
+This package is intended for Python 3.5 and later. It is tested on Linux (Travis CI)
+and Windows (AppVeyor), but it might work on other systems too.
 
 typed-astunparse depends on:
 

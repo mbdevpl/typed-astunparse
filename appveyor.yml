@@ -1,0 +1,35 @@
+version: "{build}"
+
+environment:
+  matrix:
+    # all available versions: see http://www.appveyor.com/docs/installed-software#python
+    - PYTHON: "C:\\Python35"
+    - PYTHON: "C:\\Python35-x64"
+    #- PYTHON: "C:\\Python36" # waiting for typed_ast and astunparse support for Python 3.6
+    #- PYTHON: "C:\\Python36-x64"
+
+init:
+  - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+
+install:
+  - pip install -r test_requirements.txt
+  - python setup.py sdist
+  - python setup.py bdist_wheel
+  #- dir dist\*.zip /b/o:-d > temp.txt
+  #- set /p INSTALLEDFILE=<temp.txt
+  #- pip install -U --user dist\%INSTALLEDFILE%
+  #- pip uninstall typed_astunparse --yes
+  #- dir dist\*.whl /b/o:-d > temp.txt
+  #- set /p INSTALLEDFILE=<temp.txt
+  #- pip install -U --user dist\%INSTALLEDFILE%
+  #- pip uninstall typed_astunparse --yes
+
+build: off
+
+test_script:
+  - python -m unittest discover
+
+after_test:
+  - python -m pylint --output-format=colorized --unsafe-load-any-extension=y typed_astunparse test || true
+  - python -m coverage run --branch --include="typed_astunparse\*","test\*" -m unittest discover --verbose
+  - python -m coverage report --show-missing
