@@ -18,7 +18,7 @@
 import ast
 
 import astunparse
-from astunparse.unparser import interleave
+from astunparse.unparser import interleave #, INFSTR
 import typed_ast.ast35
 
 
@@ -351,6 +351,14 @@ class Unparser(astunparse.Unparser):
         self._write_type_comment(t.type_comment)
         self.dispatch(t.body)
         self.leave()
+
+    #def _Num(self, t):
+    #    if not hasattr(t, 'contains_underscores') or not t.contains_underscores:
+    #        super()._Num(t)
+    #        return
+    #    raise NotImplementedError()
+    #    repr_n = repr(t.n)
+    #    self.write(repr_n.replace("inf", INFSTR))
 
     def _Attribute(self, t):
         self.dispatch(t.value)
