@@ -73,7 +73,7 @@ class UnparseTests(unittest.TestCase):
     def test_files(self):
         """Keep Python stdlib tree the same after roundtrip parse-unparse."""
         for path in PATHS:
-            with open(path, 'r') as py_file:
+            with open(path, 'r', encoding='utf-8') as py_file:
                 original_code = py_file.read()
             tree = typed_ast.ast35.parse(source=original_code, filename=path)
             code = typed_astunparse.unparse(tree)
@@ -85,7 +85,7 @@ class UnparseTests(unittest.TestCase):
     def test_untyped_files(self):
         """Unparse Python stdlib correctly even if parsed using built-in ast package."""
         for path in PATHS:
-            with open(path, 'r') as py_file:
+            with open(path, 'r', encoding='utf-8') as py_file:
                 original_code = py_file.read()
             tree = ast.parse(source=original_code, filename=path)
             code = typed_astunparse.unparse(tree)

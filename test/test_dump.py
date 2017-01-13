@@ -53,7 +53,7 @@ class DumpTests(unittest.TestCase):
     def test_dump_files_comparison(self):
         """Print the same data as other existing modules."""
         for path in PATHS:
-            with open(path, 'r') as py_file:
+            with open(path, 'r', encoding='utf-8') as py_file:
                 code = py_file.read()
 
             untyped_tree = ast.parse(source=code, filename=path)
