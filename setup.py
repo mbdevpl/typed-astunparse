@@ -31,7 +31,10 @@ def setup() -> None:
 
     List of valid project classifiers: https://pypi.python.org/pypi?:action=list_classifiers
 
-    Entry points is a dictionary which might have the following key-value pair:
+    The extras_require is a dictionary which might have the following key-value pairs:
+    'some_feature': ['requirement1', 'requirement2'],
+
+    The entry_points is a dictionary which might have the following key-value pair:
     'console_scripts': ['script_name = package.subpackage:function']
     """
     name = 'typed-astunparse'
@@ -61,7 +64,7 @@ def setup() -> None:
         'Topic :: Utilities'
         ]
     keywords = ['ast', 'unparsing', 'pretty printing']
-    install_requires, extras_require = parse_requirements()
+    extras_require = {}
     entry_points = {}
     test_suite = 'test'
 
@@ -72,7 +75,7 @@ def setup() -> None:
         maintainer=author, maintainer_email=author_email,
         license=license_str, classifiers=classifiers, keywords=keywords,
         packages=find_packages(), package_dir={'': _SRC_DIR},
-        install_requires=install_requires, extras_require=extras_require,
+        install_requires=parse_requirements(), extras_require=extras_require,
         entry_points=entry_points, test_suite=test_suite
         )
 
@@ -106,28 +109,19 @@ def parse_readme(readme_path: str='README.rst', encoding: str='utf-8') -> str:
     return desc
 
 def parse_requirements(
-        requirements_path: str='requirements.txt') \
-        -> t.Tuple[t.List[str], t.Mapping[str, t.List[str]]]:
+        requirements_path: str='requirements.txt') -> t.List[str]:
     """Read contents of requirements.txt file and return data from its relevant lines.
 
     Only non-empty and non-comment lines are relevant.
     """
     requirements = []
-    #raw_extra_requirements = []
     with open(os.path.join(_HERE, requirements_path)) as reqs_file:
         for requirement in [line.strip() for line in reqs_file.read().splitlines()]:
             if not requirement or requirement.startswith('#'):
                 continue
-            #if ';' in requirement:
-            #    raw_extra_requirements.append(requirement)
-            #else:
             requirements.append(requirement)
 
-    extra_requirements = {}
-    #for raw_requirement in raw_extra_requirements:
-    #    raise NotImplementedError(raw_requirement)
-
-    return requirements, extra_requirements
+    return requirements
 
 def main() -> None:
     clean()

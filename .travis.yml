@@ -1,7 +1,19 @@
 sudo: false
 language: python
+os:
+  - linux
+#  - osx
 python:
-  - "3.5"
+  - 3.3
+  - 3.4
+  - 3.5
+  - 3.6
+matrix:
+  allow_failures:
+  - python: 3.3
+  - python: 3.4
+  - python: 3.6
+#  - osx
 
 before_install:
   - pip install -r test_requirements.txt

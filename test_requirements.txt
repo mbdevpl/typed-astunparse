@@ -1,4 +1,4 @@
 coverage
 pylint
-setuptools
+setuptools >= 20.5
 -rrequirements.txt
