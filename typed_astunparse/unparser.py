@@ -183,12 +183,14 @@ class Unparser(astunparse.Unparser):
 
     """
 
-    boolops = {typed_ast.ast35.And: 'and', typed_ast.ast35.Or: 'or', **astunparse.Unparser.boolops}
+    boolops = {typed_ast.ast35.And: 'and', typed_ast.ast35.Or: 'or'}
     """Mapping from boolean operation node to its string representation.
 
     This overrides of base class dict, because {ast.And: 'and', ast.Or: 'or'} obviously causes
     errors.
     """
+
+    boolops.update(astunparse.Unparser.boolops)
 
     def _write_string_or_dispatch(self, value):
         """If value is str, write it. Otherwise, dispatch it."""
