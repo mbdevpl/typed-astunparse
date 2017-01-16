@@ -15,35 +15,34 @@
 
 """This is setup.py file for typed-astunparse."""
 
+import importlib
 import os
 import shutil
 import sys
-import typing
+import typing as t
 
 import setuptools
 
-from typed_astunparse._version import VERSION as version
-
-_HERE = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 _SRC_DIR = '.'
+"""Set directory with source code, relative to the setup.py file location."""
 
-def clean():
-    """Delete "build" directory if it exists."""
-    if os.path.isdir('build'):
-        shutil.rmtree('build')
+def setup() -> None:
+    """Run setuptools.setup() with correct arguments.
 
-def long_description() -> str:
-    """Read contents of README.rst file and return them."""
-    with open(os.path.join(_HERE, 'README.rst'), encoding='utf-8') as readme_file:
-        desc = readme_file.read()
-    return desc
+    List of valid project classifiers: https://pypi.python.org/pypi?:action=list_classifiers
 
-def classifiers() -> typing.List[str]:
-    """Project classifiers.
-
-    See: https://pypi.python.org/pypi?:action=list_classifiers
+    Entry points is a dictionary which might have the following key-value pair:
+    'console_scripts': ['script_name = package.subpackage:function']
     """
-    project_classifiers = [
+    name = 'typed-astunparse'
+    version = find_version(name.replace('-', '_'))
+    description = 'typed-astunparse is to typed-ast as astunparse is to ast'
+    url = 'http://mbdev.pl/'
+    download_url = 'https://github.com/mbdevpl/typed-astunparse'
+    author = 'Mateusz Bysiek'
+    author_email = 'mb@mbdev.pl'
+    license_str = 'Apache License 2.0'
+    classifiers = [
         'Development Status :: 2 - Pre-Alpha',
         'Environment :: Console',
         'Intended Audience :: Developers',
@@ -61,46 +60,78 @@ def classifiers() -> typing.List[str]:
         'Topic :: Software Development :: Pre-processors',
         'Topic :: Utilities'
         ]
-    return project_classifiers
-
-def packages() -> typing.List[str]:
-    """Find packages to pack."""
-    exclude = ['test', 'test.*'] if 'bdist_wheel' in sys.argv else ()
-    packages_list = setuptools.find_packages(_SRC_DIR, exclude=exclude)
-    return packages_list
-
-def install_requires() -> typing.List[str]:
-    """Read contents of requirements.txt file and return its relevant lines.
-
-    Only non-empty and non-comment lines are relevant.
-    """
-    with open(os.path.join(_HERE, 'requirements.txt')) as reqs_file:
-        reqs = [l for l in reqs_file.read().splitlines() if l and not l.strip().startswith('#')]
-    return reqs
-
-def setup():
-    """Run setuptools.setup() with correct arguments."""
-    name = 'typed-astunparse'
-    description = 'typed-astunparse is to typed-ast as astunparse is to ast'
-    url = 'http://mbdev.pl/'
-    download_url = 'https://github.com/mbdevpl/typed-astunparse'
-    author = 'Mateusz Bysiek'
-    author_email = 'mb@mbdev.pl'
-    license_str = 'Apache License 2.0'
     keywords = ['ast', 'unparsing', 'pretty printing']
-    package_dir = {'': _SRC_DIR}
-    entry_points = {
-        }
+    install_requires, extras_require = parse_requirements()
+    entry_points = {}
     test_suite = 'test'
 
     setuptools.setup(
-        name=name, version=version, description=description, long_description=long_description(),
-        url=url, download_url=download_url, author=author, author_email=author_email,
-        maintainer=author, maintainer_email=author_email, license=license_str,
-        classifiers=classifiers(), keywords=keywords, packages=packages(), package_dir=package_dir,
-        install_requires=install_requires(), entry_points=entry_points, test_suite=test_suite
+        name=name, version=version, description=description,
+        long_description=parse_readme(), url=url, download_url=download_url,
+        author=author, author_email=author_email,
+        maintainer=author, maintainer_email=author_email,
+        license=license_str, classifiers=classifiers, keywords=keywords,
+        packages=find_packages(), package_dir={'': _SRC_DIR},
+        install_requires=install_requires, extras_require=extras_require,
+        entry_points=entry_points, test_suite=test_suite
         )
 
-if __name__ == '__main__':
+# below code is generic boilerplate and normally should not be changed
+
+_HERE = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
+
+def clean(build_directory_name: str='build') -> None:
+    """Recursively delete build directory (by default "build") if it exists."""
+    build_directory_path = os.path.join(_HERE, build_directory_name)
+    if os.path.isdir(build_directory_path):
+        shutil.rmtree(build_directory_path)
+
+def find_version(
+        package_name: str, version_module_name: str='_version',
+        version_variable_name: str='VERSION') -> str:
+    """Simulate behaviour of "from package_name._version import VERSION", and return VERSION."""
+    version_module = importlib.import_module('{}.{}'.format(package_name, version_module_name))
+    return getattr(version_module, version_variable_name)
+
+def find_packages() -> t.List[str]:
+    """Find packages to pack."""
+    exclude = ['test', 'test.*'] if 'bdist_wheel' in sys.argv else []
+    packages_list = setuptools.find_packages(_SRC_DIR, exclude=exclude)
+    return packages_list
+
+def parse_readme(readme_path: str='README.rst', encoding: str='utf-8') -> str:
+    """Read contents of readme file (by default "README.rst") and return them."""
+    with open(os.path.join(_HERE, readme_path), encoding=encoding) as readme_file:
+        desc = readme_file.read()
+    return desc
+
+def parse_requirements(
+        requirements_path: str='requirements.txt') \
+        -> t.Tuple[t.List[str], t.Mapping[str, t.List[str]]]:
+    """Read contents of requirements.txt file and return data from its relevant lines.
+
+    Only non-empty and non-comment lines are relevant.
+    """
+    requirements = []
+    #raw_extra_requirements = []
+    with open(os.path.join(_HERE, requirements_path)) as reqs_file:
+        for requirement in [line.strip() for line in reqs_file.read().splitlines()]:
+            if not requirement or requirement.startswith('#'):
+                continue
+            #if ';' in requirement:
+            #    raw_extra_requirements.append(requirement)
+            #else:
+            requirements.append(requirement)
+
+    extra_requirements = {}
+    #for raw_requirement in raw_extra_requirements:
+    #    raise NotImplementedError(raw_requirement)
+
+    return requirements, extra_requirements
+
+def main() -> None:
     clean()
     setup()
+
+if __name__ == '__main__':
+    main()
