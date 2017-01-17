@@ -66,7 +66,9 @@ class DumpTests(unittest.TestCase):
             bad_typed_dump = astunparse.dump(typed_tree)
 
             for annotate_fields in [True, False]:
-                for include_attributes in [False]:
+                for include_attributes in [False, True]:
+                    if include_attributes and not annotate_fields:
+                        continue # behaviour differs from typed_ast
 
                     with self.assertRaises(TypeError):
                         _ = typed_ast.ast35.dump(
@@ -80,6 +82,11 @@ class DumpTests(unittest.TestCase):
                         typed_tree, annotate_fields=annotate_fields,
                         include_attributes=include_attributes))
 
+                    if include_attributes:
+                        # because of https://github.com/python/typed_ast/issues/23
+                        self.assertEqual(
+                            typed_dump.replace(' ', ''), tested_typed_dump.replace(' ', ''))
+                        continue
                     self.assertNotEqual(untyped_dump, bad_typed_dump)
                     self.assertNotEqual(typed_dump, bad_typed_dump)
                     self.assertEqual(typed_dump, tested_typed_dump)

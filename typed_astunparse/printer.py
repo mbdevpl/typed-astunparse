@@ -31,7 +31,6 @@ class Printer(astunparse.Printer):
             include_attributes: bool=False):
         """Initialize Printer instance."""
         super().__init__(file=file, indent=indent)
-        assert include_attributes is False
         self._annotate_fields = annotate_fields
         self._include_attributes = include_attributes
 
@@ -46,6 +45,10 @@ class Printer(astunparse.Printer):
             children = [
                 (name + "=" if self._annotate_fields else '', value)
                 for name, value in typed_ast.ast35.iter_fields(node)]
+            if self._include_attributes and node._attributes:
+                children += [
+                    (attr + '=' if self._annotate_fields else '', getattr(node, attr))
+                    for attr in node._attributes]
 
         return nodestart, children, nodeend
 
