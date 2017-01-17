@@ -16,6 +16,7 @@
 """Tested function: unparse."""
 
 import ast
+#import difflib
 import logging
 import unittest
 
@@ -72,6 +73,7 @@ class UnparseTests(unittest.TestCase):
 
     def test_files(self):
         """Keep Python stdlib tree the same after roundtrip parse-unparse."""
+        #differ = difflib.Differ()
         for path in PATHS:
             with open(path, 'r', encoding='utf-8') as py_file:
                 original_code = py_file.read()
@@ -80,7 +82,25 @@ class UnparseTests(unittest.TestCase):
             roundtrip_tree = typed_ast.ast35.parse(source=code)
             tree_dump = typed_ast.ast35.dump(tree, include_attributes=False)
             roundtrip_tree_dump = typed_ast.ast35.dump(roundtrip_tree, include_attributes=False)
+            '''
+            if tree_dump != roundtrip_tree_dump:
+                tree_diff = [
+                    line for line in differ.compare(tree_dump, roundtrip_tree_dump)
+                    if not line.startswith('  ')]
+                code_diff = [
+                    line for line in differ.compare(
+                        original_code.splitlines(keepends=True), code.splitlines(keepends=True))
+                    if not line.startswith('  ')]
+                logging.warning(
+                    '"%s" changed after roundtrip: tree by %i character(s), code by %i line(s)',
+                    path, len(tree_diff), len(code_diff))
+                if len(tree_diff) > 0:
+                    logging.warning('tree diff for "%s":\n%s', path, '\n'.join(tree_diff))
+                if len(code_diff) > 0:
+                    logging.warning('code diff for "%s":\n%s', path, ''.join(code_diff))
+            '''
             self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)
+            #self.assertLessEqual(distance(code, original_code), 100, msg=(path, mode))
 
     def test_untyped_files(self):
         """Unparse Python stdlib correctly even if parsed using built-in ast package."""
