@@ -67,14 +67,14 @@ where this module, *typed-astunparse*, comes in. It provides unparser for AST de
 requirements
 ------------
 
-This package is intended for Python 3.5 and later. It is tested on Linux (Travis CI)
+This package is intended for Python 3.3 and later. It is tested on Linux (Travis CI)
 and Windows (AppVeyor), but it might work on other systems too.
 
-typed-astunparse depends on:
+*typed-astunparse* mainly depends on:
 
--  astunparse
+-  *astunparse*
 
--  typed-ast
+-  *typed-ast*
 
 
 ------------

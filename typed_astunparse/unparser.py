@@ -209,6 +209,31 @@ class Unparser(astunparse.Unparser):
         self.write(" # type: ")
         self._write_string_or_dispatch(type_comment)
 
+    def _ClassDef(self, t):
+        if isinstance(t, ast.ClassDef):
+            super()._ClassDef(t)
+            return
+
+        self.write("\n")
+        for deco in t.decorator_list:
+            self.fill("@")
+            self.dispatch(deco)
+        self.fill("class "+t.name)
+        self.write("(")
+        comma = False
+        for e in t.bases:
+            if comma: self.write(", ")
+            else: comma = True
+            self.dispatch(e)
+        for e in t.keywords:
+            if comma: self.write(", ")
+            else: comma = True
+            self.dispatch(e)
+        self.write(")")
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
     def _generic_FunctionDef(self, t, async=False):
         """Unparse FunctionDef or AsyncFunctionDef node.
 
@@ -372,3 +397,21 @@ class Unparser(astunparse.Unparser):
             self.write(" ")
         self.write(".")
         self.write(t.attr)
+
+    def _Call(self, t):
+        if isinstance(t, ast.Call):
+            super()._Call(t)
+            return
+
+        self.dispatch(t.func)
+        self.write("(")
+        comma = False
+        for e in t.args:
+            if comma: self.write(", ")
+            else: comma = True
+            self.dispatch(e)
+        for e in t.keywords:
+            if comma: self.write(", ")
+            else: comma = True
+            self.dispatch(e)
+        self.write(")")
