@@ -158,4 +158,4 @@ links
 
    https://pypi.python.org/pypi/typed-ast
 
-   https://github.com/dropbox/typed_ast
+   https://github.com/python/typed_ast
