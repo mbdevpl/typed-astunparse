@@ -1,4 +1,4 @@
-# Copyright 2016  Mateusz Bysiek  http://mbdev.pl/
+# Copyright 2016-2017  Mateusz Bysiek  http://mbdev.pl/
 # This file is part of typed-astunparse.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@ functions: unparse, dump
 import ast
 import typing as t
 
-import typed_ast.ast35
+import typed_ast.ast3
 from six.moves import cStringIO
 
 from .unparser import Unparser
@@ -31,11 +31,11 @@ from ._version import VERSION
 __version__ = VERSION
 
 
-def unparse(tree: t.Union[ast.AST, typed_ast.ast35.AST]) -> str:
+def unparse(tree: t.Union[ast.AST, typed_ast.ast3.AST]) -> str:
     """Unparse the abstract syntax tree into a str.
 
     Behave just like astunparse.unparse(tree), but handle trees which are typed, untyped, or mixed.
-    In other words, a mixture of ast.AST-based and typed_ast.ast35-based nodes will be unparsed.
+    In other words, a mixture of ast.AST-based and typed_ast.ast3-based nodes will be unparsed.
     """
     stream = cStringIO()
     Unparser(tree, file=stream)
@@ -43,9 +43,9 @@ def unparse(tree: t.Union[ast.AST, typed_ast.ast35.AST]) -> str:
 
 
 def dump(
-        tree: t.Union[ast.AST, typed_ast.ast35.AST], annotate_fields: bool=True,
+        tree: t.Union[ast.AST, typed_ast.ast3.AST], annotate_fields: bool=True,
         include_attributes: bool=False) -> str:
-    """Behave just like astunparse.dump(tree), but handle typed_ast.ast35-based trees."""
+    """Behave just like astunparse.dump(tree), but handle typed_ast.ast3-based trees."""
     stream = cStringIO()
     Printer(
         file=stream, annotate_fields=annotate_fields,

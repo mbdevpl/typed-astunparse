@@ -1,4 +1,4 @@
-# Copyright 2016  Mateusz Bysiek  http://mbdev.pl/
+# Copyright 2016-2017  Mateusz Bysiek  http://mbdev.pl/
 # This file is part of typed-astunparse.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ import logging
 import unittest
 
 import astunparse
-import typed_ast.ast35
+import typed_ast.ast3
 import typed_astunparse
 
 from .examples import MODES, EXAMPLES, PATHS
@@ -62,7 +62,7 @@ class DumpTests(unittest.TestCase):
 
             self.assertEqual(untyped_dump.splitlines(), tested_untyped_dump.splitlines())
 
-            typed_tree = typed_ast.ast35.parse(source=code, filename=path)
+            typed_tree = typed_ast.ast3.parse(source=code, filename=path)
             bad_typed_dump = astunparse.dump(typed_tree)
 
             for annotate_fields in [True, False]:
@@ -71,11 +71,11 @@ class DumpTests(unittest.TestCase):
                         continue # behaviour differs from typed_ast
 
                     with self.assertRaises(TypeError):
-                        _ = typed_ast.ast35.dump(
+                        _ = typed_ast.ast3.dump(
                             untyped_tree, annotate_fields=annotate_fields,
                             include_attributes=include_attributes)
 
-                    typed_dump = typed_ast.ast35.dump(
+                    typed_dump = typed_ast.ast3.dump(
                         typed_tree, annotate_fields=annotate_fields,
                         include_attributes=include_attributes)
                     tested_typed_dump = _postprocess_dump(typed_astunparse.dump(
@@ -100,11 +100,11 @@ class DumpTests(unittest.TestCase):
 
                 dump = typed_astunparse.dump(example['trees'][mode])
                 for _ in range(4):
-                    tree = typed_ast.ast35.parse(source=dump, mode=mode)
+                    tree = typed_ast.ast3.parse(source=dump, mode=mode)
                     dump = typed_astunparse.unparse(tree)
                     _LOG.debug('%s', dump)
                     clean_dump = dump.replace('\n', '').replace(' ', '')
                     self.assertEqual(clean_dump, example['dumps'][mode], msg=(description, mode))
                 # TODO: use tree equality comparison below
-                #tree = typed_ast.ast35.parse(source=dump, mode=mode)
+                #tree = typed_ast.ast3.parse(source=dump, mode=mode)
                 #self.assertTrue(typed_astunparse.equal(tree, example['trees'][mode]))

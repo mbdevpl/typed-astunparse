@@ -1,4 +1,4 @@
-# Copyright 2016  Mateusz Bysiek  http://mbdev.pl/
+# Copyright 2016-2017  Mateusz Bysiek  http://mbdev.pl/
 # This file is part of typed-astunparse.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,7 @@ import ast
 import logging
 import unittest
 
-import typed_ast.ast35
+import typed_ast.ast3
 import typed_astunparse
 
 from .examples import MODES, EXAMPLES, INVALID_EXAMPLES, PATHS
@@ -53,7 +53,7 @@ class UnparseTests(unittest.TestCase):
                 self.assertIn('PEP 526', str(raised.exception), msg=(description, mode))
 
                 with self.assertRaises(SyntaxError, msg=(description, mode)):
-                    typed_ast.ast35.parse(source=example['code'], mode=mode)
+                    typed_ast.ast3.parse(source=example['code'], mode=mode)
 
     def test_many_roundtrips(self):
         """Prserve ASTs when doing parse(unparse(parse(...unparse(parse(code))...)))."""
@@ -68,18 +68,21 @@ class UnparseTests(unittest.TestCase):
                     _LOG.debug('%s', code)
                     clean_code = code.strip()
                     self.assertEqual(clean_code, example['code'], msg=(description, mode))
-                    tree = typed_ast.ast35.parse(source=code, mode=mode)
+                    tree = typed_ast.ast3.parse(source=code, mode=mode)
 
     def test_files(self):
         """Keep Python stdlib tree the same after roundtrip parse-unparse."""
         for path in PATHS:
             with open(path, 'r', encoding='utf-8') as py_file:
                 original_code = py_file.read()
-            tree = typed_ast.ast35.parse(source=original_code, filename=path)
+            tree = typed_ast.ast3.parse(source=original_code, filename=path)
             code = typed_astunparse.unparse(tree)
-            roundtrip_tree = typed_ast.ast35.parse(source=code)
-            tree_dump = typed_ast.ast35.dump(tree, include_attributes=False)
-            roundtrip_tree_dump = typed_ast.ast35.dump(roundtrip_tree, include_attributes=False)
+            try:
+                roundtrip_tree = typed_ast.ast3.parse(source=code)
+            except SyntaxError as err:
+                self.fail(msg='bad syntax after unparsing "{}"\n{}'.format(path, err))
+            tree_dump = typed_ast.ast3.dump(tree, include_attributes=False)
+            roundtrip_tree_dump = typed_ast.ast3.dump(roundtrip_tree, include_attributes=False)
             self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)
 
     def test_untyped_files(self):

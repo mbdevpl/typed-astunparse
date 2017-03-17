@@ -1,4 +1,4 @@
-# Copyright 2016  Mateusz Bysiek  http://mbdev.pl/
+# Copyright 2016-2017  Mateusz Bysiek  http://mbdev.pl/
 # This file is part of typed-astunparse.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,12 +19,12 @@ import ast
 import sys
 
 import astunparse
-import typed_ast.ast35
+import typed_ast.ast3
 
 
 class Printer(astunparse.Printer):
 
-    """Partial rewrite of Printer from astunparse to handle typed_ast.ast35-based trees."""
+    """Partial rewrite of Printer from astunparse to handle typed_ast.ast3-based trees."""
 
     def __init__(
             self, file=sys.stdout, indent="  ", annotate_fields: bool=True,
@@ -44,7 +44,7 @@ class Printer(astunparse.Printer):
             nodeend = ")"
             children = [
                 (name + "=" if self._annotate_fields else '', value)
-                for name, value in typed_ast.ast35.iter_fields(node)]
+                for name, value in typed_ast.ast3.iter_fields(node)]
             if self._include_attributes and node._attributes:
                 children += [
                     (attr + '=' if self._annotate_fields else '', getattr(node, attr))
@@ -55,7 +55,7 @@ class Printer(astunparse.Printer):
     def generic_visit(self, node):
         """Print the syntax tree without unparsing it.
 
-        Merge of astunparse.Printer.generic_visit() and typed_ast.ast35.dump().
+        Merge of astunparse.Printer.generic_visit() and typed_ast.ast3.dump().
         """
         nodestart, children, nodeend = self._prepare_for_print(node)
 
@@ -67,7 +67,7 @@ class Printer(astunparse.Printer):
             attr, child = pair
             if len(children) > 1:
                 self.write("\n" + self.indent_with * self.indentation)
-            if isinstance(child, (ast.AST, typed_ast.ast35.AST, list)):
+            if isinstance(child, (ast.AST, typed_ast.ast3.AST, list)):
                 self.write(attr)
                 self.visit(child)
             else:
