@@ -3,10 +3,16 @@ version: "{build}"
 environment:
   matrix:
     # all available versions: see http://www.appveyor.com/docs/installed-software#python
+    #- PYTHON: "C:\\Python33" # typed-ast doesn't build
+    #- PYTHON: "C:\\Python33-x64" # typed-ast doesn't build
+    #- PYTHON: "C:\\Python34" # typed-ast doesn't build
+    #- PYTHON: "C:\\Python34-x64" # typed-ast doesn't build
     - PYTHON: "C:\\Python35"
     - PYTHON: "C:\\Python35-x64"
-    #- PYTHON: "C:\\Python36" # waiting for typed_ast and astunparse support for Python 3.6
-    #- PYTHON: "C:\\Python36-x64"
+    - PYTHON: "C:\\Python36"
+    - PYTHON: "C:\\Python36-x64"
+    #- PYTHON: "C:\\Python37"
+    #- PYTHON: "C:\\Python37-x64"
 
 init:
   - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
@@ -18,11 +24,11 @@ install:
   #- dir dist\*.zip /b/o:-d > temp.txt
   #- set /p INSTALLEDFILE=<temp.txt
   #- pip install -U --user dist\%INSTALLEDFILE%
-  #- pip uninstall typed_astunparse --yes
+  #- pip uninstall --yes typed_astunparse
   #- dir dist\*.whl /b/o:-d > temp.txt
   #- set /p INSTALLEDFILE=<temp.txt
   #- pip install -U --user dist\%INSTALLEDFILE%
-  #- pip uninstall typed_astunparse --yes
+  #- pip uninstall --yes typed_astunparse
 
 build: off
 

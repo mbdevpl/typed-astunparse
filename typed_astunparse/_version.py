@@ -1,4 +1,4 @@
-# Copyright 2016  Mateusz Bysiek  http://mbdev.pl/
+# Copyright 2016-2017  Mateusz Bysiek  http://mbdev.pl/
 # This file is part of typed-astunparse.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,4 +15,4 @@
 
 """This file defines the version of "typed_astunparse" package."""
 
-VERSION = '1.0.2'
+VERSION = '2.0.0'

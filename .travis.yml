@@ -8,10 +8,10 @@ python:
   - 3.4
   - 3.5
   - 3.6
+  #- 3.7
 matrix:
   allow_failures:
-  - python: 3.6
-#  - osx
+  #- python: 3.7
 
 before_install:
   - pip install -r test_requirements.txt
@@ -21,9 +21,9 @@ before_install:
 
 install:
   - ls -1tr dist/*tar.gz | tail -n 1 | xargs pip install
-  - pip uninstall typed_astunparse --yes
+  - pip uninstall --yes typed_astunparse
   - ls -1tr dist/*.whl | tail -n 1 | xargs pip install
-  - pip uninstall typed_astunparse --yes
+  - pip uninstall --yes typed_astunparse
 
 script:
   - python -m unittest discover
