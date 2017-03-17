@@ -19,6 +19,7 @@ import ast
 
 import astunparse
 from astunparse.unparser import interleave #, INFSTR
+from six.moves import cStringIO
 import typed_ast.ast3
 
 
@@ -393,6 +394,36 @@ class Unparser(astunparse.Unparser):
         self._write_type_comment(t.type_comment)
         self.dispatch(t.body)
         self.leave()
+
+    def _FormattedValue(self, t):
+        self.write("{")
+        self.dispatch(t.value)
+        if t.conversion is not None and t.conversion != -1:
+            self.write("!")
+            self.write(self.format_conversions[t.conversion])
+        if t.format_spec is not None:
+            self.write(":")
+            if isinstance(t.format_spec, ast.Str) or isinstance(t.format_spec, typed_ast.ast3.Str):
+                self.write(t.format_spec.s)
+            else:
+                self.dispatch(t.format_spec)
+        self.write("}")
+
+    def _JoinedStr(self, t):
+        self.write("f")
+        strings = []
+        for value in t.values:
+            if isinstance(value, ast.Str) or isinstance(value, typed_ast.ast3.Str):
+                strings.append(value.s)
+                continue
+            unparser = type(self)(value, cStringIO())
+            s = unparser.f.getvalue().rstrip()
+            for delimiter in ['"""', "'''", '"', "'"]:
+                if s.startswith(delimiter) and s.endswith(delimiter):
+                    s = s[len(delimiter):-len(delimiter)]
+                    break
+            strings.append(s)
+        self.write(repr(''.join(strings)))
 
     #def _Num(self, t):
     #    if not hasattr(t, 'contains_underscores') or not t.contains_underscores:

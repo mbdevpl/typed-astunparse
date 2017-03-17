@@ -83,7 +83,7 @@ For simplest installation use :bash:`pip`:
 
 .. code:: bash
 
-    pip3.5 install typed-astunparse
+    pip install typed-astunparse
 
 You can also build your own version:
 
@@ -91,9 +91,9 @@ You can also build your own version:
 
     git clone https://github.com/mbdevpl/typed-astunparse
     cd typed-astunparse
-    python3.5 -m unittest discover # make sure the tests pass
-    python3.5 setup.py bdist_wheel
-    ls -1tr dist/*.whl | tail -n 1 | xargs pip3.5 install
+    python -m unittest discover # make sure the tests pass
+    python setup.py bdist_wheel
+    ls -1tr dist/*.whl | tail -n 1 | xargs pip install
 
 
 -----
