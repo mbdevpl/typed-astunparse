@@ -13,19 +13,24 @@ matrix:
   allow_failures:
 #    - python: 3.7
 
+env:
+  global:
+    - secure: vKDY4PpUubW9dlFrBwXqB5GPv8btDtYq/qXxdxgQF9nj4ADT3esU1SUHbHJ0MHUTgrNm3S/OsYhlRzvV4AagduUuXKQIPXnJS8OT9R1QOpP5tKIUpz/T/MQeRaCowX9MoOJk9Fnb1Qd2yaghhQ4BIOF1+gDUcL8XVne0o1kK76p4+E0H1vm91Ng6MkMohewtGD31xw1k2rNNFsxLm7DXYo3s0XWI+UuWFtN6bcJhC4ZyXCSkX6QPASNoh/1c7Bqil33w6TMOyxxaIYwhp57DnUGtutGOMag9uEcRHfMl/pQZpagcbSIfe4CQ9UoNDfQJOn0+2KjWLJfyZEgGp4IFbrU/CMC+wRkGOXnhexPg4+l858xpFFl4fRIBDw4piJDtF/1h6dumkLFLHjKKGHKSL6oKlloKptOdclaAk3yn4oUUdL9K6YJ7CMv3F1mfc6QQW2QGNo+x6zYFk0TubeVMRmw77od/G+Eo6mfdg95Hk/wjstRpZgCuFGB24rS9NSOy0GLi+i9EWc2Zwm3/b1N91jXnzum7pV8EJtJVqJNdwQmjMxJ/aNHVQmXxlfIFEL2SS3lwiLitRWADPnUh4G6QICYMoDhpTlVEPt2tVs0B8R+Vm0cXrAJs9hQaEcG9TLeLVRB3X2HFDFz9cPVmpCGahVs9sFYJISqBeUMaAvtE/w0=
+
 before_install:
   - pip install -r test_requirements.txt
   - pip install coveralls
-  - python setup.py sdist
-  - python setup.py bdist_wheel
+#  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
-install:
-  - ls -1tr dist/*tar.gz | tail -n 1 | xargs pip install
-  - pip uninstall --yes typed_astunparse
-  - ls -1tr dist/*.whl | tail -n 1 | xargs pip install
-  - pip uninstall --yes typed_astunparse
+#install:
 
 script:
+  - python setup.py sdist
+  - ls -1tr dist/*tar.gz | tail -n 1 | xargs pip install
+  - pip uninstall --yes typed_astunparse
+  - python setup.py bdist_wheel
+  - ls -1tr dist/*.whl | tail -n 1 | xargs pip install
+  - pip uninstall --yes typed_astunparse
   - python -m unittest discover
 
 after_success:
@@ -33,6 +38,17 @@ after_success:
   - python -m coverage run --branch --include="typed_astunparse/*","test/*" -m unittest discover --verbose
   - python -m coverage report --show-missing
   - coveralls
+
+addons:
+  coverity_scan:
+    project:
+      name: "mbdevpl/typed-astunparse"
+      description: "Build submitted via Travis CI"
+    notification_email: mb@mbdev.pl
+#    build_command_prepend: ""
+#    build_command: "ls -1tr dist/*tar.gz | tail -n 1 | xargs pip install"
+    branch_pattern: devel
+
 notifications:
   slack:
     secure: vlXI51/0L3jPt316tLvXxSgGQhlQYSxrVd0bHRYCW4iMQgxcURAlzydUO6+KJsnGQNd1wNehkIf8RMGuh7bX7siTBtRkrFdceGu2Mp69CVcX2wfZmTOvV6x3nyOUhFjDlWeaEpVg+kR2qmVSC+tJ6LLfIVRjPbcY+x/O4ubH79N1YYb6/ruqB2YK7ArY7yu+g6DcmYvb9xKMlG6KKQlAxoFywhLWkmReIvLH+mMcO+JUqez7HotMaVH8H6uwiA8NEX1FOeo1h7uXiqvtnxQcrWMZ3E/y7/W/BQEpfiy1JFGwInUN7Hs+uwevBtQx7q1/6EpTtP1xEFHKzGv/KTR5LGdeZTAw4KyL94Gifh2/+dTXG7jA9Ib4494JGduCPwTD5rbYQCgIu5fooCgJho+GJcShDNFrTwZ4AyCwPl3bpTgdUahqsM4kpp+dDfDXLiPO81ZRYFUM6h1VMM+KFNC/gLgnpt8Kz1JNPhPlBvlKu4rhFA7ULKzk0uKwS85U88+XhH3zzKi5jSDM9ejHKyNQFrHuIdkTjc+CGrc1U4/r3GlPFTjcJ0iVEftYwkTRYjAAHC/CUTsTYv5HKEY/eLYRH3R+el0p6BX9l2BIMTfJy6WXD8oyARN37ydRvkPxa1vQifG1MebMx0HxZseVcBfDOzvH9RLt5o6wMwnWkiHlm24=
