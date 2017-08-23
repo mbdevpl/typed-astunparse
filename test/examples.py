@@ -48,7 +48,8 @@ EXAMPLES = {
         'tree': typed_ast.ast3.FunctionDef(
             'negation',
             typed_ast.ast3.arguments(
-                [typed_ast.ast3.arg('arg', typed_ast.ast3.Name('bool', typed_ast.ast3.Load()), None)],
+                [typed_ast.ast3.arg(
+                    'arg', typed_ast.ast3.Name('bool', typed_ast.ast3.Load()), None)],
                 None, [], [], None, []),
             [typed_ast.ast3.Return(typed_ast.ast3.UnaryOp(
                 typed_ast.ast3.Not(), typed_ast.ast3.Name('arg', typed_ast.ast3.Load())))],

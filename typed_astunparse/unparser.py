@@ -18,13 +18,12 @@
 import ast
 
 import astunparse
-from astunparse.unparser import interleave #, INFSTR
+from astunparse.unparser import interleave
 from six.moves import cStringIO
 import typed_ast.ast3
 
 
 class Unparser(astunparse.Unparser):
-
     """Partial rewrite of Unparser from astunparse to handle typed_ast.ast3-based trees.
 
     The unparser aims at compatibility with native AST, as well as typed AST.
@@ -234,16 +233,20 @@ class Unparser(astunparse.Unparser):
         for deco in t.decorator_list:
             self.fill("@")
             self.dispatch(deco)
-        self.fill("class "+t.name)
+        self.fill("class " + t.name)
         self.write("(")
         comma = False
         for e in t.bases:
-            if comma: self.write(", ")
-            else: comma = True
+            if comma:
+                self.write(", ")
+            else:
+                comma = True
             self.dispatch(e)
         for e in t.keywords:
-            if comma: self.write(", ")
-            else: comma = True
+            if comma:
+                self.write(", ")
+            else:
+                comma = True
             self.dispatch(e)
         self.write(")")
         self.enter()
@@ -425,14 +428,6 @@ class Unparser(astunparse.Unparser):
             strings.append(s)
         self.write(repr(''.join(strings)))
 
-    #def _Num(self, t):
-    #    if not hasattr(t, 'contains_underscores') or not t.contains_underscores:
-    #        super()._Num(t)
-    #        return
-    #    raise NotImplementedError()
-    #    repr_n = repr(t.n)
-    #    self.write(repr_n.replace("inf", INFSTR))
-
     def _Attribute(self, t):
         self.dispatch(t.value)
         # Special case: 3.__abs__() is a syntax error, so if t.value
@@ -453,11 +448,15 @@ class Unparser(astunparse.Unparser):
         self.write("(")
         comma = False
         for e in t.args:
-            if comma: self.write(", ")
-            else: comma = True
+            if comma:
+                self.write(", ")
+            else:
+                comma = True
             self.dispatch(e)
         for e in t.keywords:
-            if comma: self.write(", ")
-            else: comma = True
+            if comma:
+                self.write(", ")
+            else:
+                comma = True
             self.dispatch(e)
         self.write(")")

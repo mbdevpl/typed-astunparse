@@ -36,7 +36,6 @@ def _postprocess_dump(tested_typed_dump):
 
 
 class DumpTests(unittest.TestCase):
-
     """Unit tests for dump() function."""
 
     def test_dump_examples(self):
@@ -68,7 +67,7 @@ class DumpTests(unittest.TestCase):
             for annotate_fields in [True, False]:
                 for include_attributes in [False, True]:
                     if include_attributes and not annotate_fields:
-                        continue # behaviour differs from typed_ast
+                        continue  # behaviour differs from typed_ast
 
                     with self.assertRaises(TypeError):
                         _ = typed_ast.ast3.dump(

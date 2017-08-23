@@ -23,12 +23,11 @@ import typed_ast.ast3
 
 
 class Printer(astunparse.Printer):
-
     """Partial rewrite of Printer from astunparse to handle typed_ast.ast3-based trees."""
 
     def __init__(
-            self, file=sys.stdout, indent="  ", annotate_fields: bool=True,
-            include_attributes: bool=False):
+            self, file=sys.stdout, indent="  ", annotate_fields: bool = True,
+            include_attributes: bool = False):
         """Initialize Printer instance."""
         super().__init__(file=file, indent=indent)
         self._annotate_fields = annotate_fields
