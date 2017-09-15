@@ -1,5 +1,10 @@
+.. role:: bash(code)
+    :language: bash
 
-================
+.. role:: python(code)
+    :language: python
+
+
 typed-astunparse
 ================
 
@@ -15,30 +20,17 @@ typed-astunparse
     :target: https://ci.appveyor.com/project/mbdevpl/typed-astunparse
     :alt: build status from AppVeyor
 
+.. image:: https://api.codacy.com/project/badge/Grade/4a6d141d87c346f0b3c0d50d76a10e32
+    :target: https://www.codacy.com/app/mbdevpl/typed-astunparse
+    :alt: grade from Codacy
+
 .. image:: https://coveralls.io/repos/github/mbdevpl/typed-astunparse/badge.svg?branch=master
     :target: https://coveralls.io/github/mbdevpl/typed-astunparse?branch=master
     :alt: test coverage from Coveralls
 
-.. image:: https://landscape.io/github/mbdevpl/typed-astunparse/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/mbdevpl/typed-astunparse/master
-    :alt: code health from Landscape
-
-.. image:: https://codeclimate.com/github/mbdevpl/typed-astunparse/badges/gpa.svg
-    :target: https://codeclimate.com/github/mbdevpl/typed-astunparse
-    :alt: code GPA from Code Climate
-
-.. image:: https://codeclimate.com/github/mbdevpl/typed-astunparse/badges/issue_count.svg
-    :target: https://codeclimate.com/github/mbdevpl/typed-astunparse
-    :alt: issue count from Code Climate
-
 .. image:: https://img.shields.io/pypi/l/typed-astunparse.svg
+    :target: https://github.com/mbdevpl/typed-astunparse/blob/master/NOTICE
     :alt: license
-
-.. role:: bash(code)
-    :language: bash
-
-.. role:: python(code)
-    :language: python
 
 The *typed-astunparse* is to *typed-ast* as *astunparse* is to *ast*. In short: unparsing of Python
 3 abstract syntax trees (AST) with type comments.
@@ -61,7 +53,6 @@ comments. This is where this module, *typed-astunparse*, comes in. It provides u
 defined in *typed-ast*.
 
 
-------------
 requirements
 ------------
 
@@ -75,7 +66,6 @@ and Windows (AppVeyor), but it might work on other systems too.
 -  *typed-ast*
 
 
-------------
 installation
 ------------
 
@@ -96,7 +86,6 @@ You can also build your own version:
     ls -1tr dist/*.whl | tail -n 1 | xargs pip install
 
 
------
 usage
 -----
 
@@ -111,10 +100,9 @@ Example of roundtrip from code through AST to code:
     roundtrip = typed_astunparse.unparse(typed_ast.ast3.parse(code))
     print(roundtrip)
 
-for more examples see :bash:`examples.ipynb` notebook.
+for more examples see `<examples.ipynb>`_ notebook.
 
 
------
 links
 -----
 

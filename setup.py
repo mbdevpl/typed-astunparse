@@ -43,8 +43,7 @@ class Package(setup_boilerplate.Package):
         'Topic :: Software Development :: Code Generators',
         'Topic :: Software Development :: Compilers',
         'Topic :: Software Development :: Pre-processors',
-        'Topic :: Utilities'
-        ]
+        'Topic :: Utilities']
     keywords = ['ast', 'unparsing', 'pretty printing']
 
 

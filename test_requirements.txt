@@ -1,5 +1,1 @@
-coverage
-pip >= 9.0
-pylint
-setuptools >= 20.5
 -rrequirements.txt

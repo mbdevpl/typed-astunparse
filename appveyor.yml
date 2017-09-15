@@ -2,38 +2,29 @@ version: "{build}"
 
 environment:
   matrix:
-    # all available versions: see http://www.appveyor.com/docs/installed-software#python
-    #- PYTHON: "C:\\Python34" # typed-ast doesn't build
-    #- PYTHON: "C:\\Python34-x64" # typed-ast doesn't build
+    - PYTHON: "C:\\Python34"
+    - PYTHON: "C:\\Python34-x64"
     - PYTHON: "C:\\Python35"
     - PYTHON: "C:\\Python35-x64"
     - PYTHON: "C:\\Python36"
     - PYTHON: "C:\\Python36-x64"
-    #- PYTHON: "C:\\Python37"
-    #- PYTHON: "C:\\Python37-x64"
+
+matrix:
+  allow_failures:
+    - PYTHON: "C:\\Python34-x64"
 
 init:
-  - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+  - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
 
 install:
-  - pip install -r test_requirements.txt
-  - python setup.py sdist
-  - python setup.py bdist_wheel
-  #- dir dist\*.zip /b/o:-d > temp.txt
-  #- set /p INSTALLEDFILE=<temp.txt
-  #- pip install -U --user dist\%INSTALLEDFILE%
-  #- pip uninstall --yes typed_astunparse
-  #- dir dist\*.whl /b/o:-d > temp.txt
-  #- set /p INSTALLEDFILE=<temp.txt
-  #- pip install -U --user dist\%INSTALLEDFILE%
-  #- pip uninstall --yes typed_astunparse
+  - pip install -U pip
+  - pip install -U -r dev_requirements.txt
 
 build: off
 
 test_script:
-  - python -m unittest discover
+  - set TEST_PACKAGING=1
+  - python -m coverage run --branch --source . -m unittest discover --verbose
 
 after_test:
-  - python -m pylint --output-format=colorized --unsafe-load-any-extension=y typed_astunparse test || true
-  - python -m coverage run --branch --include="typed_astunparse\*","test\*" -m unittest discover --verbose
   - python -m coverage report --show-missing

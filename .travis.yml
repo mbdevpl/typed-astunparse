@@ -2,36 +2,29 @@ sudo: false
 language: python
 os:
   - linux
-#  - osx
 python:
   - 3.4
   - 3.5
   - 3.6
-#  - 3.7
+  - 3.6-dev
+  - 3.7-dev
 matrix:
   allow_failures:
-#    - python: 3.7
-
-before_install:
-  - pip install -r test_requirements.txt
-  - pip install coveralls
-  - python setup.py sdist
-  - python setup.py bdist_wheel
+    - python: 3.6-dev
+    - python: 3.7-dev
 
 install:
-  - ls -1tr dist/*tar.gz | tail -n 1 | xargs pip install
-  - pip uninstall --yes typed_astunparse
-  - ls -1tr dist/*.whl | tail -n 1 | xargs pip install
-  - pip uninstall --yes typed_astunparse
+  - pip install -U pip
+  - pip install -U -r dev_requirements.txt
 
 script:
-  - python -m unittest discover
+  - TEST_PACKAGING=1 python -m coverage run --branch --source . -m unittest discover --verbose
 
 after_success:
-  - python -m pylint --output-format=colorized --unsafe-load-any-extension=y typed_astunparse test || true
-  - python -m coverage run --branch --include="typed_astunparse/*","test/*" -m unittest discover --verbose
   - python -m coverage report --show-missing
   - coveralls
+  - python -m pylint --load-plugins=pylint.extensions.mccabe --docstring-min-length 5 --no-docstring-rgx "^(test)?_|.*Tests$" --unsafe-load-any-extension y --output-format colorized  --reports y $(find . -name "*.py")
+
 notifications:
   slack:
     secure: vlXI51/0L3jPt316tLvXxSgGQhlQYSxrVd0bHRYCW4iMQgxcURAlzydUO6+KJsnGQNd1wNehkIf8RMGuh7bX7siTBtRkrFdceGu2Mp69CVcX2wfZmTOvV6x3nyOUhFjDlWeaEpVg+kR2qmVSC+tJ6LLfIVRjPbcY+x/O4ubH79N1YYb6/ruqB2YK7ArY7yu+g6DcmYvb9xKMlG6KKQlAxoFywhLWkmReIvLH+mMcO+JUqez7HotMaVH8H6uwiA8NEX1FOeo1h7uXiqvtnxQcrWMZ3E/y7/W/BQEpfiy1JFGwInUN7Hs+uwevBtQx7q1/6EpTtP1xEFHKzGv/KTR5LGdeZTAw4KyL94Gifh2/+dTXG7jA9Ib4494JGduCPwTD5rbYQCgIu5fooCgJho+GJcShDNFrTwZ4AyCwPl3bpTgdUahqsM4kpp+dDfDXLiPO81ZRYFUM6h1VMM+KFNC/gLgnpt8Kz1JNPhPlBvlKu4rhFA7ULKzk0uKwS85U88+XhH3zzKi5jSDM9ejHKyNQFrHuIdkTjc+CGrc1U4/r3GlPFTjcJ0iVEftYwkTRYjAAHC/CUTsTYv5HKEY/eLYRH3R+el0p6BX9l2BIMTfJy6WXD8oyARN37ydRvkPxa1vQifG1MebMx0HxZseVcBfDOzvH9RLt5o6wMwnWkiHlm24=
