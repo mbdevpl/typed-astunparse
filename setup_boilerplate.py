@@ -1,4 +1,11 @@
-"""Below code is generic boilerplate and normally should not be changed."""
+"""Below code is generic boilerplate and normally should not be changed.
+
+To avoid setup script boilerplate, create "setup.py" file with the following minimal contents
+and modify them according to the specifics of your package.
+
+See the implementation of setup_boilerplate.Package for default metadata values and available
+options.
+"""
 
 import importlib
 import pathlib
@@ -8,24 +15,34 @@ import typing as t
 
 import setuptools
 
-__updated__ = "2017-08-23"
+__updated__ = '2017-09-04'
+
+SETUP_TEMPLATE = '''"""Setup script."""
+
+import setup_boilerplate
+
+
+class Package(setup_boilerplate.Package):
+
+    """Package metadata."""
+
+    name = ''
+    description = ''
+    download_url = 'https://github.com/mbdevpl/...'
+    classifiers = [
+        'Development Status :: 1 - Planning',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3 :: Only']
+    keywords = []
+
+
+if __name__ == '__main__':
+    Package.setup()
+'''
 
 HERE = pathlib.Path(__file__).resolve().parent
-
-SRC_DIR = '.'
-"""Directory with source code, relative to the setup.py file location."""
-
-
-def setup():
-    """Implement this when using this boilerplate."""
-    raise NotImplementedError()
-
-
-def clean(build_directory_name: str = 'build') -> None:
-    """Recursively delete build directory (by default "build") if it exists."""
-    build_directory_path = HERE.joinpath(build_directory_name)
-    if build_directory_path.is_dir():
-        shutil.rmtree(str(build_directory_path))
 
 
 def find_version(
@@ -37,10 +54,10 @@ def find_version(
     return getattr(version_module, version_variable_name)
 
 
-def find_packages() -> t.List[str]:
+def find_packages(root_directory: str = '.') -> t.List[str]:
     """Find packages to pack."""
     exclude = ['test', 'test.*'] if ('bdist_wheel' in sys.argv or 'bdist' in sys.argv) else []
-    packages_list = setuptools.find_packages(SRC_DIR, exclude=exclude)
+    packages_list = setuptools.find_packages(root_directory, exclude=exclude)
     return packages_list
 
 
@@ -66,15 +83,30 @@ def parse_requirements(
     return requirements
 
 
+def partition_version_classifiers(
+        classifiers: t.Sequence[str], version_prefix: str = 'Programming Language :: Python :: ',
+        only_suffix: str = ' :: Only') -> t.Tuple[t.List[str], t.List[str]]:
+    """Find version number classifiers in given list and partition them into 2 groups."""
+    versions_min, versions_only = [], []
+    for classifier in classifiers:
+        version = classifier.replace(version_prefix, '')
+        versions = versions_min
+        if version.endswith(only_suffix):
+            version = version.replace(only_suffix, '')
+            versions = versions_only
+        try:
+            versions.append(tuple([int(_) for _ in version.split('.')]))
+        except ValueError:
+            pass
+    return versions_min, versions_only
+
+
 def find_required_python_version(
-        classifiers: t.Sequence[str], ver_prefix: str = 'Programming Language :: Python :: ',
-        only_suffix: str = ' :: Only') -> str:
+        classifiers: t.Sequence[str], version_prefix: str = 'Programming Language :: Python :: ',
+        only_suffix: str = ' :: Only') -> t.Optional[str]:
     """Determine the minimum required Python version."""
-    versions = [ver.replace(ver_prefix, '') for ver in classifiers if ver.startswith(ver_prefix)]
-    versions_min = [ver for ver in versions if not ver.endswith(only_suffix)]
-    versions_only = [ver.replace(only_suffix, '') for ver in versions if ver.endswith(only_suffix)]
-    versions_min = [tuple([int(_) for _ in ver.split('.')]) for ver in versions_min]
-    versions_only = [tuple([int(_) for _ in ver.split('.')]) for ver in versions_only]
+    versions_min, versions_only = partition_version_classifiers(
+        classifiers, version_prefix, only_suffix)
     if len(versions_only) > 1:
         raise ValueError(
             'more than one "{}" version encountered in {}'.format(only_suffix, versions_only))
@@ -99,7 +131,69 @@ def find_required_python_version(
     return None
 
 
-def main() -> None:
-    """Call this when using this boilerplate."""
-    clean()
-    setup()
+class Package:
+
+    """Default metadata and behaviour for a Python package setup script."""
+
+    root_directory = '.' # type: str
+    """Root directory of the source code of the package, relative to the setup.py file location."""
+
+    name = None # type: str
+    description = None # type: str
+    url = 'https://mbdevpl.github.io/' # type: str
+    download_url = 'https://github.com/mbdevpl' # type: str
+    author = 'Mateusz Bysiek' # type: str
+    author_email = 'mb@mbdev.pl' # type: str
+    # maintainer = None # type: str
+    # maintainer_email = None # type: str
+    license_str = 'Apache License 2.0' # type: str
+
+    classifiers = [] # type: t.List[str]
+    """List of valid project classifiers: https://pypi.python.org/pypi?:action=list_classifiers"""
+
+    keywords = [] # type: t.List[str]
+    package_data = {}
+    exclude_package_data = {}
+
+    extras_require = {} # type: t.Mapping[str, t.List[str]]
+    """A dictionary containing entries of type 'some_feature': ['requirement1', 'requirement2']."""
+
+    entry_points = {} # type: t.Mapping[str, t.List[str]]
+    """A dictionary used to enable automatic creation of console scripts, gui scripts and plugins.
+
+    Example entry:
+    'console_scripts': ['script_name = package.subpackage:function']
+    """
+
+    test_suite = 'test' # type: str
+
+    @classmethod
+    def try_fields(cls, *names) -> t.Optional[t.Any]:
+        for name in names:
+            if hasattr(cls, name):
+                return getattr(cls, name)
+
+    @classmethod
+    def clean(cls, build_directory_name: str = 'build') -> None:
+        """Recursively delete build directory (by default "build") if it exists."""
+        build_directory_path = pathlib.Path(HERE, build_directory_name)
+        if build_directory_path.is_dir():
+            shutil.rmtree(str(build_directory_path))
+
+    @classmethod
+    def setup(cls) -> None:
+        """Run setuptools.setup() with correct arguments."""
+        setuptools.setup(
+            name=cls.name, version=find_version(cls.name), description=cls.description,
+            long_description=parse_readme(), url=cls.url, download_url=cls.download_url,
+            author=cls.author, author_email=cls.author_email,
+            maintainer=cls.try_fields('maintainer', 'author'),
+            maintainer_email=cls.try_fields('maintainer_email', 'author_email'),
+            license=cls.license_str, classifiers=cls.classifiers, keywords=cls.keywords,
+            packages=find_packages(cls.root_directory), package_dir={'': cls.root_directory},
+            include_package_data=True,
+            package_data=cls.package_data, exclude_package_data=cls.exclude_package_data,
+            install_requires=parse_requirements(), extras_require=cls.extras_require,
+            python_requires=find_required_python_version(cls.classifiers),
+            entry_points=cls.entry_points, test_suite=cls.test_suite
+            )
