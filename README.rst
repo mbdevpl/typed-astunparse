@@ -56,14 +56,11 @@ defined in *typed-ast*.
 requirements
 ------------
 
-This package is intended for Python 3.4 and later. It is tested on Linux (Travis CI)
-and Windows (AppVeyor), but it might work on other systems too.
+Python version >= 3.4.
 
-*typed-astunparse* mainly depends on:
+Python libraries as specified in `<requirements.txt>`_.
 
--  *astunparse*
-
--  *typed-ast*
+Tested on Linux, OS X and Windows.
 
 
 installation
