@@ -3,8 +3,6 @@ version: "{build}"
 environment:
   matrix:
     # all available versions: see http://www.appveyor.com/docs/installed-software#python
-    #- PYTHON: "C:\\Python33" # typed-ast doesn't build
-    #- PYTHON: "C:\\Python33-x64" # typed-ast doesn't build
     #- PYTHON: "C:\\Python34" # typed-ast doesn't build
     #- PYTHON: "C:\\Python34-x64" # typed-ast doesn't build
     - PYTHON: "C:\\Python35"
