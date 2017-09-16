@@ -1,9 +1,0 @@
-strictness: veryhigh
-pep8:
-  full: true
-doc-warnings: true
-test-warnings: true
-max-line-length: 100
-pylint:
-  options:
-    docstring-min-length: 10
