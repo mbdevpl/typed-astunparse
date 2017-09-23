@@ -28,3 +28,4 @@ test_script:
 
 after_test:
   - python -m coverage report --show-missing
+  - codecov

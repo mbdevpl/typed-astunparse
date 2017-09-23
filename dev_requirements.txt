@@ -1,5 +1,5 @@
+codecov
 coverage
-coveralls
 pylint
 twine
 -rtest_requirements.txt

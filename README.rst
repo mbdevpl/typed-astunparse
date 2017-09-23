@@ -24,9 +24,9 @@ typed-astunparse
     :target: https://www.codacy.com/app/mbdevpl/typed-astunparse
     :alt: grade from Codacy
 
-.. image:: https://coveralls.io/repos/github/mbdevpl/typed-astunparse/badge.svg?branch=master
-    :target: https://coveralls.io/github/mbdevpl/typed-astunparse?branch=master
-    :alt: test coverage from Coveralls
+.. image:: https://codecov.io/gh/mbdevpl/typed-astunparse/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/mbdevpl/typed-astunparse
+    :alt: test coverage from Codecov
 
 .. image:: https://img.shields.io/pypi/l/typed-astunparse.svg
     :target: https://github.com/mbdevpl/typed-astunparse/blob/master/NOTICE
