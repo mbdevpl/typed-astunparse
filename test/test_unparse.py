@@ -49,12 +49,16 @@ class UnparseTests(unittest.TestCase):
             for mode in MODES:
                 if example['trees'][mode] is None:
                     continue
-                with self.assertRaises(SyntaxError, msg=(description, mode)) as raised:
-                    typed_astunparse.unparse(example['trees'][mode])
-                self.assertIn('PEP 526', str(raised.exception), msg=(description, mode))
-
                 with self.assertRaises(SyntaxError, msg=(description, mode)):
                     typed_ast.ast3.parse(source=example['code'], mode=mode)
+
+                code = typed_astunparse.unparse(example['trees'][mode])
+                tree = None
+                try:
+                    tree = typed_ast.ast3.parse(source=code, mode=mode)
+                except SyntaxError:
+                    continue
+                code = typed_astunparse.unparse(tree)
 
     def test_many_roundtrips(self):
         """Prserve ASTs when doing parse(unparse(parse(...unparse(parse(code))...)))."""

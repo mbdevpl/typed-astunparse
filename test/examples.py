@@ -412,45 +412,45 @@ UNVERIFIED_EXAMPLES = {
             "decorator_list=[],returns=None,type_comment='(...)->bool')"}}
 
 INVALID_EXAMPLES = {
-    # 'chained assignment with type annotation': {
-    #     'code': "my_string: str = my_string2 = None",
-    #     'is_expression': False,
-    #     'tree': typed_ast.ast3.AnnAssign(
-    #         [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store()),
-    #          typed_ast.ast3.Name('my_string2', typed_ast.ast3.Store())],
-    #         typed_ast.ast3.NameConstant(None),
-    #         typed_ast.ast3.Name('str', typed_ast.ast3.Load()), True),
-    #     'dump': "None"},
-    # 'tuple unpacking assignment with one type annotation': {
-    #     'code': "my_string, my_string2: str = my_tuple",
-    #     'is_expression': False,
-    #     'tree': typed_ast.ast3.AnnAssign(
-    #         [typed_ast.ast3.Tuple(
-    #             [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store()),
-    #              typed_ast.ast3.Name('my_string2', typed_ast.ast3.Store())],
-    #             typed_ast.ast3.Store())],
-    #         typed_ast.ast3.Name('my_tuple', typed_ast.ast3.Load()),
-    #         typed_ast.ast3.Name('str', typed_ast.ast3.Load()), True),
-    #     'dump': "None"},
-    # 'tuple unpacking assignment with multiple type annotations': {
-    #     'code': "my_string: str, my_string2: str = my_tuple",
-    #     'is_expression': False,
-    #     'tree': typed_ast.ast3.AnnAssign(
-    #         [typed_ast.ast3.Tuple(
-    #             [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store()),
-    #              typed_ast.ast3.Name('my_string2', typed_ast.ast3.Store())],
-    #             typed_ast.ast3.Store())],
-    #         typed_ast.ast3.Name('my_tuple', typed_ast.ast3.Load()),
-    #         typed_ast.ast3.Name('str', typed_ast.ast3.Load()), True),
-    #     'dump': "None"},
-    # 'assignment with type comment and annotation': {
-    #     'code': "my_string: str = None # type: str",
-    #     'is_expression': False,
-    #     'tree': typed_ast.ast3.AnnAssign(
-    #         [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store())],
-    #         typed_ast.ast3.NameConstant(None),
-    #         typed_ast.ast3.Name('str', typed_ast.ast3.Load()), True),
-    #     'dump': "None"}
+    'chained assignment with type annotation': {
+        'code': "my_string: str = my_string2 = None",
+        'is_expression': False,
+        'tree': typed_ast.ast3.AnnAssign(
+            [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store()),
+             typed_ast.ast3.Name('my_string2', typed_ast.ast3.Store())],
+            typed_ast.ast3.NameConstant(None),
+            typed_ast.ast3.Name('str', typed_ast.ast3.Load()), True),
+        'dump': "None"},
+    'tuple unpacking assignment with one type annotation': {
+        'code': "my_string, my_string2: str = my_tuple",
+        'is_expression': False,
+        'tree': typed_ast.ast3.AnnAssign(
+            [typed_ast.ast3.Tuple(
+                [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store()),
+                 typed_ast.ast3.Name('my_string2', typed_ast.ast3.Store())],
+                typed_ast.ast3.Store())],
+            typed_ast.ast3.Name('my_tuple', typed_ast.ast3.Load()),
+            typed_ast.ast3.Name('str', typed_ast.ast3.Load()), True),
+        'dump': "None"},
+    'tuple unpacking assignment with multiple type annotations': {
+        'code': "my_string: str, my_string2: str = my_tuple",
+        'is_expression': False,
+        'tree': typed_ast.ast3.AnnAssign(
+            [typed_ast.ast3.Tuple(
+                [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store()),
+                 typed_ast.ast3.Name('my_string2', typed_ast.ast3.Store())],
+                typed_ast.ast3.Store())],
+            typed_ast.ast3.Name('my_tuple', typed_ast.ast3.Load()),
+            typed_ast.ast3.Name('str', typed_ast.ast3.Load()), True),
+        'dump': "None"},
+    'assignment with type comment and annotation': {
+        'code': "my_string: str = None # type: str",
+        'is_expression': False,
+        'tree': typed_ast.ast3.AnnAssign(
+            [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store())],
+            typed_ast.ast3.NameConstant(None),
+            typed_ast.ast3.Name('str', typed_ast.ast3.Load()), True),
+        'dump': "None"}
     }
 
 
