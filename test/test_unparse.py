@@ -82,10 +82,7 @@ class UnparseTests(unittest.TestCase):
                 original_code = py_file.read()
             tree = typed_ast.ast3.parse(source=original_code, filename=path)
             code = typed_astunparse.unparse(tree)
-            try:
-                roundtrip_tree = typed_ast.ast3.parse(source=code)
-            except SyntaxError as err:
-                self.fail(msg='bad syntax after unparsing "{}"\n{}'.format(path, err))
+            roundtrip_tree = typed_ast.ast3.parse(source=code)
             tree_dump = typed_ast.ast3.dump(tree, include_attributes=False)
             roundtrip_tree_dump = typed_ast.ast3.dump(roundtrip_tree, include_attributes=False)
             self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)

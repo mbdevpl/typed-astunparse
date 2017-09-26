@@ -296,34 +296,10 @@ class Unparser(astunparse.Unparser):
         handle:
 
         Assign(expr* targets, expr value, string? type_comment)
-
-        or even:
-
-        Assign(expr* targets, expr? value, string? type_comment, expr? annotation)
         """
-        if not hasattr(t, 'annotation') or t.annotation is None:
-            super()._Assign(t)
-            if hasattr(t, 'type_comment') and t.type_comment is not None:
-                self._write_type_comment(t.type_comment)
-            return
-
-        if len(t.targets) > 1:
-            raise SyntaxError('PEP 526: annotating chained assignments is not allowed')
-
-        if isinstance(t.targets[0], typed_ast.ast3.Tuple):
-            raise SyntaxError('PEP 526: annotating tuple unpacking assignments is not allowed')
-
-        if t.type_comment is not None:
-            raise SyntaxError('PEP 526: adding type comment to annotated assignment is not allowed')
-
-        self.fill()
-        self.dispatch(t.targets[0])
-        self.write(': ')
-        self.dispatch(t.annotation)
-
-        if t.value is not None:
-            self.write(" = ")
-            self.dispatch(t.value)
+        super()._Assign(t)
+        if hasattr(t, 'type_comment') and t.type_comment is not None:
+            self._write_type_comment(t.type_comment)
 
     def _generic_For(self, t, async=False):
         """Unparse For or AsyncFor node.
