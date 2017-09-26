@@ -409,7 +409,16 @@ UNVERIFIED_EXAMPLES = {
             "arg(arg='ham',annotation=None,type_comment='str')],"
             "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
             "body=[Return(value=Name(id='arg',ctx=Load()))],"
-            "decorator_list=[],returns=None,type_comment='(...)->bool')"}}
+            "decorator_list=[],returns=None,type_comment='(...)->bool')"},
+    'assignment with type comment stored as AST': {
+        'code': "my_string = None # type: str",
+        'is_expression': False,
+        'tree': typed_ast.ast3.Assign(
+            [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store())],
+            typed_ast.ast3.NameConstant(None), typed_ast.ast3.Name('str', typed_ast.ast3.Load())),
+        'dump':
+            "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None),"
+            "type_comment=Name(id='str',ctx=Load()))"}}
 
 INVALID_EXAMPLES = {
     'chained assignment with type annotation': {
