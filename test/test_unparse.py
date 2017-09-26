@@ -16,13 +16,14 @@
 """Tested function: unparse."""
 
 import ast
+import itertools
 import logging
 import unittest
 
 import typed_ast.ast3
 import typed_astunparse
 
-from .examples import MODES, EXAMPLES, INVALID_EXAMPLES, PATHS
+from .examples import MODES, EXAMPLES, UNVERIFIED_EXAMPLES, INVALID_EXAMPLES, PATHS
 
 _LOG = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ class UnparseTests(unittest.TestCase):
 
     def test_unparse_examples(self):
         """Unparse ASTs of examples correctly."""
-        for description, example in EXAMPLES.items():
+        for description, example in itertools.chain(EXAMPLES.items(), UNVERIFIED_EXAMPLES.items()):
             for mode in MODES:
                 if example['trees'][mode] is None:
                     continue

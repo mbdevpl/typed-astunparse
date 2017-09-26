@@ -77,6 +77,25 @@ EXAMPLES = {
             "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
             "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))],"
             "decorator_list=[],returns=None,type_comment='(bool)->bool')"},
+    'function definiton with per-argument type comment': {
+        'code':
+            "def negation(arg  # type: bool\n"
+            "        ):\n    # type: (...) -> bool\n    return (not arg)",
+        'is_expression': False,
+        'tree': typed_ast.ast3.FunctionDef(
+            'negation',
+            typed_ast.ast3.arguments(
+                [typed_ast.ast3.arg('arg', None, 'bool')],
+                None, [], [], None, []),
+            [typed_ast.ast3.Return(typed_ast.ast3.UnaryOp(
+                typed_ast.ast3.Not(), typed_ast.ast3.Name('arg', typed_ast.ast3.Load())))],
+            [], None, '(...) -> bool'),
+        'dump':
+            "FunctionDef(name='negation',args=arguments("
+            "args=[arg(arg='arg',annotation=None,type_comment='bool')],"
+            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
+            "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))],"
+            "decorator_list=[],returns=None,type_comment='(...)->bool')"},
     'decorated function with type comment': {
         'code': '@deco\ndef do_nothing():\n    # type: () -> None\n    pass',
         'is_expression': False,
@@ -367,6 +386,31 @@ EXAMPLES = {
         'dump':
             "Call(func=Attribute(value=Num(n=3),attr='__abs__',ctx=Load()),args=[],keywords=[])"}}
 
+UNVERIFIED_EXAMPLES = {
+    'function definiton with several per-argument type comments': {
+        'code':
+            "def lovely(spam  # type: bool\n"
+            "        , eggs  # type: int\n        , ham  # type: str\n"
+            "        ):\n    # type: (...) -> bool\n    return spam",
+        'is_expression': False,
+        'tree': typed_ast.ast3.FunctionDef(
+            'lovely',
+            typed_ast.ast3.arguments(
+                [typed_ast.ast3.arg('spam', None, 'bool'),
+                 typed_ast.ast3.arg('eggs', None, 'int'),
+                 typed_ast.ast3.arg('ham', None, 'str')],
+                None, [], [], None, []),
+            [typed_ast.ast3.Return(typed_ast.ast3.Name('spam', typed_ast.ast3.Load()))],
+            [], None, '(...) -> bool'),
+        'dump':
+            "FunctionDef(name='lovely',args=arguments("
+            "args=[arg(arg='spam',annotation=None,type_comment='bool'),"
+            "arg(arg='eggs',annotation=None,type_comment='int'),"
+            "arg(arg='ham',annotation=None,type_comment='str')],"
+            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
+            "body=[Return(value=Name(id='arg',ctx=Load()))],"
+            "decorator_list=[],returns=None,type_comment='(...)->bool')"}}
+
 INVALID_EXAMPLES = {
     # 'chained assignment with type annotation': {
     #     'code': "my_string: str = my_string2 = None",
@@ -431,6 +475,9 @@ def _generate_variants(example: dict):
             'single': 'Interactive(body=[{}])'.format(example['dump'])}
 
 for _, _example in EXAMPLES.items():
+    _generate_variants(_example)
+
+for _, _example in UNVERIFIED_EXAMPLES.items():
     _generate_variants(_example)
 
 for _, _example in INVALID_EXAMPLES.items():

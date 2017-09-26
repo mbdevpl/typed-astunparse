@@ -460,3 +460,12 @@ class Unparser(astunparse.Unparser):
                 comma = True
             self.dispatch(e)
         self.write(")")
+
+    def _arg(self, t):
+        super()._arg(t)
+        if not hasattr(t, 'type_comment') or t.type_comment is None:
+            return
+
+        self.write('  # type: ')
+        self.write(t.type_comment)
+        self.fill('        ')
