@@ -32,6 +32,8 @@ class UnparseTests(unittest.TestCase):
 
     """Unit tests for unparse() function."""
 
+    maxDiff = None
+
     def test_unparse_examples(self):
         """Unparse ASTs of examples correctly."""
         for description, example in itertools.chain(EXAMPLES.items(), UNVERIFIED_EXAMPLES.items()):

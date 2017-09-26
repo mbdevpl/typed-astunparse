@@ -36,7 +36,10 @@ def _postprocess_dump(tested_typed_dump):
 
 
 class DumpTests(unittest.TestCase):
+
     """Unit tests for dump() function."""
+
+    maxDiff = None
 
     def test_dump_examples(self):
         """Print ASTs of examples correctly."""
