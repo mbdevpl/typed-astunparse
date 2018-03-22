@@ -445,6 +445,5 @@ class Unparser(astunparse.Unparser):
         if not hasattr(t, 'type_comment') or t.type_comment is None:
             return
 
-        self.write('  # type: ')
-        self.write(t.type_comment)
+        self._write_type_comment(t.type_comment)
         self.fill('        ')
