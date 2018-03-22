@@ -137,7 +137,7 @@ EXAMPLES = {
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None),"
             "type_comment=None)"},
     'assignment with type comment': {
-        'code': "my_string = None # type: str",
+        'code': "my_string = None  # type: str",
         'is_expression': False,
         'tree': typed_ast.ast3.Assign(
             [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store())],
@@ -146,7 +146,7 @@ EXAMPLES = {
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None),"
             "type_comment='str')"},
     'tuple unpacking assignment with type comment': {
-        'code': "(my_string, my_int) = my_list # type: str, int",
+        'code': "(my_string, my_int) = my_list  # type: str, int",
         'is_expression': False,
         'tree': typed_ast.ast3.Assign(
             [typed_ast.ast3.Tuple(
@@ -205,7 +205,7 @@ EXAMPLES = {
             "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
             "args=[Str(s='hmm')],keywords=[]))],type_comment=None)"},
     'for loop with type comment': {
-        'code': "for i in [0, 4, 2, 42]: # type: int\n    print(i)",
+        'code': "for i in [0, 4, 2, 42]:  # type: int\n    print(i)",
         'is_expression': False,
         'tree': typed_ast.ast3.For(
             typed_ast.ast3.Name('i', typed_ast.ast3.Store()),
@@ -224,7 +224,7 @@ EXAMPLES = {
             "args=[Name(id='i',ctx=Load())],keywords=[]))],"
             "orelse=[],type_comment='int')"},
     'for-else loop with type comment': {
-        'code': "for i in [0, 4, 2, 42]: # type: int\n    print(i)\nelse:\n    print('hmm')",
+        'code': "for i in [0, 4, 2, 42]:  # type: int\n    print(i)\nelse:\n    print('hmm')",
         'is_expression': False,
         'tree': typed_ast.ast3.For(
             typed_ast.ast3.Name('i', typed_ast.ast3.Store()),
@@ -289,7 +289,7 @@ EXAMPLES = {
             "keywords=[]))],"
             "type_comment=None)"},
     'with statement with type comment': {
-        'code': "with open('setup.py') as f: # type: typing.io.TextIO\n    print(f.read())",
+        'code': "with open('setup.py') as f:  # type: typing.io.TextIO\n    print(f.read())",
         'is_expression': False,
         'tree': typed_ast.ast3.With(
             [typed_ast.ast3.withitem(
@@ -319,7 +319,7 @@ EXAMPLES = {
     'multi-context with statement with type comment': {
         'code':
             "with open('setup.py') as f1, open('README.rst') as f2:"
-            " # type: typing.io.TextIO, typing.io.TextIO\n"
+            "  # type: typing.io.TextIO, typing.io.TextIO\n"
             "    print(f1.read())\n    print(f2.read())",
         'is_expression': False,
         'tree': typed_ast.ast3.With(
@@ -411,7 +411,7 @@ UNVERIFIED_EXAMPLES = {
             "body=[Return(value=Name(id='arg',ctx=Load()))],"
             "decorator_list=[],returns=None,type_comment='(...)->bool')"},
     'assignment with type comment stored as AST': {
-        'code': "my_string = None # type: str",
+        'code': "my_string = None  # type: str",
         'is_expression': False,
         'tree': typed_ast.ast3.Assign(
             [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store())],
@@ -453,7 +453,7 @@ INVALID_EXAMPLES = {
             typed_ast.ast3.Name('str', typed_ast.ast3.Load()), True),
         'dump': "None"},
     'assignment with type comment and annotation': {
-        'code': "my_string: str = None # type: str",
+        'code': "my_string: str = None  # type: str",
         'is_expression': False,
         'tree': typed_ast.ast3.AnnAssign(
             [typed_ast.ast3.Name('my_string', typed_ast.ast3.Store())],

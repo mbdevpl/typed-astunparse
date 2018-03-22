@@ -221,7 +221,7 @@ class Unparser(astunparse.Unparser):
 
     def _write_type_comment(self, type_comment):
         """Unparse type comment, appending it to the end of the current line."""
-        self.write(" # type: ")
+        self.write("  # type: ")
         self._write_string_or_dispatch(type_comment)
 
     def _ClassDef(self, t):
