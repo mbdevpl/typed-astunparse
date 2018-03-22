@@ -216,12 +216,12 @@ class Unparser(astunparse.Unparser):
 
     def _fill_type_comment(self, type_comment):
         """Unparse type comment, adding it on the next line."""
-        self.fill("# type: ")
+        self.fill('# type: ')
         self._write_string_or_dispatch(type_comment)
 
     def _write_type_comment(self, type_comment):
         """Unparse type comment, appending it to the end of the current line."""
-        self.write("  # type: ")
+        self.write('  # type: ')
         self._write_string_or_dispatch(type_comment)
 
     def _ClassDef(self, t):
@@ -267,15 +267,16 @@ class Unparser(astunparse.Unparser):
             identifier name, arguments args, stmt* body, expr* decorator_list, expr? returns,
             string? type_comment)
         """
+        async_ = async
         if not hasattr(t, 'type_comment') or t.type_comment is None:
-            super()._generic_FunctionDef(t, async)
+            super()._generic_FunctionDef(t, async_)
             return
 
         self.write("\n")
         for deco in t.decorator_list:
             self.fill("@")
             self.dispatch(deco)
-        self.fill(("async " if async else "") + "def " + t.name + "(")
+        self.fill(("async " if async_ else "") + "def " + t.name + "(")
         self.dispatch(t.args)
         self.write(")")
         if getattr(t, "returns", False):
@@ -312,11 +313,12 @@ class Unparser(astunparse.Unparser):
 
         For/AsyncFor(expr target, expr iter, stmt* body, stmt* orelse, string? type_comment)
         """
+        async_ = async
         if not hasattr(t, 'type_comment') or t.type_comment is None:
-            super()._generic_For(t, async)
+            super()._generic_For(t, async_)
             return
 
-        self.fill("async for " if async else "for ")
+        self.fill("async for " if async_ else "for ")
         self.dispatch(t.target)
         self.write(" in ")
         self.dispatch(t.iter)
@@ -363,11 +365,12 @@ class Unparser(astunparse.Unparser):
 
         With/AsyncWith(withitem* items, stmt* body, string? type_comment)
         """
+        async_ = async
         if not hasattr(t, 'type_comment') or t.type_comment is None:
-            super()._generic_With(t, async)
+            super()._generic_With(t, async_)
             return
 
-        self.fill("async with " if async else "with ")
+        self.fill("async with " if async_ else "with ")
         interleave(lambda: self.write(", "), self.dispatch, t.items)
         self.enter()
         self._write_type_comment(t.type_comment)
