@@ -17,7 +17,7 @@ init:
   - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
 
 install:
-  - pip install -U pip
+  - pip install -U pip || pip --version
   - pip install -U -r dev_requirements.txt
 
 build: off
