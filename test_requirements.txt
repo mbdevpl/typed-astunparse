@@ -1,3 +1,4 @@
+docutils
 pip >= 9.0
 setuptools >= 20.5
 wheel

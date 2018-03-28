@@ -1,16 +1,20 @@
+# Jupyter Notebook
+/.ipynb_checkpoints
+*-checkpoint.ipynb
+
+# macOS
+.DS_Store
+
+# Python
 /build
 /dist
-/htmlcov
-/examples.py
-
-# temporary files
+/.cache
 __pycache__
 *.egg
 *.egg-info
 *.pyc
-*-checkpoint.ipynb
-/.*project
-/.cache
+
+# Python coverage
+/htmlcov
+/coverage.xml
 /.coverage
-/.ipynb_checkpoints
-/.settings
