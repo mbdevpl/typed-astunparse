@@ -424,10 +424,82 @@ class Unparser(astunparse.Unparser):
             self.dispatch(keyword)
         self.write(")")
 
-    def _arg(self, t):
-        super()._arg(t)
-        if not hasattr(t, 'type_comment') or t.type_comment is None:
-            return
+    def _arguments(self, t):
+        first = True
+        latest_comment = None
+        # normal arguments
+        defaults = [None] * (len(t.args) - len(t.defaults)) + t.defaults
+        for a, d in zip(t.args, defaults):
+            if first:
+                first = False
+            else:
+                self.write(',')
+                if latest_comment is not None:
+                    self._write_type_comment(latest_comment)
+                    self.fill('        ')
+                    latest_comment = None
+                else:
+                    self.write(' ')
+            self.dispatch(a)
+            if d:
+                self.write("=")
+                self.dispatch(d)
+            latest_comment = getattr(a, 'type_comment', None)
 
-        self._write_type_comment(t.type_comment)
-        self.fill('        ')
+        # varargs, or bare '*' if no varargs but keyword-only arguments present
+        if t.vararg or getattr(t, "kwonlyargs", False):
+            if first:
+                first = False
+            else:
+                self.write(',')
+                if latest_comment is not None:
+                    self._write_type_comment(latest_comment)
+                    self.fill('        ')
+                    latest_comment = None
+                else:
+                    self.write(' ')
+            self.write("*")
+            if t.vararg:
+                self.write(t.vararg.arg)
+                if t.vararg.annotation:
+                    self.write(": ")
+                    self.dispatch(t.vararg.annotation)
+                latest_comment = getattr(t.vararg, 'type_comment', None)
+
+        # keyword-only arguments
+        if getattr(t, "kwonlyargs", False):
+            for a, d in zip(t.kwonlyargs, t.kw_defaults):
+                self.write(',')
+                if latest_comment is not None:
+                    self._write_type_comment(latest_comment)
+                    self.fill('        ')
+                    latest_comment = None
+                else:
+                    self.write(' ')
+                self.dispatch(a)
+                if d:
+                    self.write("=")
+                    self.dispatch(d)
+                latest_comment = getattr(a, 'type_comment', None)
+
+        # kwargs
+        if t.kwarg:
+            if first:
+                first = False
+            else:
+                self.write(',')
+                if latest_comment is not None:
+                    self._write_type_comment(latest_comment)
+                    self.fill('        ')
+                    latest_comment = None
+                else:
+                    self.write(' ')
+            self.write("**"+t.kwarg.arg)
+            if t.kwarg.annotation:
+                self.write(": ")
+                self.dispatch(t.kwarg.annotation)
+            latest_comment = getattr(t.kwarg, 'type_comment', None)
+
+        if latest_comment is not None:
+            self._write_type_comment(latest_comment)
+            self.fill('        ')

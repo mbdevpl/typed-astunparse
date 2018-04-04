@@ -81,6 +81,173 @@ EXAMPLES = {
             "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
             "body=[Return(value=UnaryOp(op=Not(),operand=Name(id='arg',ctx=Load())))],"
             "decorator_list=[],returns=None,type_comment='(...)->bool')"},
+    'function definiton with several per-argument type comments': {
+        'code':
+            "def lovely(spam,  # type: bool\n"
+            "        eggs=None,  # type: int\n"
+            "        ham=None  # type: str\n"
+            "        ):\n    # type: (...) -> bool\n    return spam",
+        'is_expression': False,
+        'tree': typed_ast.ast3.FunctionDef(
+            'lovely', typed_ast.ast3.arguments(
+                [typed_ast.ast3.arg('spam', None, 'bool'),
+                 typed_ast.ast3.arg('eggs', None, 'int'),
+                 typed_ast.ast3.arg('ham', None, 'str')],
+                None, [], [], None, [
+                    typed_ast.ast3.NameConstant(value=None),
+                    typed_ast.ast3.NameConstant(value=None)]),
+            [typed_ast.ast3.Return(typed_ast.ast3.Name('spam', typed_ast.ast3.Load()))],
+            [], None, '(...) -> bool'),
+        'dump':
+            "FunctionDef(name='lovely',args=arguments("
+            "args=[arg(arg='spam',annotation=None,type_comment='bool'),"
+            "arg(arg='eggs',annotation=None,type_comment='int'),"
+            "arg(arg='ham',annotation=None,type_comment='str')],"
+            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=["
+            "NameConstant(value=None),NameConstant(value=None)]),"
+            "body=[Return(value=Name(id='spam',ctx=Load()))],"
+            "decorator_list=[],returns=None,type_comment='(...)->bool')"},
+    'function definiton with per-argument type comments and annotations': {
+        'code':
+            "def fun(a,  # type: int\n"
+            "        b: float, c  # type: str\n"
+            "        ):\n    pass",
+        'is_expression': False,
+        'tree': typed_ast.ast3.FunctionDef(
+            'fun', typed_ast.ast3.arguments(
+                [typed_ast.ast3.arg('a', None, 'int'), typed_ast.ast3.arg(
+                    'b', typed_ast.ast3.Name(id='float', ctx=typed_ast.ast3.Load()), None),
+                 typed_ast.ast3.arg('c', None, 'str')],
+                None, [], [], None, []),
+            [typed_ast.ast3.Pass()],
+            [], None, None),
+        'dump':
+            "FunctionDef(name='fun',args=arguments("
+            "args=[arg(arg='a',annotation=None,type_comment='int'),"
+            "arg(arg='b',annotation=Name(id='float',ctx=Load()),type_comment=None),"
+            "arg(arg='c',annotation=None,type_comment='str')],"
+            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
+            "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
+    'function definiton with some arguments typed': {
+        'code':
+            "def fun(a, b,  # type: float\n"
+            "        c=''  # type: str\n"
+            "        ):\n    pass",
+        'is_expression': False,
+        'tree': typed_ast.ast3.FunctionDef(
+            'fun', typed_ast.ast3.arguments(
+                [typed_ast.ast3.arg('a', None, None), typed_ast.ast3.arg('b', None, 'float'),
+                 typed_ast.ast3.arg('c', None, 'str')],
+                None, [], [], None, [typed_ast.ast3.Str(s='')]),
+            [typed_ast.ast3.Pass()],
+            [], None, None),
+        'dump':
+            "FunctionDef(name='fun',args=arguments("
+            "args=[arg(arg='a',annotation=None,type_comment=None),"
+            "arg(arg='b',annotation=None,type_comment='float'),"
+            "arg(arg='c',annotation=None,type_comment='str')],"
+            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[Str(s='')]),"
+            "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
+    'function definiton with some keyword-only arguments typed': {
+        'code':
+            "def fun(a, *, b,  # type: float\n"
+            "        c=''  # type: str\n"
+            "        ):\n    pass",
+        'is_expression': False,
+        'tree': typed_ast.ast3.FunctionDef(
+            'fun', typed_ast.ast3.arguments(
+                [typed_ast.ast3.arg('a', None, None)], None,
+                [typed_ast.ast3.arg('b', None, 'float'), typed_ast.ast3.arg('c', None, 'str')],
+                [None, typed_ast.ast3.Str(s='')], None, []),
+            [typed_ast.ast3.Pass()],
+            [], None, None),
+        'dump':
+            "FunctionDef(name='fun',args=arguments("
+            "args=[arg(arg='a',annotation=None,type_comment=None)],"
+            "vararg=None,kwonlyargs=["
+            "arg(arg='b',annotation=None,type_comment='float'),"
+            "arg(arg='c',annotation=None,type_comment='str')],"
+            "kw_defaults=[None,Str(s='')],kwarg=None,defaults=[]),"
+            "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
+    'function definiton with normal and keyword-only arguments typed': {
+        'code':
+            "def fun(a,  # type: int\n"
+            "        *args, b,  # type: float\n"
+            "        c='',  # type: str\n"
+            "        **kwargs):\n    pass",
+        'is_expression': False,
+        'tree': typed_ast.ast3.FunctionDef(
+            'fun', typed_ast.ast3.arguments(
+                [typed_ast.ast3.arg('a', None, 'int')],
+                typed_ast.ast3.arg(arg='args', annotation=None, type_comment=None),
+                [typed_ast.ast3.arg('b', None, 'float'), typed_ast.ast3.arg('c', None, 'str')],
+                [None, typed_ast.ast3.Str(s='')],
+                typed_ast.ast3.arg(arg='kwargs', annotation=None, type_comment=None), []),
+            [typed_ast.ast3.Pass()],
+            [], None, None),
+        'dump':
+            "FunctionDef(name='fun',args=arguments("
+            "args=[arg(arg='a',annotation=None,type_comment='int')],"
+            "vararg=arg(arg='args',annotation=None,type_comment=None),kwonlyargs=["
+            "arg(arg='b',annotation=None,type_comment='float'),"
+            "arg(arg='c',annotation=None,type_comment='str')],"
+            "kw_defaults=[None,Str(s='')],"
+            "kwarg=arg(arg='kwargs',annotation=None,type_comment=None),defaults=[]),"
+            "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
+    'function definiton with only varargs and per-argument type comment': {
+        'code':
+            "def fun(*args: 'blahblahblah'  # type: tuple\n"
+            "        ):\n    pass",
+        'is_expression': False,
+        'tree': typed_ast.ast3.FunctionDef(
+            'fun', typed_ast.ast3.arguments(
+                [], typed_ast.ast3.arg(arg='args', annotation=typed_ast.ast3.Str(s='blahblahblah'),
+                                       type_comment='tuple'),
+                [], [], None, []),
+            [typed_ast.ast3.Pass()],
+            [], None, None),
+        'dump':
+            "FunctionDef(name='fun',args=arguments("
+            "args=[],vararg=arg(arg='args',annotation=Str(s='blahblahblah'),type_comment='tuple'),"
+            "kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
+            "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
+    'function definiton with only kwargs and per-argument type comment': {
+        'code':
+            "def fun(**kwargs: 'blahblahblah'  # type: dict\n"
+            "        ):\n    pass",
+        'is_expression': False,
+        'tree': typed_ast.ast3.FunctionDef(
+            'fun', typed_ast.ast3.arguments(
+                [], None, [], [],
+                typed_ast.ast3.arg(arg='kwargs', annotation=typed_ast.ast3.Str(s='blahblahblah'),
+                                   type_comment='dict'), []),
+            [typed_ast.ast3.Pass()],
+            [], None, None),
+        'dump':
+            "FunctionDef(name='fun',args=arguments("
+            "args=[],vararg=None,kwonlyargs=[],kw_defaults=[],"
+            "kwarg=arg(arg='kwargs',annotation=Str(s='blahblahblah'),type_comment='dict'),"
+            "defaults=[]),"
+            "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
+    'function definiton with last argument not typed': {
+        'code':
+            "def fun(a, b,  # type: float\n"
+            "        c):\n    pass",
+        'is_expression': False,
+        'tree': typed_ast.ast3.FunctionDef(
+            'fun', typed_ast.ast3.arguments(
+                [typed_ast.ast3.arg('a', None, None), typed_ast.ast3.arg('b', None, 'float'),
+                 typed_ast.ast3.arg('c', None, None)],
+                None, [], [], None, []),
+            [typed_ast.ast3.Pass()],
+            [], None, None),
+        'dump':
+            "FunctionDef(name='fun',args=arguments("
+            "args=[arg(arg='a',annotation=None,type_comment=None),"
+            "arg(arg='b',annotation=None,type_comment='float'),"
+            "arg(arg='c',annotation=None,type_comment=None)],"
+            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
+            "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
     'decorated function with type comment': {
         'code': '@deco\ndef do_nothing():\n    # type: () -> None\n    pass',
         'is_expression': False,
@@ -372,29 +539,6 @@ EXAMPLES = {
             "Call(func=Attribute(value=Num(n=3),attr='__abs__',ctx=Load()),args=[],keywords=[])"}}
 
 UNVERIFIED_EXAMPLES = {
-    'function definiton with several per-argument type comments': {
-        'code':
-            "def lovely(spam  # type: bool\n"
-            "        , eggs  # type: int\n        , ham  # type: str\n"
-            "        ):\n    # type: (...) -> bool\n    return spam",
-        'is_expression': False,
-        'tree': typed_ast.ast3.FunctionDef(
-            'lovely',
-            typed_ast.ast3.arguments(
-                [typed_ast.ast3.arg('spam', None, 'bool'),
-                 typed_ast.ast3.arg('eggs', None, 'int'),
-                 typed_ast.ast3.arg('ham', None, 'str')],
-                None, [], [], None, []),
-            [typed_ast.ast3.Return(typed_ast.ast3.Name('spam', typed_ast.ast3.Load()))],
-            [], None, '(...) -> bool'),
-        'dump':
-            "FunctionDef(name='lovely',args=arguments("
-            "args=[arg(arg='spam',annotation=None,type_comment='bool'),"
-            "arg(arg='eggs',annotation=None,type_comment='int'),"
-            "arg(arg='ham',annotation=None,type_comment='str')],"
-            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
-            "body=[Return(value=Name(id='arg',ctx=Load()))],"
-            "decorator_list=[],returns=None,type_comment='(...)->bool')"},
     'assignment with type comment stored as AST': {
         'code': "my_string = None  # type: str",
         'is_expression': False,
