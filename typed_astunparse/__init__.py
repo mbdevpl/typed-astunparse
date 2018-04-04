@@ -1,18 +1,3 @@
-# Copyright 2016-2017  Mateusz Bysiek  http://mbdev.pl/
-# This file is part of typed-astunparse.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """This is "__init__.py" file for "typed_astunparse" package.
 
 functions: unparse, dump
@@ -43,13 +28,14 @@ def unparse(tree: t.Union[ast.AST, typed_ast.ast3.AST]) -> str:
 
 
 def dump(
-        tree: t.Union[ast.AST, typed_ast.ast3.AST], annotate_fields: bool=True,
-        include_attributes: bool=False) -> str:
+        tree: t.Union[ast.AST, typed_ast.ast3.AST], annotate_fields: bool = True,
+        include_attributes: bool = False) -> str:
     """Behave just like astunparse.dump(tree), but handle typed_ast.ast3-based trees."""
     stream = cStringIO()
     Printer(
         file=stream, annotate_fields=annotate_fields,
         include_attributes=include_attributes).visit(tree)
     return stream.getvalue()
+
 
 __all__ = ['unparse', 'dump']

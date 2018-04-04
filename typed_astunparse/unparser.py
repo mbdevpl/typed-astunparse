@@ -1,18 +1,3 @@
-# Copyright 2016-2017  Mateusz Bysiek  http://mbdev.pl/
-# This file is part of typed-astunparse.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """Class: Unparser."""
 
 import ast
@@ -236,18 +221,18 @@ class Unparser(astunparse.Unparser):
         self.fill("class " + t.name)
         self.write("(")
         comma = False
-        for e in t.bases:
+        for base in t.bases:
             if comma:
                 self.write(", ")
             else:
                 comma = True
-            self.dispatch(e)
-        for e in t.keywords:
+            self.dispatch(base)
+        for keyword in t.keywords:
             if comma:
                 self.write(", ")
             else:
                 comma = True
-            self.dispatch(e)
+            self.dispatch(keyword)
         self.write(")")
         self.enter()
         self.dispatch(t.body)
@@ -339,8 +324,8 @@ class Unparser(astunparse.Unparser):
         self.dispatch(t.body)
         self.leave()
         # collapse nested ifs into equivalent elifs.
-        while (t.orelse and len(t.orelse) == 1 and
-               (isinstance(t.orelse[0], ast.If) or isinstance(t.orelse[0], typed_ast.ast3.If))):
+        while t.orelse and len(t.orelse) == 1 \
+                and isinstance(t.orelse[0], (ast.If, typed_ast.ast3.If)):
             t = t.orelse[0]
             self.fill("elif ")
             self.dispatch(t.test)
@@ -385,7 +370,7 @@ class Unparser(astunparse.Unparser):
             self.write(self.format_conversions[t.conversion])
         if t.format_spec is not None:
             self.write(":")
-            if isinstance(t.format_spec, ast.Str) or isinstance(t.format_spec, typed_ast.ast3.Str):
+            if isinstance(t.format_spec, (ast.Str, typed_ast.ast3.Str)):
                 self.write(t.format_spec.s)
             else:
                 self.dispatch(t.format_spec)
@@ -395,7 +380,7 @@ class Unparser(astunparse.Unparser):
         self.write("f")
         strings = []
         for value in t.values:
-            if isinstance(value, ast.Str) or isinstance(value, typed_ast.ast3.Str):
+            if isinstance(value, (ast.Str, typed_ast.ast3.Str)):
                 strings.append(value.s)
                 continue
             unparser = type(self)(value, cStringIO())
@@ -412,8 +397,7 @@ class Unparser(astunparse.Unparser):
         # Special case: 3.__abs__() is a syntax error, so if t.value
         # is an integer literal then we need to either parenthesize
         # it or add an extra space to get 3 .__abs__().
-        if (isinstance(t.value, ast.Num) or isinstance(t.value, typed_ast.ast3.Num)) \
-                and isinstance(t.value.n, int):
+        if isinstance(t.value, (ast.Num, typed_ast.ast3.Num)) and isinstance(t.value.n, int):
             self.write(" ")
         self.write(".")
         self.write(t.attr)
@@ -426,18 +410,18 @@ class Unparser(astunparse.Unparser):
         self.dispatch(t.func)
         self.write("(")
         comma = False
-        for e in t.args:
+        for arg in t.args:
             if comma:
                 self.write(", ")
             else:
                 comma = True
-            self.dispatch(e)
-        for e in t.keywords:
+            self.dispatch(arg)
+        for keyword in t.keywords:
             if comma:
                 self.write(", ")
             else:
                 comma = True
-            self.dispatch(e)
+            self.dispatch(keyword)
         self.write(")")
 
     def _arg(self, t):

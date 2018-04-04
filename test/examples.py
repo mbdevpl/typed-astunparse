@@ -1,18 +1,3 @@
-# Copyright 2016-2017  Mateusz Bysiek  http://mbdev.pl/
-# This file is part of typed-astunparse.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """Examples used in unit tests."""
 
 import os
@@ -329,10 +314,10 @@ EXAMPLES = {
                     [typed_ast.ast3.Str(s='setup.py')], []),
                 typed_ast.ast3.Name('f1', typed_ast.ast3.Store())),
              typed_ast.ast3.withitem(
-                typed_ast.ast3.Call(
-                    typed_ast.ast3.Name('open', typed_ast.ast3.Load()),
-                    [typed_ast.ast3.Str(s='README.rst')], []),
-                typed_ast.ast3.Name('f2', typed_ast.ast3.Store()))],
+                 typed_ast.ast3.Call(
+                     typed_ast.ast3.Name('open', typed_ast.ast3.Load()),
+                     [typed_ast.ast3.Str(s='README.rst')], []),
+                 typed_ast.ast3.Name('f2', typed_ast.ast3.Store()))],
             [typed_ast.ast3.Expr(typed_ast.ast3.Call(
                 typed_ast.ast3.Name('print', typed_ast.ast3.Load()),
                 [typed_ast.ast3.Call(typed_ast.ast3.Attribute(
@@ -483,6 +468,7 @@ def _generate_variants(example: dict):
             'eval': None,
             'single': 'Interactive(body=[{}])'.format(example['dump'])}
 
+
 for _, _example in EXAMPLES.items():
     _generate_variants(_example)
 
@@ -529,7 +515,7 @@ _ROOT_DIRECTORY = os.path.join(*_ROOT_DIRECTORY_PARTS)
 # verify root directory
 if __debug__:
     assert isinstance(_ROOT_DIRECTORY, str), _ROOT_DIRECTORY
-    assert len(_ROOT_DIRECTORY) > 0
+    assert _ROOT_DIRECTORY
     assert os.path.isdir(_ROOT_DIRECTORY), _ROOT_DIRECTORY
 
 PATHS = sorted([
