@@ -384,12 +384,12 @@ class Unparser(astunparse.Unparser):
                 strings.append(value.s)
                 continue
             unparser = type(self)(value, cStringIO())
-            s = unparser.f.getvalue().rstrip()
+            unparsed = unparser.f.getvalue().rstrip()
             for delimiter in ['"""', "'''", '"', "'"]:
-                if s.startswith(delimiter) and s.endswith(delimiter):
-                    s = s[len(delimiter):-len(delimiter)]
+                if unparsed.startswith(delimiter) and unparsed.endswith(delimiter):
+                    unparsed = unparsed[len(delimiter):-len(delimiter)]
                     break
-            strings.append(s)
+            strings.append(unparsed)
         self.write(repr(''.join(strings)))
 
     def _Attribute(self, t):
