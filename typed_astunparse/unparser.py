@@ -437,7 +437,7 @@ class Unparser(astunparse.Unparser):
         latest_comment = None
         # normal arguments
         defaults = [None] * (len(t.args) - len(t.defaults)) + t.defaults
-        for a, d in zip(t.args, defaults):
+        for arg, default in zip(t.args, defaults):
             if first:
                 first = False
             else:
@@ -448,11 +448,11 @@ class Unparser(astunparse.Unparser):
                     latest_comment = None
                 else:
                     self.write(' ')
-            self.dispatch(a)
-            if d:
+            self.dispatch(arg)
+            if default:
                 self.write("=")
-                self.dispatch(d)
-            latest_comment = getattr(a, 'type_comment', None)
+                self.dispatch(default)
+            latest_comment = getattr(arg, 'type_comment', None)
 
         # varargs, or bare '*' if no varargs but keyword-only arguments present
         if t.vararg or getattr(t, "kwonlyargs", False):
@@ -476,7 +476,7 @@ class Unparser(astunparse.Unparser):
 
         # keyword-only arguments
         if getattr(t, "kwonlyargs", False):
-            for a, d in zip(t.kwonlyargs, t.kw_defaults):
+            for kwarg, default in zip(t.kwonlyargs, t.kw_defaults):
                 self.write(',')
                 if latest_comment is not None:
                     self._write_type_comment(latest_comment)
@@ -484,11 +484,11 @@ class Unparser(astunparse.Unparser):
                     latest_comment = None
                 else:
                     self.write(' ')
-                self.dispatch(a)
-                if d:
+                self.dispatch(kwarg)
+                if default:
                     self.write("=")
-                    self.dispatch(d)
-                latest_comment = getattr(a, 'type_comment', None)
+                    self.dispatch(default)
+                latest_comment = getattr(kwarg, 'type_comment', None)
 
         # kwargs
         if t.kwarg:
