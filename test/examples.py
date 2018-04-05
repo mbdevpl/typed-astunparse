@@ -547,7 +547,28 @@ UNVERIFIED_EXAMPLES = {
             typed_ast.ast3.NameConstant(None), typed_ast.ast3.Name('str', typed_ast.ast3.Load())),
         'dump':
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None),"
-            "type_comment=Name(id='str',ctx=Load()))"}}
+            "type_comment=Name(id='str',ctx=Load()))"},
+    'f-string': {
+        'code': """f'len("lalala")={6}{42:0}{3.1415:2f}{3.1415:"{2}f"}'""",
+        'is_expression': True,
+        'tree': typed_ast.ast3.JoinedStr([
+            typed_ast.ast3.Str('len("lalala")='),
+            typed_ast.ast3.FormattedValue(typed_ast.ast3.Num(6), -1, None),
+            typed_ast.ast3.FormattedValue(typed_ast.ast3.Num(42), -1, typed_ast.ast3.Num(0)),
+            typed_ast.ast3.FormattedValue(typed_ast.ast3.Num(3.1415), -1, typed_ast.ast3.Str('2f')),
+            typed_ast.ast3.FormattedValue(typed_ast.ast3.Num(3.1415), -1, typed_ast.ast3.JoinedStr([
+                typed_ast.ast3.Str('"'),
+                typed_ast.ast3.FormattedValue(typed_ast.ast3.Num(2), -1, None),
+                typed_ast.ast3.Str('f"')]))]),
+        'dump':
+            "JoinedStr(values=["
+            """Str(s='len("lalala")='),"""
+            "FormattedValue(value=Num(n=6),conversion=-1,format_spec=None),"
+            "FormattedValue(value=Num(n=42),conversion=-1,format_spec=Str(s='0')),"
+            "FormattedValue(value=Num(n=3.1415),conversion=-1,format_spec=Str(s='2f')),"
+            "FormattedValue(value=Num(n=3.1415),conversion=-1,format_spec=JoinedStr(values=["
+            """Str(s='"'),FormattedValue(value=Num(n=2),conversion=-1,format_spec=None),"""
+            """Str(s='f"')]))])"""}}
 
 INVALID_EXAMPLES = {
     'chained assignment with type annotation': {

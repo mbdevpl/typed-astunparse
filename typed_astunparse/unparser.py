@@ -8,6 +8,13 @@ from six.moves import cStringIO
 import typed_ast.ast3
 
 
+def strip_delimiters(text: str):
+    for delimiter in ['"""', "'''", '"', "'"]:
+        if text.startswith(delimiter) and text.endswith(delimiter):
+            return text[len(delimiter):-len(delimiter)]
+    return text
+
+
 class Unparser(astunparse.Unparser):
     """Partial rewrite of Unparser from astunparse to handle typed_ast.ast3-based trees.
 
@@ -372,6 +379,11 @@ class Unparser(astunparse.Unparser):
             self.write(":")
             if isinstance(t.format_spec, (ast.Str, typed_ast.ast3.Str)):
                 self.write(t.format_spec.s)
+            elif isinstance(t.format_spec, (getattr(ast, 'JoinedStr', typed_ast.ast3.JoinedStr),
+                                            typed_ast.ast3.JoinedStr)):
+                unparser = type(self)(t.format_spec, cStringIO())
+                unparsed = unparser.f.getvalue().rstrip()
+                self.write(strip_delimiters(unparsed[1:]))
             else:
                 self.dispatch(t.format_spec)
         self.write("}")
@@ -385,11 +397,7 @@ class Unparser(astunparse.Unparser):
                 continue
             unparser = type(self)(value, cStringIO())
             unparsed = unparser.f.getvalue().rstrip()
-            for delimiter in ['"""', "'''", '"', "'"]:
-                if unparsed.startswith(delimiter) and unparsed.endswith(delimiter):
-                    unparsed = unparsed[len(delimiter):-len(delimiter)]
-                    break
-            strings.append(unparsed)
+            strings.append(strip_delimiters(unparsed))
         self.write(repr(''.join(strings)))
 
     def _Attribute(self, t):
