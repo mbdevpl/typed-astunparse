@@ -1,5 +1,6 @@
 docutils
 pip >= 9.0
+pygments
 setuptools >= 20.5
 wheel
 -rrequirements.txt
