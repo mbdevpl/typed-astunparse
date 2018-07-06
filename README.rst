@@ -5,11 +5,12 @@
     :language: python
 
 
+================
 typed-astunparse
 ================
 
 .. image:: https://img.shields.io/pypi/v/typed-astunparse.svg
-    :target: https://pypi.python.org/pypi/typed-astunparse
+    :target: https://pypi.org/project/typed-astunparse
     :alt: package version from PyPI
 
 .. image:: https://travis-ci.org/mbdevpl/typed-astunparse.svg?branch=master
@@ -35,12 +36,19 @@ typed-astunparse
 The *typed-astunparse* is to *typed-ast* as *astunparse* is to *ast*. In short: unparsing of Python
 3 abstract syntax trees (AST) with type comments.
 
-The built-in *ast* module can parse Python source code into AST. It can't, however, generate source
-code from the AST. That's where *astunparse* comes in. Using a refactored version of an obscure
-script found in official Python repository, it provides code generation capability for native
+.. contents::
+    :backlinks: none
+
+
+Why this module was created
+===========================
+
+The built-in *ast* module can parse Python source code into AST but it can't generate source
+code from the AST. The *astunparse* module (using a refactored version of an obscure
+script found in official Python repository) provides code generation capability for native
 Python AST.
 
-The *ast* and *astunparse* modules, however, completely ignore type comments introduced in
+However, both *ast* and *astunparse* modules completely ignore type comments introduced in
 PEP 484. They treat them like all other comments, so when you parse the code using
 :python:`compile()`, your type comments will be lost. There is no place for them in the AST, so
 obviously they also cannot be unparsed.
@@ -49,22 +57,37 @@ The *typed-ast* module provides an updated AST including type comments defined i
 a parser for Python code that contains such comments.
 
 Unfortunately, *typed-ast* doesn't provide any means to go from AST back to source code with type
-comments. This is where this module, *typed-astunparse*, comes in. It provides unparser for AST
-defined in *typed-ast*.
+comments. This is why module *typed-astunparse* (i.e. this one) was created: to provide unparser
+for AST defined in *typed-ast*.
 
 
-requirements
-------------
+Usage
+=====
 
-Python version >= 3.4.
+Example of roundtrip from code through AST to code:
 
-Python libraries as specified in `<requirements.txt>`_.
+.. code:: python
 
-Tested on Linux, OS X and Windows.
+    import typed_ast.ast3
+    import typed_astunparse
+
+    code = 'my_string = None  # type: str'
+    roundtrip = typed_astunparse.unparse(typed_ast.ast3.parse(code))
+    print(roundtrip)
+
+This will print:
+
+.. code:: python
+
+    my_string = None  # type: str
 
 
-installation
-------------
+for more examples see `<examples.ipynb>`_ notebook.
+
+
+
+Installation
+============
 
 For simplest installation use :bash:`pip`:
 
@@ -78,63 +101,94 @@ You can also build your own version:
 
     git clone https://github.com/mbdevpl/typed-astunparse
     cd typed-astunparse
-    python3 -m unittest discover # make sure the tests pass
+    pip3 install -U test_requirements.txt
+    python3 -m unittest discover  # make sure the tests pass
     python3 setup.py bdist_wheel
-    ls -1tr dist/*.whl | tail -n 1 | xargs pip3 install
+    pip3 install dist/*.whl
 
 
-usage
------
+Requirements
+------------
 
-Example of roundtrip from code through AST to code:
+Python version 3.4 or later.
 
-.. code:: python
+Python libraries as specified in `<requirements.txt>`_.
 
-    import typed_ast.ast3
-    import typed_astunparse
+Building and running tests additionally requires packages listed in `<test_requirements.txt>`_.
 
-    code = 'my_string = None # type: str'
-    roundtrip = typed_astunparse.unparse(typed_ast.ast3.parse(code))
-    print(roundtrip)
-
-for more examples see `<examples.ipynb>`_ notebook.
+Tested on Linux, OS X and Windows.
 
 
-links
------
+Links
+=====
 
--  *ast*:
 
-   https://docs.python.org/3/library/ast.html
+Extensions of this module
+-------------------------
 
-   https://greentreesnakes.readthedocs.io/
+If you're extending typed-astunparse and you'd like to share why,
+feel free to submit a `pull request <https://github.com/mbdevpl/typed-astunparse/pulls>`_
+introducing your project.
 
--  *astunparse*:
+-   *horast*: human-oriented ast
 
-   https://pypi.python.org/pypi/astunparse
+    Built upon both *typed-ast* and *typed-astunparse* providing parsing and unparsing
+    of arbitrary comments in addition to type comments.
 
-   https://github.com/simonpercivall/astunparse
+    https://pypi.org/project/horast
 
-   https://astunparse.readthedocs.io/en/latest/
+    https://github.com/mbdevpl/horast
 
--  PEP 483 - The Theory of Type Hints:
 
-   https://www.python.org/dev/peps/pep-0483/
+Who's using this module and why
+-------------------------------
 
--  PEP 484 - Type Hints:
+If you're using typed-astunparse in your work and you'd like to share why,
+feel free to submit a `pull request <https://github.com/mbdevpl/typed-astunparse/pulls>`_
+introducing your project.
 
-   https://www.python.org/dev/peps/pep-0484/
+-   *static-typing*: using *typed-astunparse* directly to provide AST unparsing function
 
--  PEP 3107 - Function Annotations:
+    https://pypi.org/project/static-typing
 
-   https://www.python.org/dev/peps/pep-3107/
+    https://github.com/mbdevpl/static-typing
 
--  PEP 526 - Syntax for Variable Annotations:
 
-   https://www.python.org/dev/peps/pep-0526/
+References
+----------
 
--  *typed-ast*:
+-   *ast*:
 
-   https://pypi.python.org/pypi/typed-ast
+    https://docs.python.org/3/library/ast.html
 
-   https://github.com/python/typed_ast
+    https://greentreesnakes.readthedocs.io/
+
+-   *astunparse*:
+
+    https://pypi.org/project/astunparse
+
+    https://github.com/simonpercivall/astunparse
+
+    https://astunparse.readthedocs.io/en/latest/
+
+-   PEP 483 - The Theory of Type Hints:
+
+    https://www.python.org/dev/peps/pep-0483/
+
+-   PEP 484 - Type Hints:
+
+    https://www.python.org/dev/peps/pep-0484/
+
+-   PEP 3107 - Function Annotations:
+
+    https://www.python.org/dev/peps/pep-3107/
+
+-   PEP 526 - Syntax for Variable Annotations:
+
+    https://www.python.org/dev/peps/pep-0526/
+
+-   *typed-ast*:
+
+    https://pypi.org/project/typed-ast
+
+    https://github.com/python/typed_ast
