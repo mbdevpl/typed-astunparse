@@ -17,14 +17,14 @@ init:
   - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
 
 install:
-  - pip install -U pip || pip --version
-  - pip install -U -r dev_requirements.txt
+  - python -m pip install -U pip
+  - python -m pip install -U -r dev_requirements.txt
 
 build: off
 
 test_script:
   - set TEST_PACKAGING=1
-  - python -m coverage run --branch --source . -m unittest discover --verbose
+  - python -m coverage run --branch --source . -m unittest --verbose
 
 after_test:
   - python -m coverage report --show-missing
