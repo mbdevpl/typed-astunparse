@@ -4,7 +4,6 @@ import ast
 
 import astunparse
 from astunparse.unparser import interleave
-from six.moves import cStringIO
 import typed_ast.ast3
 
 
@@ -365,37 +364,6 @@ class Unparser(astunparse.Unparser):
         self._write_type_comment(t.type_comment)
         self.dispatch(t.body)
         self.leave()
-
-    def _FormattedValue(self, t):
-        self.write("{")
-        self.dispatch(t.value)
-        if t.conversion is not None and t.conversion != -1:
-            self.write("!")
-            self.write(self.format_conversions[t.conversion])
-        if t.format_spec is not None:
-            self.write(":")
-            if isinstance(t.format_spec, (ast.Str, typed_ast.ast3.Str)):
-                self.write(t.format_spec.s)
-            elif isinstance(t.format_spec, (getattr(ast, 'JoinedStr', typed_ast.ast3.JoinedStr),
-                                            typed_ast.ast3.JoinedStr)):
-                unparser = type(self)(t.format_spec, cStringIO())
-                unparsed = unparser.f.getvalue().rstrip()
-                self.write(strip_delimiters(unparsed[1:]))
-            else:
-                self.dispatch(t.format_spec)
-        self.write("}")
-
-    def _JoinedStr(self, t):
-        self.write("f")
-        strings = []
-        for value in t.values:
-            if isinstance(value, (ast.Str, typed_ast.ast3.Str)):
-                strings.append(value.s)
-                continue
-            unparser = type(self)(value, cStringIO())
-            unparsed = unparser.f.getvalue().rstrip()
-            strings.append(strip_delimiters(unparsed))
-        self.write(repr(''.join(strings)))
 
     def _Attribute(self, t):
         self.dispatch(t.value)
