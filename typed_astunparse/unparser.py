@@ -7,13 +7,6 @@ from astunparse.unparser import interleave
 import typed_ast.ast3
 
 
-def strip_delimiters(text: str):
-    for delimiter in ['"""', "'''", '"', "'"]:
-        if text.startswith(delimiter) and text.endswith(delimiter):
-            return text[len(delimiter):-len(delimiter)]
-    return text
-
-
 class Unparser(astunparse.Unparser):
     """Partial rewrite of Unparser from astunparse to handle typed_ast.ast3-based trees.
 
