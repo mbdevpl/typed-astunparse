@@ -245,7 +245,7 @@ class Unparser(astunparse.Unparser):
         self.dispatch(t.body)
         self.leave()
 
-    def _generic_FunctionDef(self, t, async=False):
+    def _generic_FunctionDef(self, t, async_=False):
         """Unparse FunctionDef or AsyncFunctionDef node.
 
         Rather than handling:
@@ -259,7 +259,6 @@ class Unparser(astunparse.Unparser):
             identifier name, arguments args, stmt* body, expr* decorator_list, expr? returns,
             string? type_comment)
         """
-        async_ = async
         if not hasattr(t, 'type_comment') or t.type_comment is None:
             super()._generic_FunctionDef(t, async_)
             return
@@ -294,7 +293,7 @@ class Unparser(astunparse.Unparser):
         if hasattr(t, 'type_comment') and t.type_comment is not None:
             self._write_type_comment(t.type_comment)
 
-    def _generic_For(self, t, async=False):
+    def _generic_For(self, t, async_=False):
         """Unparse For or AsyncFor node.
 
         Rather than handling just:
@@ -305,7 +304,6 @@ class Unparser(astunparse.Unparser):
 
         For/AsyncFor(expr target, expr iter, stmt* body, stmt* orelse, string? type_comment)
         """
-        async_ = async
         if not hasattr(t, 'type_comment') or t.type_comment is None:
             super()._generic_For(t, async_)
             return
@@ -346,7 +344,7 @@ class Unparser(astunparse.Unparser):
             self.dispatch(t.orelse)
             self.leave()
 
-    def _generic_With(self, t, async=False):
+    def _generic_With(self, t, async_=False):
         """Unparse With or AsyncWith node.
 
         Rather than handling just:
@@ -357,7 +355,6 @@ class Unparser(astunparse.Unparser):
 
         With/AsyncWith(withitem* items, stmt* body, string? type_comment)
         """
-        async_ = async
         if not hasattr(t, 'type_comment') or t.type_comment is None:
             super()._generic_With(t, async_)
             return
