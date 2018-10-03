@@ -12,23 +12,22 @@ matrix:
       language: python
       python: "3.6"
     - os: linux
+      dist: xenial
+      sudo: true
       language: python
-      python: "3.7-dev"
+      python: "3.7"
     - os: osx
       language: generic
-      env: TRAVIS_PYTHON_VERSION="3.4.7"
+      env: TRAVIS_PYTHON_VERSION="3.4.8"
     - os: osx
       language: generic
-      env: TRAVIS_PYTHON_VERSION="3.5.4"
+      env: TRAVIS_PYTHON_VERSION="3.5.5"
     - os: osx
       language: generic
-      env: TRAVIS_PYTHON_VERSION="3.6.3"
+      env: TRAVIS_PYTHON_VERSION="3.6.6"
     - os: osx
       language: generic
-      env: TRAVIS_PYTHON_VERSION="3.7-dev"
-  allow_failures:
-    - python: "3.7-dev"
-    - env: TRAVIS_PYTHON_VERSION="3.7-dev"
+      env: TRAVIS_PYTHON_VERSION="3.7.0"
 
 before_install: |
   set -e
@@ -45,7 +44,7 @@ install:
   - pip install -U -r dev_requirements.txt
 
 script:
-  - TEST_PACKAGING=1 python -m coverage run --branch --source . -m unittest --verbose
+  - TEST_PACKAGING=1 python -m coverage run --branch --source . -m unittest -v
 
 after_success:
   - python -m coverage report --show-missing

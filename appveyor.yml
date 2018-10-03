@@ -2,16 +2,27 @@ version: "{build}"
 
 environment:
   matrix:
-    - PYTHON: "C:\\Python34"
-    - PYTHON: "C:\\Python34-x64"
-    - PYTHON: "C:\\Python35"
-    - PYTHON: "C:\\Python35-x64"
-    - PYTHON: "C:\\Python36"
-    - PYTHON: "C:\\Python36-x64"
-
-matrix:
-  allow_failures:
-    - PYTHON: "C:\\Python34-x64"
+    - ARCHITECTURE: "x86"
+      PYTHON_VERSION: "3.4"
+      PYTHON: "C:\\Python34"
+    - ARCHITECTURE: "x86"
+      PYTHON_VERSION: "3.5"
+      PYTHON: "C:\\Python35"
+    - ARCHITECTURE: "x64"
+      PYTHON_VERSION: "3.5"
+      PYTHON: "C:\\Python35-x64"
+    - ARCHITECTURE: "x86"
+      PYTHON_VERSION: "3.6"
+      PYTHON: "C:\\Python36"
+    - ARCHITECTURE: "x64"
+      PYTHON_VERSION: "3.6"
+      PYTHON: "C:\\Python36-x64"
+    - ARCHITECTURE: "x86"
+      PYTHON_VERSION: "3.7"
+      PYTHON: "C:\\Python37"
+    - ARCHITECTURE: "x64"
+      PYTHON_VERSION: "3.7"
+      PYTHON: "C:\\Python37-x64"
 
 init:
   - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
@@ -24,7 +35,7 @@ build: off
 
 test_script:
   - set TEST_PACKAGING=1
-  - python -m coverage run --branch --source . -m unittest --verbose
+  - python -m coverage run --branch --source . -m unittest -v
 
 after_test:
   - python -m coverage report --show-missing
