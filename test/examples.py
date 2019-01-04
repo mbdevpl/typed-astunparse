@@ -138,7 +138,7 @@ EXAMPLES = {
             'fun', typed_ast.ast3.arguments(
                 [typed_ast.ast3.arg('a', None, None), typed_ast.ast3.arg('b', None, 'float'),
                  typed_ast.ast3.arg('c', None, 'str')],
-                None, [], [], None, [typed_ast.ast3.Str(s='')]),
+                None, [], [], None, [typed_ast.ast3.Str('', '')]),
             [typed_ast.ast3.Pass()],
             [], None, None),
         'dump':
@@ -146,7 +146,7 @@ EXAMPLES = {
             "args=[arg(arg='a',annotation=None,type_comment=None),"
             "arg(arg='b',annotation=None,type_comment='float'),"
             "arg(arg='c',annotation=None,type_comment='str')],"
-            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[Str(s='')]),"
+            "vararg=None,kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[Str(s='',kind='')]),"
             "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
     'function definiton with some keyword-only arguments typed': {
         'code':
@@ -158,7 +158,7 @@ EXAMPLES = {
             'fun', typed_ast.ast3.arguments(
                 [typed_ast.ast3.arg('a', None, None)], None,
                 [typed_ast.ast3.arg('b', None, 'float'), typed_ast.ast3.arg('c', None, 'str')],
-                [None, typed_ast.ast3.Str(s='')], None, []),
+                [None, typed_ast.ast3.Str('', '')], None, []),
             [typed_ast.ast3.Pass()],
             [], None, None),
         'dump':
@@ -167,7 +167,7 @@ EXAMPLES = {
             "vararg=None,kwonlyargs=["
             "arg(arg='b',annotation=None,type_comment='float'),"
             "arg(arg='c',annotation=None,type_comment='str')],"
-            "kw_defaults=[None,Str(s='')],kwarg=None,defaults=[]),"
+            "kw_defaults=[None,Str(s='',kind='')],kwarg=None,defaults=[]),"
             "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
     'function definiton with normal and keyword-only arguments typed': {
         'code':
@@ -181,7 +181,7 @@ EXAMPLES = {
                 [typed_ast.ast3.arg('a', None, 'int')],
                 typed_ast.ast3.arg(arg='args', annotation=None, type_comment=None),
                 [typed_ast.ast3.arg('b', None, 'float'), typed_ast.ast3.arg('c', None, 'str')],
-                [None, typed_ast.ast3.Str(s='')],
+                [None, typed_ast.ast3.Str('', '')],
                 typed_ast.ast3.arg(arg='kwargs', annotation=None, type_comment=None), []),
             [typed_ast.ast3.Pass()],
             [], None, None),
@@ -191,7 +191,7 @@ EXAMPLES = {
             "vararg=arg(arg='args',annotation=None,type_comment=None),kwonlyargs=["
             "arg(arg='b',annotation=None,type_comment='float'),"
             "arg(arg='c',annotation=None,type_comment='str')],"
-            "kw_defaults=[None,Str(s='')],"
+            "kw_defaults=[None,Str(s='',kind='')],"
             "kwarg=arg(arg='kwargs',annotation=None,type_comment=None),defaults=[]),"
             "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
     'function definiton with only varargs and per-argument type comment': {
@@ -201,14 +201,16 @@ EXAMPLES = {
         'is_expression': False,
         'tree': typed_ast.ast3.FunctionDef(
             'fun', typed_ast.ast3.arguments(
-                [], typed_ast.ast3.arg(arg='args', annotation=typed_ast.ast3.Str(s='blahblahblah'),
-                                       type_comment='tuple'),
+                [], typed_ast.ast3.arg(
+                    arg='args', annotation=typed_ast.ast3.Str('blahblahblah', ''),
+                    type_comment='tuple'),
                 [], [], None, []),
             [typed_ast.ast3.Pass()],
             [], None, None),
         'dump':
             "FunctionDef(name='fun',args=arguments("
-            "args=[],vararg=arg(arg='args',annotation=Str(s='blahblahblah'),type_comment='tuple'),"
+            "args=[],vararg=arg(arg='args',annotation=Str(s='blahblahblah',kind=''),"
+            "type_comment='tuple'),"
             "kwonlyargs=[],kw_defaults=[],kwarg=None,defaults=[]),"
             "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
     'function definiton with only kwargs and per-argument type comment': {
@@ -218,15 +220,15 @@ EXAMPLES = {
         'is_expression': False,
         'tree': typed_ast.ast3.FunctionDef(
             'fun', typed_ast.ast3.arguments(
-                [], None, [], [],
-                typed_ast.ast3.arg(arg='kwargs', annotation=typed_ast.ast3.Str(s='blahblahblah'),
-                                   type_comment='dict'), []),
+                [], None, [], [], typed_ast.ast3.arg(
+                    arg='kwargs', annotation=typed_ast.ast3.Str('blahblahblah', ''),
+                    type_comment='dict'), []),
             [typed_ast.ast3.Pass()],
             [], None, None),
         'dump':
             "FunctionDef(name='fun',args=arguments("
             "args=[],vararg=None,kwonlyargs=[],kw_defaults=[],"
-            "kwarg=arg(arg='kwargs',annotation=Str(s='blahblahblah'),type_comment='dict'),"
+            "kwarg=arg(arg='kwargs',annotation=Str(s='blahblahblah',kind=''),type_comment='dict'),"
             "defaults=[]),"
             "body=[Pass()],decorator_list=[],returns=None,type_comment=None)"},
     'function definiton with last argument not typed': {
@@ -346,7 +348,7 @@ EXAMPLES = {
                 [typed_ast.ast3.Name('i', typed_ast.ast3.Load())], []))],
             [typed_ast.ast3.Expr(typed_ast.ast3.Call(
                 typed_ast.ast3.Name('print', typed_ast.ast3.Load()),
-                [typed_ast.ast3.Str('hmm')], []))],
+                [typed_ast.ast3.Str('hmm', '')], []))],
             None),
         'dump':
             "For("
@@ -355,7 +357,7 @@ EXAMPLES = {
             "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
             "args=[Name(id='i',ctx=Load())],keywords=[]))],"
             "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
-            "args=[Str(s='hmm')],keywords=[]))],type_comment=None)"},
+            "args=[Str(s='hmm',kind='')],keywords=[]))],type_comment=None)"},
     'for loop with type comment': {
         'code': "for i in [0, 4, 2, 42]:  # type: int\n    print(i)",
         'is_expression': False,
@@ -388,7 +390,7 @@ EXAMPLES = {
                 [typed_ast.ast3.Name('i', typed_ast.ast3.Load())], []))],
             [typed_ast.ast3.Expr(typed_ast.ast3.Call(
                 typed_ast.ast3.Name('print', typed_ast.ast3.Load()),
-                [typed_ast.ast3.Str('hmm')], []))],
+                [typed_ast.ast3.Str('hmm', '')], []))],
             'int'),
         'dump':
             "For("
@@ -397,7 +399,7 @@ EXAMPLES = {
             "body=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
             "args=[Name(id='i',ctx=Load())],keywords=[]))],"
             "orelse=[Expr(value=Call(func=Name(id='print',ctx=Load()),"
-            "args=[Str(s='hmm')],keywords=[]))],type_comment='int')"},
+            "args=[Str(s='hmm',kind='')],keywords=[]))],type_comment='int')"},
     'if-elif-else': {
         'code': "if False:\n    pass\nelif True:\n    pass\nelse:\n    pass",
         'is_expression': False,
@@ -419,7 +421,7 @@ EXAMPLES = {
             [typed_ast.ast3.withitem(
                 typed_ast.ast3.Call(
                     typed_ast.ast3.Name('open', typed_ast.ast3.Load()),
-                    [typed_ast.ast3.Str(s='setup.py')], []),
+                    [typed_ast.ast3.Str('setup.py', '')], []),
                 typed_ast.ast3.Name('f', typed_ast.ast3.Store()))],
             [typed_ast.ast3.Expr(typed_ast.ast3.Call(
                 typed_ast.ast3.Name('print', typed_ast.ast3.Load()),
@@ -431,7 +433,7 @@ EXAMPLES = {
         'dump':
             "With("
             "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
-            "args=[Str(s='setup.py')],keywords=[]),"
+            "args=[Str(s='setup.py',kind='')],keywords=[]),"
             "optional_vars=Name(id='f',ctx=Store()))],"
             "body=[Expr(value=Call("
             "func=Name(id='print',ctx=Load()),"
@@ -447,7 +449,7 @@ EXAMPLES = {
             [typed_ast.ast3.withitem(
                 typed_ast.ast3.Call(
                     typed_ast.ast3.Name('open', typed_ast.ast3.Load()),
-                    [typed_ast.ast3.Str(s='setup.py')], []),
+                    [typed_ast.ast3.Str('setup.py', '')], []),
                 typed_ast.ast3.Name('f', typed_ast.ast3.Store()))],
             [typed_ast.ast3.Expr(typed_ast.ast3.Call(
                 typed_ast.ast3.Name('print', typed_ast.ast3.Load()),
@@ -459,7 +461,7 @@ EXAMPLES = {
         'dump':
             "With("
             "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
-            "args=[Str(s='setup.py')],keywords=[]),"
+            "args=[Str(s='setup.py',kind='')],keywords=[]),"
             "optional_vars=Name(id='f',ctx=Store()))],"
             "body=[Expr(value=Call("
             "func=Name(id='print',ctx=Load()),"
@@ -478,12 +480,12 @@ EXAMPLES = {
             [typed_ast.ast3.withitem(
                 typed_ast.ast3.Call(
                     typed_ast.ast3.Name('open', typed_ast.ast3.Load()),
-                    [typed_ast.ast3.Str(s='setup.py')], []),
+                    [typed_ast.ast3.Str('setup.py', '')], []),
                 typed_ast.ast3.Name('f1', typed_ast.ast3.Store())),
              typed_ast.ast3.withitem(
                  typed_ast.ast3.Call(
                      typed_ast.ast3.Name('open', typed_ast.ast3.Load()),
-                     [typed_ast.ast3.Str(s='README.rst')], []),
+                     [typed_ast.ast3.Str('README.rst', '')], []),
                  typed_ast.ast3.Name('f2', typed_ast.ast3.Store()))],
             [typed_ast.ast3.Expr(typed_ast.ast3.Call(
                 typed_ast.ast3.Name('print', typed_ast.ast3.Load()),
@@ -501,10 +503,10 @@ EXAMPLES = {
         'dump':
             "With("
             "items=[withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
-            "args=[Str(s='setup.py')],keywords=[]),"
+            "args=[Str(s='setup.py',kind='')],keywords=[]),"
             "optional_vars=Name(id='f1',ctx=Store())),"
             "withitem(context_expr=Call(func=Name(id='open',ctx=Load()),"
-            "args=[Str(s='README.rst')],keywords=[]),"
+            "args=[Str(s='README.rst',kind='')],keywords=[]),"
             "optional_vars=Name(id='f2',ctx=Store()))],"
             "body=[Expr(value=Call("
             "func=Name(id='print',ctx=Load()),"
@@ -519,6 +521,21 @@ EXAMPLES = {
             "args=[],keywords=[])],"
             "keywords=[]))],"
             "type_comment='typing.io.TextIO,typing.io.TextIO')"},
+    'raw string': {
+        'code': "r'spam'",
+        'is_expression': True,
+        'tree': typed_ast.ast3.Str('spam', 'r'),
+        'dump': "Str(s='spam',kind='r')"},
+    'raw string variant': {
+        'code': "R'spam'",
+        'is_expression': True,
+        'tree': typed_ast.ast3.Str('spam', 'R'),
+        'dump': "Str(s='spam',kind='R')"},
+    'unicode string': {
+        'code': "u'spam'",
+        'is_expression': True,
+        'tree': typed_ast.ast3.Str('spam', 'u'),
+        'dump': "Str(s='spam',kind='u')"},
     'addition': {
         'code': "(a + b)",
         'is_expression': True,
@@ -547,7 +564,19 @@ UNVERIFIED_EXAMPLES = {
             typed_ast.ast3.NameConstant(None), typed_ast.ast3.Name('str', typed_ast.ast3.Load())),
         'dump':
             "Assign(targets=[Name(id='my_string',ctx=Store())],value=NameConstant(value=None),"
-            "type_comment=Name(id='str',ctx=Load()))"}}
+            "type_comment=Name(id='str',ctx=Load()))"},
+    }
+
+# 'raw bytes': {
+#     'code': "rb'spam'",
+#     'is_expression': True,
+#     'tree': typed_ast.ast3.Bytes(b'spam'),
+#     'dump': "Bytes(s='spam')"},
+# 'raw bytes inverted prefix': {
+#     'code': "br'spam'",
+#     'is_expression': True,
+#     'tree': typed_ast.ast3.Bytes(b'spam'),
+#     'dump': "Bytes(s='spam')"},
 
 # 'f-string': {
 #     'code': """f'len("lalala")={6}{42:0}{3.1415:2f}{3.1415:"{2}f"}'""",

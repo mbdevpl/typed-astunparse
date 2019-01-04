@@ -25,10 +25,11 @@ class UnparseTests(unittest.TestCase):
             for mode in MODES:
                 if example['trees'][mode] is None:
                     continue
-                code = typed_astunparse.unparse(example['trees'][mode])
-                _LOG.debug('%s', code)
-                code = code.strip()
-                self.assertEqual(code, example['code'], msg=(description, mode))
+                with self.subTest(description=description):
+                    code = typed_astunparse.unparse(example['trees'][mode])
+                    _LOG.debug('%s', code)
+                    code = code.strip()
+                    self.assertEqual(code, example['code'], msg=(description, mode))
 
     def test_unparse_invalid_examples(self):
         """Raise errors on ASTs of invalid examples as expected."""
@@ -55,12 +56,13 @@ class UnparseTests(unittest.TestCase):
                     continue
 
                 tree = example['trees'][mode]
-                for _ in range(4):
-                    code = typed_astunparse.unparse(tree)
-                    _LOG.debug('%s', code)
-                    clean_code = code.strip()
-                    self.assertEqual(clean_code, example['code'], msg=(description, mode))
-                    tree = typed_ast.ast3.parse(source=code, mode=mode)
+                with self.subTest(description=description):
+                    for _ in range(4):
+                        code = typed_astunparse.unparse(tree)
+                        _LOG.debug('%s', code)
+                        clean_code = code.strip()
+                        self.assertEqual(clean_code, example['code'], msg=(description, mode))
+                        tree = typed_ast.ast3.parse(source=code, mode=mode)
 
     def test_files(self):
         """Keep Python stdlib tree the same after roundtrip parse-unparse."""
@@ -69,10 +71,11 @@ class UnparseTests(unittest.TestCase):
                 original_code = py_file.read()
             tree = typed_ast.ast3.parse(source=original_code, filename=path)
             code = typed_astunparse.unparse(tree)
-            roundtrip_tree = typed_ast.ast3.parse(source=code)
-            tree_dump = typed_ast.ast3.dump(tree, include_attributes=False)
-            roundtrip_tree_dump = typed_ast.ast3.dump(roundtrip_tree, include_attributes=False)
-            self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)
+            with self.subTest(path=path):
+                roundtrip_tree = typed_ast.ast3.parse(source=code)
+                tree_dump = typed_ast.ast3.dump(tree, include_attributes=False)
+                roundtrip_tree_dump = typed_ast.ast3.dump(roundtrip_tree, include_attributes=False)
+                self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)
 
     def test_untyped_files(self):
         """Unparse Python stdlib correctly even if parsed using built-in ast package."""
@@ -81,7 +84,8 @@ class UnparseTests(unittest.TestCase):
                 original_code = py_file.read()
             tree = ast.parse(source=original_code, filename=path)
             code = typed_astunparse.unparse(tree)
-            roundtrip_tree = ast.parse(source=code)
-            tree_dump = ast.dump(tree, include_attributes=False)
-            roundtrip_tree_dump = ast.dump(roundtrip_tree, include_attributes=False)
-            self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)
+            with self.subTest(path=path):
+                roundtrip_tree = ast.parse(source=code)
+                tree_dump = ast.dump(tree, include_attributes=False)
+                roundtrip_tree_dump = ast.dump(roundtrip_tree, include_attributes=False)
+                self.assertEqual(tree_dump, roundtrip_tree_dump, msg=path)
