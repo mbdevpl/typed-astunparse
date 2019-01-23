@@ -3,7 +3,9 @@
 import ast
 import itertools
 import logging
+import pathlib
 import unittest
+import sys
 
 import typed_ast.ast3
 import typed_astunparse
@@ -67,6 +69,8 @@ class UnparseTests(unittest.TestCase):
     def test_files(self):
         """Keep Python stdlib tree the same after roundtrip parse-unparse."""
         for path in PATHS:
+            if sys.version_info[:2] == (3, 7) and pathlib.Path(path).name == 'dataclasses.py':
+                continue
             with open(path, 'r', encoding='utf-8') as py_file:
                 original_code = py_file.read()
             tree = typed_ast.ast3.parse(source=original_code, filename=path)
