@@ -521,6 +521,11 @@ EXAMPLES = {
             "args=[],keywords=[])],"
             "keywords=[]))],"
             "type_comment='typing.io.TextIO,typing.io.TextIO')"},
+    'raw bytes': {
+        'code': "br'''1\"\"\"2\'3\"4\\'\\'\\'\\n'''",
+        'is_expression': True,
+        'tree': typed_ast.ast3.Bytes(b'1\"\"\"2\'3\"4\\\'\\\'\\\'\\n', 'br'),
+        'dump': "Bytes(s=b'1\"\"\"2\\'3\"4\\\\\\'\\\\\\'\\\\\\'\\\\n',kind='br')"},
     'raw string': {
         'code': "r'spam'",
         'is_expression': True,

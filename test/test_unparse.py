@@ -50,6 +50,15 @@ class UnparseTests(unittest.TestCase):
                     continue
                 code = typed_astunparse.unparse(tree)
 
+    def test_bad_raw_literal(self):
+        raw_literal = rb'''\t\t ' """ ''' + rb""" " ''' \n"""
+        tree = typed_ast.ast3.Bytes(raw_literal, 'rb')
+        # with self.assertRaises(SyntaxError):
+        code = typed_astunparse.unparse(tree)
+        print(code)
+        for mode in MODES:
+            tree = typed_ast.ast3.parse(source=code, mode=mode)
+
     def test_many_roundtrips(self):
         """Prserve ASTs when doing parse(unparse(parse(...unparse(parse(code))...)))."""
         for description, example in EXAMPLES.items():
