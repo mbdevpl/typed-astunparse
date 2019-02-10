@@ -210,6 +210,24 @@ class Unparser(astunparse.Unparser):
         self.write('  # type: ')
         self._write_string_or_dispatch(type_comment)
 
+    def _write_raw_literal(self, text: str):
+        delimiter = None
+        for _ in ("'", '"', "'''", '"""'):
+            if _ not in text:
+                delimiter = _
+                break
+        if delimiter is None:
+            delimiter = '"""'
+        assert delimiter is not None
+        if '\n' in text and delimiter in {'"', "'"}:
+            delimiter = {'"': '"""', "'": "'''"}[delimiter]
+        if delimiter in text:
+            escaped_delimiter = ''.join(['\\{}'.format(_) for _ in delimiter])
+            text = text.replace(delimiter, escaped_delimiter)
+        self.write(delimiter)
+        self.write(text)
+        self.write(delimiter)
+
     def _ClassDef(self, t):
         if isinstance(t, ast.ClassDef):
             super()._ClassDef(t)
@@ -360,27 +378,21 @@ class Unparser(astunparse.Unparser):
         self.dispatch(t.body)
         self.leave()
 
+    def _Bytes(self, tree):
+        if hasattr(tree, 'kind') and tree.kind:
+            self.write(tree.kind)
+            if 'r' in tree.kind.lower():
+                self._write_raw_literal(tree.s.decode())
+            else:
+                self.write(repr(tree.s)[1:])
+            return
+        super()._Bytes(tree)
+
     def _Str(self, tree):
         if hasattr(tree, 'kind') and tree.kind:
             self.write(tree.kind)
             if 'r' in tree.kind.lower():
-                text = tree.s
-                delimiter = None
-                for _ in ("'", '"', "'''", '"""'):
-                    if _ not in text:
-                        delimiter = _
-                        break
-                if delimiter is None:
-                    delimiter = '"""'
-                assert delimiter is not None
-                if '\n' in text and delimiter in {'"', "'"}:
-                    delimiter = {'"': '"""', "'": "'''"}[delimiter]
-                if delimiter in text:
-                    escaped_delimiter = ''.join(['\\{}'.format(_) for _ in delimiter])
-                    text = text.replace(delimiter, escaped_delimiter)
-                self.write(delimiter)
-                self.write(text)
-                self.write(delimiter)
+                self._write_raw_literal(tree.s)
                 return
         super()._Str(tree)
 
