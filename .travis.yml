@@ -45,6 +45,21 @@ after_success:
   - python -m coverage report --show-missing
   - codecov
 
+before_deploy:
+  - pip3 install -U --user version_query || pip3 install -U version_query
+  - wget https://gist.githubusercontent.com/mbdevpl/46d458350f0c9cc7d793b67573e01f7b/raw/prepare_bintray_deployment.py
+  - python3 prepare_bintray_deployment.py "$TRAVIS_OS_NAME-python$TRAVIS_PYTHON_VERSION" "dist/*.tar.gz" "dist/*.whl" "dist/*.zip"
+
+deploy:
+  - provider: bintray
+    file: ".bintray.json"
+    user: "mbdevpl"
+    key:
+      secure: "QzpD9CQ+2BGmma1GLxMfBKjHRRqs0N1/CZLzvHxsitdy4HXXbfV2MG2Cq6OrYUKtZIkSoCWj/T9sEfiI/A/mszkXFgrzBBCxZm/viZ/o3SSmLZ6JfRMWFAW76K61KS9YWkRNPy8NKKTqQfiFbZij90BjvC2kanYAP+17e9xZ0VgoSoQaKehNMWTpUm+ZHEp03lF26CKroJcA2aLK4mk7OVBFd0nfmo/hGvGam4p4qYTmKrZksKFigCCjOYF/lqaFfPkGT8wvfzvywETVD/1aaP8nICxdL4b8GoIYftYludbtTkSP2VMRoyvjf9m53Ofic1I3DsJLs1j4uVDRVU/vPR4bLFXjc/SW2LjU5us6f58+4FuSpOBNMlHBhHXp00b86V40AeqZ/vRIEkBtCWDzS/kUH7NOKqGAaBbHomvirqyVjqtSPkAwEzILgcgXJrtsIT1XY1vW5Kr9HbLm4zrAX4jdJ6785Uc6/SeasbfrsZfkD70y5uaPGWGJ/7c0vwYeJFNZGZCeNYKyLPDdkf0gkeA2TQdq0ov0nWWLXCN/V6G9wtuXVY5g765PqD24FzzVPE/3YH+a1NnWOhpVmOYZ6cs0GstjtNgWOqoDx3Az35a96kxE2SjZsvIOuUamfDgfyQo5itMX0LaExPb7e4g9+zRoXQqRbKHILZsyG0L6vzk="
+    on:
+      all_branches: true
+    skip_cleanup: true
+
 notifications:
   slack:
     secure: "vlXI51/0L3jPt316tLvXxSgGQhlQYSxrVd0bHRYCW4iMQgxcURAlzydUO6+KJsnGQNd1wNehkIf8RMGuh7bX7siTBtRkrFdceGu2Mp69CVcX2wfZmTOvV6x3nyOUhFjDlWeaEpVg+kR2qmVSC+tJ6LLfIVRjPbcY+x/O4ubH79N1YYb6/ruqB2YK7ArY7yu+g6DcmYvb9xKMlG6KKQlAxoFywhLWkmReIvLH+mMcO+JUqez7HotMaVH8H6uwiA8NEX1FOeo1h7uXiqvtnxQcrWMZ3E/y7/W/BQEpfiy1JFGwInUN7Hs+uwevBtQx7q1/6EpTtP1xEFHKzGv/KTR5LGdeZTAw4KyL94Gifh2/+dTXG7jA9Ib4494JGduCPwTD5rbYQCgIu5fooCgJho+GJcShDNFrTwZ4AyCwPl3bpTgdUahqsM4kpp+dDfDXLiPO81ZRYFUM6h1VMM+KFNC/gLgnpt8Kz1JNPhPlBvlKu4rhFA7ULKzk0uKwS85U88+XhH3zzKi5jSDM9ejHKyNQFrHuIdkTjc+CGrc1U4/r3GlPFTjcJ0iVEftYwkTRYjAAHC/CUTsTYv5HKEY/eLYRH3R+el0p6BX9l2BIMTfJy6WXD8oyARN37ydRvkPxa1vQifG1MebMx0HxZseVcBfDOzvH9RLt5o6wMwnWkiHlm24="
