@@ -1,3 +1,5 @@
-"""This file defines the version of "typed_astunparse" package."""
+"""Version of typed-astunparse package."""
 
-VERSION = '2.1.1'
+from version_query import predict_version_str
+
+VERSION = predict_version_str()
