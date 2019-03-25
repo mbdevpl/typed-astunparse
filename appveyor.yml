@@ -3,9 +3,6 @@ version: "{build}"
 environment:
   matrix:
     - ARCHITECTURE: "x86"
-      PYTHON_VERSION: "3.4"
-      PYTHON: "C:\\Python34"
-    - ARCHITECTURE: "x86"
       PYTHON_VERSION: "3.5"
       PYTHON: "C:\\Python35"
     - ARCHITECTURE: "x64"
