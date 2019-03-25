@@ -53,9 +53,9 @@ class UnparseTests(unittest.TestCase):
     def test_bad_raw_literal(self):
         raw_literal = rb'''\t\t ' """ ''' + rb""" " ''' \n"""
         tree = typed_ast.ast3.Bytes(raw_literal, 'rb')
-        # with self.assertRaises(SyntaxError):
         code = typed_astunparse.unparse(tree)
-        print(code)
+        _LOG.debug('%s', code)
+        self.assertNotEqual(raw_literal, code)
         for mode in MODES:
             tree = typed_ast.ast3.parse(source=code, mode=mode)
 
