@@ -181,17 +181,7 @@ class Unparser(astunparse.Unparser):
 
     [1]: https://hg.python.org/cpython/file/tip/Parser/Python.asdl
     [2]: https://github.com/python/typed_ast/blob/master/typed_ast/ast3.py#L5
-
     """
-
-    boolops = {typed_ast.ast3.And: 'and', typed_ast.ast3.Or: 'or'}
-    """Mapping from boolean operation node to its string representation.
-
-    This overrides of base class dict, because {ast.And: 'and', ast.Or: 'or'} obviously causes
-    errors.
-    """
-
-    boolops.update(astunparse.Unparser.boolops)
 
     def _write_string_or_dispatch(self, value):
         """If value is str, write it. Otherwise, dispatch it."""
@@ -395,6 +385,15 @@ class Unparser(astunparse.Unparser):
                 self._write_raw_literal(tree.s)
                 return
         super()._Str(tree)
+
+    boolops = {'And': 'and', 'Or': 'or'}
+
+    def _BoolOp(self, syntax):
+        # TODO: push this to astunparse (upstream)
+        self.write('(')
+        op_ = ' {} '.format(self.boolops[syntax.op.__class__.__name__])
+        interleave(lambda: self.write(op_), self.dispatch, syntax.values)
+        self.write(')')
 
     def _Attribute(self, t):
         self.dispatch(t.value)
