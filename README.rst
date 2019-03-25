@@ -102,7 +102,7 @@ You can also build your own version:
     git clone https://github.com/mbdevpl/typed-astunparse
     cd typed-astunparse
     pip3 install -U test_requirements.txt
-    python3 -m unittest discover  # make sure the tests pass
+    python3 -m unittest  # make sure the tests pass
     python3 setup.py bdist_wheel
     pip3 install dist/*.whl
 
