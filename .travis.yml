@@ -15,21 +15,22 @@ matrix:
       python: "3.7"
     - os: osx
       language: generic
-      env: TRAVIS_PYTHON_VERSION="3.5.5"
+      env: TRAVIS_PYTHON_VERSION="3.5"
     - os: osx
       language: generic
-      env: TRAVIS_PYTHON_VERSION="3.6.6"
+      env: TRAVIS_PYTHON_VERSION="3.6"
     - os: osx
       language: generic
-      env: TRAVIS_PYTHON_VERSION="3.7.0"
+      env: TRAVIS_PYTHON_VERSION="3.7"
 
 before_install: |
   set -e
   if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
     brew update
     brew install pyenv || brew upgrade pyenv
+    TRAVIS_PYTHON_VERSION="$(pyenv install --list | grep " ${TRAVIS_PYTHON_VERSION}\." | tail -n 1 | sed -e 's/^[[:space:]]*//')"
     pyenv install "${TRAVIS_PYTHON_VERSION}"
-    export PATH="$HOME/.pyenv/versions/${TRAVIS_PYTHON_VERSION}/bin:${PATH}"
+    export PATH="${HOME}/.pyenv/versions/${TRAVIS_PYTHON_VERSION}/bin:${PATH}"
   fi
   set +e
 
