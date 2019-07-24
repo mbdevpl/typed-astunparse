@@ -26,7 +26,7 @@ matrix:
 
 before_install:
   - if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /; fi  # https://github.com/pyenv/pyenv/issues/1219
-  - DIAGNOSE_PYENV=1 .build/install_pyenv.sh
+  - .build/install_pyenv.sh
 
 install:
   - pip install -U pip
