@@ -9,7 +9,7 @@ class Package(setup_boilerplate.Package):
 
     name = 'typed-astunparse'
     description = 'typed-astunparse is to typed-ast as astunparse is to ast'
-    download_url = 'https://github.com/mbdevpl/typed-astunparse'
+    url = 'https://github.com/mbdevpl/typed-astunparse'
     classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Console',
