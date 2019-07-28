@@ -9,6 +9,8 @@
 typed-astunparse
 ================
 
+Unparser for Python 3 abstract syntax trees (ASTs) with type comments.
+
 .. image:: https://img.shields.io/pypi/v/typed-astunparse.svg
     :target: https://pypi.org/project/typed-astunparse
     :alt: package version from PyPI
@@ -29,12 +31,12 @@ typed-astunparse
     :target: https://codecov.io/gh/mbdevpl/typed-astunparse
     :alt: test coverage from Codecov
 
-.. image:: https://img.shields.io/pypi/l/typed-astunparse.svg
+.. image:: https://img.shields.io/github/license/mbdevpl/typed-astunparse.svg
     :target: https://github.com/mbdevpl/typed-astunparse/blob/master/NOTICE
     :alt: license
 
 The *typed-astunparse* is to *typed-ast* as *astunparse* is to *ast*. In short: unparsing of Python
-3 abstract syntax trees (AST) with type comments.
+3 abstract syntax trees (ASTs) with type comments.
 
 .. contents::
     :backlinks: none
